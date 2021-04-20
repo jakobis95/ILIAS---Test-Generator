@@ -2,14 +2,14 @@ import sqlite3
 from tkinter import *
 
 class DB_Interface():
-    def __init__(self, dbname, tempdbname, root, table_dict, *args, **kwargs):
+    def __init__(self, dbname, tempdbname, root, table_dict, table_list, *args, **kwargs):
         self.root = root
         self.listeners = []
         self.all_data = []
         self.db_data = [self.all_data, None, None, False] #broadcast data 1:Datenbak auswahl 2:Einzelne Frage aus Datenbank 3: daten in Temp datenbank 4:
         self.table = 'formelfrage'
         self.table_dict = table_dict
-        self.table_list = ['formelfrage', 'singlechoice', 'multiplechoice', 'zuordnungsfrage']
+        self.table_list = table_list
         #self.q = q
         # Insert Data from Database
         self.mydb = sqlite3.connect(dbname)
