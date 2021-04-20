@@ -12,7 +12,7 @@ from ScrolledText_Functionality import Textformatierung
 
 class fragen_gui():
 
-    # test
+    # test - Tobi
 
     def __init__(self, table_dict, fragentyp, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color='#4cc9f0', entry_color='white', label_color='#3a0ca3', button_color='#3f37c9', fg_color='#4cc9f0', *args, **kwargs):
         bg_color = '#4cc9f0'  # general Background color
