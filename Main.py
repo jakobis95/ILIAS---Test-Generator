@@ -12,8 +12,7 @@ class Main(tk.Frame):
         #XML related data
 
 
-        #XML_interface erstellen
-        #XML_interface = xml_interface()
+
 
 
 
@@ -54,6 +53,9 @@ class Main(tk.Frame):
         DBT = UI(table_dict, DBI, Left_Top_Frame, WIDTH, 0, table_index_list, table_index_dict, "Fragendatenbank", bg_color, button_color, label_color, Button_Font, Label_Font)
         Test_T = UI(table_dict, DBI, Left_Bottom_Frame, WIDTH, 2, table_index_list, table_index_dict, "Fragenauswahl für Test", bg_color, button_color, label_color, Button_Font, Label_Font)
         mytempdb_name = '../tempdb.db'
+
+        # XML_interface erstellen, diese Klasse muss die DBI kennen. Daher wird dieses übergeben
+        # XML_interface = xml_interface(DBI)
 
         #Menue
         Menu_lbl = Label(Right_Menu_Frame, text="Menü", bg=label_color, fg=bg_color)

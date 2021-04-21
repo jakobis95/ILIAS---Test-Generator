@@ -1,7 +1,11 @@
-class xml_interface(self, db_entry_to_index_dict, ids_in_entry_box, question_type, pool_img_dir,
+from DB_interface import DB_Interface
+
+class xml_interface(DBI, self, db_entry_to_index_dict, ids_in_entry_box, question_type, pool_img_dir,
                  ilias_id_pool_qpl_dir, xml_read_qti_template_path, xml_qti_output_file_path,
                  xml_qpl_output_file_path, max_id_pool_qti_xml, max_id, taxonomy_file_question_pool):
-
+#DBI = DB_Interface
+#DBI.get_dbtemp_data gibt die daten aus formelfrage zurück
+    self.DBI = DBI
     # INIT
     # ff_question_structure
     # ff_question_variable_structure
