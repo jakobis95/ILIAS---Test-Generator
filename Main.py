@@ -3,11 +3,22 @@ import tkinter as tk
 import tkinter.font as font
 from DB_Treeview import UI
 from DB_interface import DB_Interface
+from XML_class import xml_interface
 from ScrolledText_Functionality import Textformatierung
 class Main(tk.Frame):
 
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
+        #XML related data
+
+
+        #XML_interface erstellen
+        #XML_interface = xml_interface()
+
+
+
+
+
         # Farben und Schriften Definitionen
         Label_Font = font.Font(family='Verdana', size=10, weight='bold')  # Font definition for Labels
         Entry_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Entrys
@@ -63,18 +74,19 @@ class Main(tk.Frame):
         test_lbl = Label(Right_Menu_Frame, text="Test Menü", bg=label_color, fg=bg_color)
         test_lbl['font'] = Label_Font
         test_lbl.pack(side="top", fill=X)
-        create_Test = Button(Right_Menu_Frame, text="Test aus Auswahl erstellen", bg=button_color, fg=bg_color, command=self.Test_aus_auswahl_erstellem)
-        create_Test['font'] = Button_Font
-        create_Test.pack(side="top", fill=X)
+        #create_Test = Button(Right_Menu_Frame, text="Test aus Auswahl erstellen", bg=button_color, fg=bg_color, command=self.Test_aus_auswahl_erstellem)
+        #create_Test['font'] = Button_Font
+        #create_Test.pack(side="top", fill=X)
         create_Test_excel = Button(Right_Menu_Frame, text="Test aus Excel erstellen", bg=button_color, fg=bg_color)
         create_Test_excel['font'] = Button_Font
         create_Test_excel.pack(side="top", fill=X)
         #Put_btn = tk.Button(bottom_Frame, text="Add to Test")
         #Put_btn.place(relx=0, rely=0)
 
-    def test_aus_auswahl_erstellen(self): # hier werden die Funktionalitäten aufgerufen um einen Test zu erstellen
-        self.table_list #liste mit den 4 tabeln
-        mytempdb_name #datenbank name nicht der von Temp
+    #def test_aus_auswahl_erstellen(self): # hier werden die Funktionalitäten aufgerufen um einen Test zu erstellen
+        #self.table_list #liste mit den 4 tabeln
+        #mytempdb_name #datenbank name nicht der von Temp
+
 if __name__ == "__main__":
 
 
