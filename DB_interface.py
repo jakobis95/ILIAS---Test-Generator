@@ -85,7 +85,7 @@ class DB_Interface():
                 self.index_list.append(q)
                 index = index + 1
 
-            self.table_index_dict[i] = self.index_dict
+            self.table_index_dict[i] = self.index_dict #liste von dictionary für jeden tabel kann mit self.table_dict[tablename] verwendet werden
             self.table_index_list[i] = self.index_list
             i = i + 1
             #print("index aus ", self.index_dict['question_type'])
@@ -187,6 +187,16 @@ class DB_Interface():
             all_data.append(self.cursorlist[id].fetchall())
         self.db_data[id] = all_data
         self.notify()
+
+    def get_dbtemp_data(self):
+
+        self.query = "SELECT * FROM formelfrage"
+        self.cursorlist[2].execute(self.query)
+        test_data = self.cursorlist[2].fetchall()
+
+        return test_data
+
+
 
     def notify(self):
         for listener in self.listeners:
