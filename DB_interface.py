@@ -2,14 +2,14 @@ import sqlite3
 from tkinter import *
 
 class DB_Interface():
-    def __init__(self, dbname, tempdbname, root, table_dict, *args, **kwargs):
+    def __init__(self, dbname, tempdbname, root, table_dict, table_list, *args, **kwargs):
         self.root = root
         self.listeners = []
         self.all_data = []
         self.db_data = [self.all_data, None, None, False] #broadcast data 1:Datenbak auswahl 2:Einzelne Frage aus Datenbank 3: daten in Temp datenbank 4:
         self.table = 'formelfrage'
         self.table_dict = table_dict
-        self.table_list = ['formelfrage', 'singlechoice', 'multiplechoice', 'zuordnungsfrage']
+        self.table_list = table_list
         #self.q = q
         # Insert Data from Database
         self.mydb = sqlite3.connect(dbname)
@@ -85,7 +85,7 @@ class DB_Interface():
                 self.index_list.append(q)
                 index = index + 1
 
-            self.table_index_dict[i] = self.index_dict
+            self.table_index_dict[i] = self.index_dict #liste von dictionary für jeden tabel kann mit self.table_dict[tablename] verwendet werden
             self.table_index_list[i] = self.index_list
             i = i + 1
             #print("index aus ", self.index_dict['question_type'])
@@ -187,6 +187,16 @@ class DB_Interface():
             all_data.append(self.cursorlist[id].fetchall())
         self.db_data[id] = all_data
         self.notify()
+
+    def get_dbtemp_data(self):
+
+        self.query = "SELECT * FROM formelfrage"
+        self.cursorlist[2].execute(self.query)
+        test_data = self.cursorlist[2].fetchall()
+
+        return test_data
+
+
 
     def notify(self):
         for listener in self.listeners:

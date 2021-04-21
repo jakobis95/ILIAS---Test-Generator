@@ -3237,7 +3237,7 @@ class Create_Formelfrage_Questions(Formelfrage):
         #self.number_of_pools = 1
 
         self.ff_db_entry_to_index_dict = db_entry_to_index_dict
-        self.ff_test_entry_splitted = ids_in_entry_box.split(",")
+        self.ff_test_entry_splitted = ids_in_entry_box.split(",") #todo das sind die eingegebenen ids welche zu den gewünschten Testfragen gehören
         self.qti_file_path_output = xml_qti_output_file_path
         self.formelfrage_pool_qpl_file_path_output = xml_qpl_output_file_path
         self.ff_mytree = ET.parse(xml_read_qti_template_path)
@@ -3266,7 +3266,7 @@ class Create_Formelfrage_Questions(Formelfrage):
 
 
         if self.ff_question_type_test_or_pool == "question_test":
-            print("FORMELFRAGE: ILIAS-TEST WIRD ERSTELLT...  ID: " + str(ids_in_entry_box))
+            print("FORMELFRAGE: ILIAS-TEST WIRD ERSTELLT...  ID: " + str(ids_in_entry_box)) #todo die ID ist für eine Frage?
 
         else:
             print("FORMELFRAGE: ILIAS-POOL WIRD ERSTELLT...  ID: " + str(ids_in_entry_box))
@@ -3307,7 +3307,7 @@ class Create_Formelfrage_Questions(Formelfrage):
 
         # Sämtliche Datenbank Einträge auslesen mit der entsprechenden "oid" (Datenbank ID)
         # Datenbank ID wird automatisch bei einem neuen Eintrag erstellt (fortlaufend) und kann nicht beeinflusst werden
-        cursor.execute("SELECT *, oid FROM %s"  % self.ff_database_table)
+        cursor.execute("SELECT *, oid FROM %s"  % self.ff_database_table) #todo Wo kommt das Database_table her?
         ff_db_records = cursor.fetchall()
         """
         for pool_number in range(self.number_of_pools):
@@ -3318,10 +3318,10 @@ class Create_Formelfrage_Questions(Formelfrage):
             print(self.ff_test_entry_splitted)
 
         """
-
-        for i in range(len(self.ff_test_entry_splitted)):
-            for ff_db_record in ff_db_records:
-                if str(ff_db_record[len(ff_db_record) - 1]) == self.ff_test_entry_splitted[i]:
+        #todo die einzelnen Inhalte werden aus DB records(zwischenspeicher) in einen weiteren zwischenspeicher der bereits den zutreffenden namen hat zugeordnet um damit eine Frage zu erstellen
+        for i in range(len(self.ff_test_entry_splitted)): #todo ein durchlauf für jede Frage in die zum test gehört
+            for ff_db_record in ff_db_records:# todo Inhalt aller Fragen  oder nur einer Frage aus der Datenbank die in die Test sollen
+                if str(ff_db_record[len(ff_db_record) - 1]) == self.ff_test_entry_splitted[i]:#todo da bin ich mir nicht sicher was es unterscheiden soll?
                     for t in range(len(ff_db_record)):
                         if ff_db_record[self.ff_db_entry_to_index_dict['question_type']].lower() == self.ff_question_type_name.lower():
                             self.ff_question_difficulty                                                = ff_db_record[self.ff_db_entry_to_index_dict['question_difficulty']]
@@ -3546,7 +3546,7 @@ class Create_Formelfrage_Questions(Formelfrage):
 
             Create_Formelfrage_Questions.ff_question_structure(self, i)
 
-    def ff_question_structure(self, id_nr):
+    def ff_question_structure(self, id_nr): #todo wird von der Funktion oben drüber aufgerufen
         """Diese Funktion wandelt die SQL-Einträge in die .xml um, welche anschließend in ILIAS eingespielt werden kann"""
 
 
@@ -3556,7 +3556,7 @@ class Create_Formelfrage_Questions(Formelfrage):
 
         self.ff_question_description_main = test_generator_modul_taxonomie_und_textformatierung.Textformatierung.format_description_text_in_xml(self, self.ff_var_use_latex_on_text_check.get(), self.ff_question_description_main)
 
-
+        #todo es wurden doch bereits alle daten zugeordnet warum wird die Datenbank nochmal verwendet?
         # Verbindung zur FF-Datenank
         ff_connect = sqlite3.connect(self.database_formelfrage_path)
         ff_cursor = ff_connect.cursor()
@@ -3626,7 +3626,7 @@ class Create_Formelfrage_Questions(Formelfrage):
 
                 # Testdauer -- "duration" in xml
                 # wird keine Testzeit eingetragen, wird 1h vorausgewählt
-                duration.text = self.ff_test_time
+                duration.text = self.ff_test_time #todo ist das die Testzeit oder die Zeit für die eine Frage?
                 if duration.text == "":
                     duration.text = "P0Y0M0DT1H0M0S"
 
