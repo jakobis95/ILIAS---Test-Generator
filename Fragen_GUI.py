@@ -5,7 +5,7 @@ from tkinter import filedialog
 #import tkFileDialog
 from tkinter.scrolledtext import ScrolledText
 from Time_input_UI import Test_Time_UI
-from Variablen_Einfügen_UI import Variablen_UI, single_choice_input
+from Variablen_Einfügen_UI import Variablen_UI, single_choice_input, zuordnungsfrage_input, zuordnungspaare
 from Picture_interface import Pictures
 from PIL import Image, ImageTk
 from ScrolledText_Functionality import Textformatierung
@@ -33,6 +33,7 @@ class fragen_gui():
         self.index_dict = index_dict[table_dict[fragentyp]] #welcher index gehört zu welchem eintrag on der Datenbank
         self.ScrText = ScrText
         self.Fragen_Window = Frame
+        self.Fragen_Window.configure(bg=bg_color)
         #self.add_picture()
         self.db_I = DB_interface
         self.db_I.subscribe(self.Fill_Entrys_From_DB)
@@ -246,7 +247,7 @@ class singlechoice(fragen_gui):
         self.fragentyp = "singlechoice"
         fg_color = bg_color
         fragen_gui.__init__(self, table_dict, self.fragentyp, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, entry_color, label_color, button_color, fg_color, *args, **kwargs)
-        self.response_frame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
+        self.response_frame = tk.Frame(self.Fragen_Window, bg=fg_color, bd=5)
         self.response_frame.place(relx=.5, rely=0, relwidth=.5, relheight=1)
         self.respose_input = single_choice_input(self.bg_color, self.label_color, self.Label_Font, self.response_frame, self.dbinhaltsliste, self.index_dict, (3 * self.width)/2, Rows=10, Columns=3, Header="Choices", header_index=['Antworttext', 'Antwort-Grafik.', 'Punkte'], columnwidth=(2, 3, 1))
 
@@ -274,8 +275,54 @@ class zuordnungsfrage(fragen_gui):
         self.fragentyp = "zuordnungsfrage"
         fg_color = bg_color
         fragen_gui.__init__(self, table_dict, self.fragentyp, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, entry_color, label_color, button_color, fg_color, *args, **kwargs)
+        self.response_frame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
+        self.response_frame.place(relx=.5, rely=0, relwidth=.5, relheight=.3)
+        self.response_frame_2 = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
+        self.response_frame_2.place(relx=.5, rely=0.3, relwidth=.5, relheight=.3)
+        self.response_frame_3 = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
+        self.response_frame_3.place(relx=.5, rely=0.6, relwidth=.5, relheight=.4)
+        self.respose_input = zuordnungsfrage_input(self.bg_color, self.label_color, self.Label_Font, self.response_frame,
+                                                 self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=10,
+                                                 Columns=2, Header="Definition",
+                                                 header_index=['Antworttext', 'Antwort-Grafik.'],
+                                                 columnwidth=(3, 3))
+        self.respose_input_2 = zuordnungsfrage_input(self.bg_color, self.label_color, self.Label_Font,
+                                                   self.response_frame_2,
+                                                   self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=10,
+                                                   Columns=2, Header="Term",
+                                                   header_index=['Antworttext', 'Antwort-Grafik.'],
+                                                   columnwidth=(3, 3))
+        
+        self.zuordnungspaare_1 = zuordnungspaare(self.bg_color, self.label_color, self.Label_Font,
+                                                   self.response_frame_3,
+                                                   self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=10,
+                                                   Columns=3, Header="Zuordnungspaare",
+                                                   header_index=['Definition', 'Term', 'Punkte'],
+                                                   columnwidth=(4, 4, 1))
 
+    #mix_answers text,
+                            # asignment_mode int,
+                            #
+                            # definitions_response_1_text text,
+                            # definitions_response_1_img_label text,
+                            # definitions_response_1_img_path text,
+                            # definitions_response_1_img_string_base64_encoded text,
 
+    # terms_response_1_text
+    # text,
+    # terms_response_1_img_label
+    # text,
+    # terms_response_1_img_path
+    # text,
+    # terms_response_1_img_string_base64_encoded
+    # text,
+    #
+    # assignment_pairs_definition_1
+    # text,
+    # assignment_pairs_term_1
+    # text,
+    # assignment_pairs_1_pts
+    # int,
 if __name__ == "__main__":
     root = tk.Tk()
     WIDTH = int(root.winfo_screenwidth() / 1.5)
