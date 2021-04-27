@@ -6,7 +6,7 @@ from tkinter import filedialog
 from tkinter.scrolledtext import ScrolledText
 from Time_input_UI import Test_Time_UI
 from Variablen_Einfügen_UI import variable_scrl_UI
-from Picture_interface import Pictures
+from Picture_interface import Pictures, picture_choice
 from PIL import Image, ImageTk
 from ScrolledText_Functionality import Textformatierung
 
@@ -100,15 +100,18 @@ class fragen_gui():
         self.Fragen_Window.protocol("WM_DELETE_WINDOW", self.on_closing)
 
         #Picture interface
-        self.image_interface_1 = Pictures(self.dbinhaltsliste, self.index_dict, self.picture_Frame_1, 1, self.bg_color,
-                                          self.label_color, self.button_color, self.fg_color, self.Label_Font,
-                                          self.Entry_Font)
-        self.image_interface_2 = Pictures(self.dbinhaltsliste, self.index_dict, self.picture_Frame_2, 2, self.bg_color,
-                                          self.label_color, self.button_color, self.fg_color, self.Label_Font,
-                                          self.Entry_Font)
-        self.image_interface_3 = Pictures(self.dbinhaltsliste, self.index_dict, self.picture_Frame_3, 3, self.bg_color,
-                                          self.label_color, self.button_color, self.fg_color, self.Label_Font,
-                                          self.Entry_Font)
+        #print("das soll die Varchar sein:", self.dbinhaltsliste[self.index_dict["description_img_path_1"]])
+        self.image_interface_1 = picture_choice(self.dbinhaltsliste[self.index_dict["description_img_path_1"]][0], self.picture_Frame_1, self.bg_color,
+                                          self.label_color, self.button_color, self.fg_color)
+        self.image_interface_1.change_font(self.Label_Font, self.Entry_Font)
+
+        self.image_interface_2 = picture_choice(self.dbinhaltsliste[self.index_dict["description_img_path_2"]][0], self.picture_Frame_2,  self.bg_color,
+                                          self.label_color, self.button_color, self.fg_color)
+        self.image_interface_2.change_font(self.Label_Font, self.Entry_Font)
+
+        self.image_interface_3 = picture_choice(self.dbinhaltsliste[self.index_dict["description_img_path_3"]][0], self.picture_Frame_3,  self.bg_color,
+                                          self.label_color, self.button_color, self.fg_color)
+        self.image_interface_2.change_font(self.Label_Font, self.Entry_Font)
 
 
 
