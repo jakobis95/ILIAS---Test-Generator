@@ -30,7 +30,7 @@ class Test_Time_UI():
     def get_time(self):
         return("",self.ff_proc_hours_box.get(),":" ,self.ff_proc_minutes_box.get(),":", self.ff_proc_seconds_box.get(),"")
 
-    def set_time(self, time="00:00:00"):
+    def set_time(self, time="23:00:00"):
 
         self.ff_proc_hours_box.current(int(time[0:2]))
         self.ff_proc_minutes_box.current(int(time[3:5]))

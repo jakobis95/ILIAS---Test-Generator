@@ -5,7 +5,7 @@ from tkinter import filedialog
 #import tkFileDialog
 from tkinter.scrolledtext import ScrolledText
 from Time_input_UI import Test_Time_UI
-from Variablen_Einfügen_UI import Variablen_UI, single_choice_input, zuordnungsfrage_input, zuordnungspaare
+from Variablen_Einfügen_UI import variable_scrl_UI
 from Picture_interface import Pictures
 from PIL import Image, ImageTk
 from ScrolledText_Functionality import Textformatierung
@@ -231,41 +231,55 @@ class formelfrage(fragen_gui):
         fragen_gui.__init__(self, table_dict, self.fragentyp, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, entry_color, label_color, button_color, fg_color, *args, **kwargs)
         self.dbinhaltsliste[self.index_dict["question_type"]][0].set(self.fragentyp)
         Frame.configure(bg=bg_color)
+        varname_list_variable = ["var{}_name",
+                               "var{}_min",
+                               "var{}_max",
+                               "var{}_prec",
+                               "var{}_divby",
+                               "var{}_unit"]
 
+        varname_list_result = ["res{}_name",
+                            "res{}_min",
+                            "res{}_max",
+                            "res{}_prec",
+                            "res{}_points",
+                            "res{}_unit"]
 
         self.VarFrame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
         self.VarFrame.place(relx=.5, rely=0, relwidth=.5, relheight=.5)
         self.ResFrame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
         self.ResFrame.place(relx=.5, rely=0.5, relwidth=.5, relheight=.5)
-        self.Variablen_interface = Variablen_UI(self.bg_color, self.label_color, self.Label_Font, self.VarFrame, self.dbinhaltsliste, self.index_dict, 3 * self.width, Rows=15, Columns=5, Header="Variablen", header_index=['Name.', 'Min.', 'Max', 'Präz.', 'Teilbar durch'], Type="Var")
-        self.Results_interface = Variablen_UI(self.bg_color, self.label_color, self.Label_Font, self.ResFrame, self.dbinhaltsliste, self.index_dict, 3 * self.width, Rows=10, Columns=6, Header="Ergebnisse", header_index=['Name.', 'Min.', 'Max', 'Tol.', 'Punkte', 'Formel'], Type="Res")
+        self.Variablen_interface = variable_scrl_UI(varname_list_variable, self.bg_color, self.label_color, self.Label_Font, self.VarFrame, self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=15, Columns=5, Header="Variablen", header_index=['Name.', 'Min.', 'Max', 'Präz.', 'Teilbar durch'], column_type_list=[0, 0, 0, 0, 0], columnwidth=(1, 1, 1, 1, 1))
+        self.Results_interface = variable_scrl_UI(varname_list_result, self.bg_color, self.label_color, self.Label_Font, self.ResFrame, self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=10, Columns=6, Header="Ergebnisse", header_index=['Name.', 'Min.', 'Max', 'Tol.', 'Punkte', 'Formel'], column_type_list=[0, 0, 0, 0, 0, 0], columnwidth=(1, 1, 1, 1, 1, 1))
 
 
 class singlechoice(fragen_gui):
     def __init__(self, table_dict, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, label_color, button_color, *args, **kwargs):
         entry_color = 'white'
+        varname_list = ["response_{}_text",  "response_{}_img_path", "response_{}_pts"]
         self.fragentyp = "singlechoice"
         fg_color = bg_color
         fragen_gui.__init__(self, table_dict, self.fragentyp, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, entry_color, label_color, button_color, fg_color, *args, **kwargs)
         self.response_frame = tk.Frame(self.Fragen_Window, bg=fg_color, bd=5)
         self.response_frame.place(relx=.5, rely=0, relwidth=.5, relheight=1)
-        self.respose_input = single_choice_input(self.bg_color, self.label_color, self.Label_Font, self.response_frame, self.dbinhaltsliste, self.index_dict, (3 * self.width)/2, Rows=10, Columns=3, Header="Choices", header_index=['Antworttext', 'Antwort-Grafik.', 'Punkte'], columnwidth=(2, 3, 1))
+        self.respose_input = variable_scrl_UI(varname_list, self.bg_color, self.label_color, self.Label_Font, self.response_frame, self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=10, Columns=3, Header="Choices", header_index=['Antworttext', 'Antwort-Grafik.', 'Punkte'], column_type_list=[0, 1, 0], columnwidth=(2, 3, 1))
 
 
 class multiplechoice(fragen_gui):
     def __init__(self, table_dict, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, label_color,
                  button_color, *args, **kwargs):
         entry_color = 'white'
+        varname_list = "response_{}_text","response_{}_img_path", "response_{}_pts_correct_answer","response_{}_pts_false_answer"
         fg_color = bg_color
         self.fragentyp = "multiplechoice"
         fragen_gui.__init__(self, table_dict, self.fragentyp, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict,
                             bg_color, entry_color, label_color, button_color, fg_color, *args, **kwargs)
         self.response_frame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
         self.response_frame.place(relx=.5, rely=0, relwidth=.5, relheight=1)
-        self.respose_input = single_choice_input(self.bg_color, self.label_color, self.Label_Font, self.response_frame,
-                                                 self.dbinhaltsliste, self.index_dict, (3 * self.width)/2, Rows=10,
-                                                 Columns=4, Header="Choices",
-                                                 header_index=['Antworttext', 'Antwort-Grafik.', 'Punkte','Punkteabzug'], columnwidth=(2, 3, 1, 1))
+        self.respose_input = variable_scrl_UI(varname_list, self.bg_color, self.label_color, self.Label_Font, self.response_frame,
+                                              self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=10,
+                                              Columns=4, Header="Choices",
+                                              header_index=['Antworttext', 'Antwort-Grafik.', 'Punkte','Punkteabzug'], column_type_list=[0,1,0,0], columnwidth=(2, 3, 1, 1))
 
 
 class zuordnungsfrage(fragen_gui):
@@ -274,6 +288,10 @@ class zuordnungsfrage(fragen_gui):
         fg_color = bg_color
         self.fragentyp = "zuordnungsfrage"
         fg_color = bg_color
+        varname_1 = ["definitions_response_{}_text", "definitions_response_{}_img_path"]
+        varname_2 = ["terms_response_{}_text", "terms_response_{}_img_path"]
+        varname_3 = ["assignment_pairs_definition_{}", "assignment_pairs_term_{}",
+                            "assignment_pairs_{}_pts"]
         fragen_gui.__init__(self, table_dict, self.fragentyp, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, entry_color, label_color, button_color, fg_color, *args, **kwargs)
         self.response_frame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
         self.response_frame.place(relx=.5, rely=0, relwidth=.5, relheight=.3)
@@ -281,48 +299,25 @@ class zuordnungsfrage(fragen_gui):
         self.response_frame_2.place(relx=.5, rely=0.3, relwidth=.5, relheight=.3)
         self.response_frame_3 = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
         self.response_frame_3.place(relx=.5, rely=0.6, relwidth=.5, relheight=.4)
-        self.respose_input = zuordnungsfrage_input(self.bg_color, self.label_color, self.Label_Font, self.response_frame,
-                                                 self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=10,
-                                                 Columns=2, Header="Definition",
-                                                 header_index=['Antworttext', 'Antwort-Grafik.'],
-                                                 columnwidth=(3, 3))
-        self.respose_input_2 = zuordnungsfrage_input(self.bg_color, self.label_color, self.Label_Font,
-                                                   self.response_frame_2,
-                                                   self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=10,
-                                                   Columns=2, Header="Term",
-                                                   header_index=['Antworttext', 'Antwort-Grafik.'],
-                                                   columnwidth=(3, 3))
+        self.respose_input = variable_scrl_UI(varname_1, self.bg_color, self.label_color, self.Label_Font, self.response_frame,
+                                              self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=10,
+                                              Columns=2, Header="Definition",
+                                              header_index=['Antworttext', 'Antwort-Grafik.'], column_type_list=[0,1],
+                                              columnwidth=(3, 3))
+        self.respose_input_2 = variable_scrl_UI(varname_2, self.bg_color, self.label_color, self.Label_Font,
+                                                self.response_frame_2,
+                                                self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=10,
+                                                Columns=2, Header="Term",
+                                                header_index=['Antworttext', 'Antwort-Grafik.'], column_type_list=[0,1],
+                                                columnwidth=(3, 3))
         
-        self.zuordnungspaare_1 = zuordnungspaare(self.bg_color, self.label_color, self.Label_Font,
-                                                   self.response_frame_3,
-                                                   self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=10,
-                                                   Columns=3, Header="Zuordnungspaare",
-                                                   header_index=['Definition', 'Term', 'Punkte'],
-                                                   columnwidth=(4, 4, 1))
+        self.zuordnungspaare_1 = variable_scrl_UI(varname_3, self.bg_color, self.label_color, self.Label_Font,
+                                                  self.response_frame_3,
+                                                  self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=10,
+                                                  Columns=3, Header="Zuordnungspaare",
+                                                  header_index=['Definition', 'Term', 'Punkte'], column_type_list=[2,2,0],
+                                                  columnwidth=(4, 4, 1))
 
-    #mix_answers text,
-                            # asignment_mode int,
-                            #
-                            # definitions_response_1_text text,
-                            # definitions_response_1_img_label text,
-                            # definitions_response_1_img_path text,
-                            # definitions_response_1_img_string_base64_encoded text,
-
-    # terms_response_1_text
-    # text,
-    # terms_response_1_img_label
-    # text,
-    # terms_response_1_img_path
-    # text,
-    # terms_response_1_img_string_base64_encoded
-    # text,
-    #
-    # assignment_pairs_definition_1
-    # text,
-    # assignment_pairs_term_1
-    # text,
-    # assignment_pairs_1_pts
-    # int,
 if __name__ == "__main__":
     root = tk.Tk()
     WIDTH = int(root.winfo_screenwidth() / 1.5)
