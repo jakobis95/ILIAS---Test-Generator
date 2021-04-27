@@ -6,7 +6,7 @@ from tkinter import filedialog
 from tkinter.scrolledtext import ScrolledText
 from Time_input_UI import Test_Time_UI
 from Variablen_Einfügen_UI import variable_scrl_UI
-from Picture_interface import Pictures, picture_choice
+from Picture_interface import picture_choice
 from PIL import Image, ImageTk
 from ScrolledText_Functionality import Textformatierung
 
@@ -60,7 +60,7 @@ class fragen_gui():
         self.Speichern_Frame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
         self.Speichern_Frame.place(relx=0, rely=0.9, relwidth=.5, relheight=.1)
         self.UI_Elemente()
-
+        self.dbinhaltsliste[self.index_dict["question_type"]][0].set(self.fragentyp)
         #Subscribe to Fragentext Funktionalotäten
         self.ScrText.subscribe(self.Fragentext_Entry.insert)
 
@@ -144,6 +144,7 @@ class fragen_gui():
         self.Typ_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_type']][0], bg=self.entry_color, fg=self.efg_color)
         self.Typ_Entry['font'] = self.Entry_Font
         self.Typ_Entry.place(relx=0.5, rely=0.3, relwidth=.5, relheight=.1)
+        self.Typ_Entry.configure(state=DISABLED)
 
         self.Fragentext_label = Label(self.QD_frame, text=self.dbinhaltsliste[self.index_dict['question_description_main']][1], bg=self.label_color, fg=self.fg_color)
         self.Fragentext_label['font'] = self.Label_Font
