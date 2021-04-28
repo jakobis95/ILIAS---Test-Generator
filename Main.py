@@ -31,20 +31,18 @@ class Main(tk.Frame):
         button_color = '#3f37c9'
         fg_color = '#4cc9f0'  # general foregroundcolor
         table_dict = {'formelfrage': 0, 'singlechoice': 1, 'multiplechoice': 2, 'zuordnungsfrage': 3}
-        #Fragen_db = '../ilias_formelfrage_db.db'
+
         mydb_name = 'generaldb.db'         #Datenbank mit allen Fragentypen
         mytempdb_name = 'generaldb2.db' #Kopie der originalen Datenbank
-        #self.q = (StringVar(), 'Schwierigkeit'), (StringVar(), 'Typ'), (StringVar(), 'Titel'), (StringVar(), 'Author'), (StringVar(), 'Datum'), (StringVar(), 'Author2'), (StringVar(), 'Datum2')
         Left_Top_Frame = tk.Frame(bg=bg_color, bd=20)
         Left_Top_Frame.place(relx=0, rely=0, relwidth=.8, relheight=.5)
         Left_Bottom_Frame = tk.Frame(bg=bg_color, bd=20)
         Left_Bottom_Frame.place(relx=0, rely=0.5, relwidth=.8, relheight=.5)
         Right_Menu_Frame = tk.Frame(bg=bg_color, bd=20)
         Right_Menu_Frame.place(relx=.8, rely=0.0, relwidth=.2, relheight=1)
-        #bottom_Frame = tk.Frame(bg="blue")
-        #bottom_Frame.place(relx=0, rely=.9, relwidth=1, relheight=.1)
-        WIDTH = int(root.winfo_screenwidth() / 1.2)
-        HEIGHT = int(root.winfo_screenheight() / 2)
+
+        WIDTH = int(root.winfo_screenwidth())
+
         DBI = DB_Interface(mydb_name, mytempdb_name, root, table_dict, self.table_list)
         index_info = DBI.get_index_info()
         table_index_list = index_info[0]

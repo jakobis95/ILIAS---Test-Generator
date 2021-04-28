@@ -38,27 +38,26 @@ class fragen_gui():
         self.db_I = DB_interface
         self.db_I.subscribe(self.Fill_Entrys_From_DB)
         self.titel = StringVar()
-        WIDTH = int(Frame.winfo_screenwidth()/ 4)
-        self.width = WIDTH
-        HEIGHT = int(Frame.winfo_screenheight() / 2)
+        WIDTH = int(Frame.winfo_screenwidth()/10)
+        self.width = 9*WIDTH
+        HEIGHT = int(Frame.winfo_screenheight() / 1.5)
         self.Fragen_Window.title("DB_List")
         self.Fragen_Window.resizable(True, True)
-        self.Fragen_Window.geometry("%dx%d" % (3 * WIDTH, HEIGHT))
+        self.Fragen_Window.geometry("%dx%d" % (9*WIDTH, HEIGHT))
         self.param_Frame = tk.Frame(self.Fragen_Window, bg=bg_color,bd=5)# alle Einstellungen
-        self.param_Frame.place(relx=0, rely=0, relwidth=.25, relheight=.4)
-        self.title_Frame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5) #Title, Author, Fragenbeschreibung entrys
-        self.title_Frame.place(relx=.25, rely=0, relwidth=.25, relheight=.4)
+        self.param_Frame.place(relx=0, rely=0, relwidth=.25, relheight=1)
+
 
         self.QD_frame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)#Fragentext mit formatierungsoptionen
-        self.QD_frame.place(relx=0, rely=.4, relwidth=.3, relheight=.5)
+        self.QD_frame.place(relx=0.25, rely=0, relwidth=.25, relheight=.4)
         self.picture_Frame_1 = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)  # Bildverwaltung für Fragentext
-        self.picture_Frame_1.place(relx=.3, rely=.4, relwidth=.2, relheight=.1)
+        self.picture_Frame_1.place(relx=0.25, rely=.4, relwidth=.25, relheight=.1)
         self.picture_Frame_2 = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)  # Bildverwaltung für Fragentext
-        self.picture_Frame_2.place(relx=.3, rely=.5, relwidth=.2, relheight=.1)
+        self.picture_Frame_2.place(relx=0.25, rely=.5, relwidth=.25, relheight=.1)
         self.picture_Frame_3 = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)  # Bildverwaltung für Fragentext
-        self.picture_Frame_3.place(relx=.3, rely=.6, relwidth=.2, relheight=.1)
+        self.picture_Frame_3.place(relx=0.25, rely=.6, relwidth=.25, relheight=.1)
         self.Speichern_Frame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
-        self.Speichern_Frame.place(relx=0, rely=0.9, relwidth=.5, relheight=.1)
+        self.Speichern_Frame.place(relx=0.25, rely=0.9, relwidth=.25, relheight=.1)
         self.UI_Elemente()
         self.dbinhaltsliste[self.index_dict["question_type"]][0].set(self.fragentyp)
         #Subscribe to Fragentext Funktionalotäten
@@ -124,27 +123,58 @@ class fragen_gui():
         self.Fragen_Window.destroy()
 
     def UI_Elemente(self):
+        self.Title_label = Label(self.param_Frame, text=self.dbinhaltsliste[self.index_dict['question_title']][1],bg=self.label_color, fg=self.fg_color)
+        self.Title_label.pack(anchor=N, fill=X, pady=(3, 0))
+        self.Title_label['font'] = self.Label_Font
+        self.Title_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_title']][0], bg=self.entry_color, fg=self.efg_color)
+        self.Title_Entry['font'] = self.Entry_Font
+        self.Title_Entry.pack(anchor=N, fill=X)
+
+        self.Describtion_label = Label(self.param_Frame,text=self.dbinhaltsliste[self.index_dict['question_description_title']][1],bg=self.label_color, fg=self.fg_color)
+        self.Describtion_label['font'] = self.Label_Font
+        self.Describtion_label.pack(anchor=N, fill=X, pady=(3, 0))
+        self.Describtion_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_description_title']][0], bg=self.entry_color, fg=self.efg_color)
+        self.Describtion_Entry['font'] = self.Entry_Font
+        self.Describtion_Entry.pack(anchor=N, fill=X)
+
+        self.Author_label = Label(self.param_Frame, text=self.dbinhaltsliste[self.index_dict['question_author']][1], bg=self.label_color, fg=self.fg_color)
+        self.Author_label['font'] = self.Label_Font
+        self.Author_label.pack(anchor=N, fill=X, pady=(3, 0))
+        self.Author_Entry = Entry(self.param_Frame,textvariable=self.dbinhaltsliste[self.index_dict['question_author']][0], bg=self.entry_color, fg=self.efg_color)
+        self.Author_Entry['font'] = self.Entry_Font
+        self.Author_Entry.pack(anchor=N, fill=X)
+
         self.Schwierigkeit_label = Label(self.param_Frame, text=self.dbinhaltsliste[self.index_dict['question_difficulty']][1], bg=self.label_color, fg=self.fg_color)
         self.Schwierigkeit_label['font'] = self.Label_Font
-        self.Schwierigkeit_label.place(relx=0, rely=0, relwidth=1, relheight=.1)
+        self.Schwierigkeit_label.pack(anchor=N, fill=X, pady=(3, 0))
         self.Schwierigkeit_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_difficulty']][0], bg=self.entry_color, fg=self.efg_color, bd=1)
         self.Schwierigkeit_Entry['font'] = self.Entry_Font
-        self.Schwierigkeit_Entry.place(relx=0, rely=0.1, relwidth=1, relheight=.1)
+        self.Schwierigkeit_Entry.pack(anchor=N, fill=X)
+
+
 
         self.Category_label = Label(self.param_Frame, text=self.dbinhaltsliste[self.index_dict['question_category']][1], bg=self.label_color, fg=self.fg_color)
         self.Category_label['font'] = self.Label_Font
-        self.Category_label.place(relx=0, rely=0.2, relwidth=.5, relheight=.1)
+        self.Category_label.pack(anchor=N, fill=X, pady=(3, 0))
         self.Category_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_category']][0], bg=self.entry_color, fg=self.efg_color)
         self.Category_Entry['font'] = self.Entry_Font
-        self.Category_Entry.place(relx=0, rely=0.3, relwidth=.5, relheight=.1)
+        self.Category_Entry.pack(anchor=N, fill=X)
 
         self.Typ_label = Label(self.param_Frame, text=self.dbinhaltsliste[self.index_dict['question_type']][1], bg=self.label_color, fg=self.fg_color)
         self.Typ_label['font'] = self.Label_Font
-        self.Typ_label.place(relx=0.5, rely=0.2, relwidth=.5, relheight=.1)
+        self.Typ_label.pack(anchor=N, fill=X, pady=(3, 0))
         self.Typ_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_type']][0], bg=self.entry_color, fg=self.efg_color)
         self.Typ_Entry['font'] = self.Entry_Font
-        self.Typ_Entry.place(relx=0.5, rely=0.3, relwidth=.5, relheight=.1)
+        self.Typ_Entry.pack(anchor=N, fill=X)
         self.Typ_Entry.configure(state=DISABLED)
+
+
+        self.PoolTag_label = Label(self.param_Frame, text=self.dbinhaltsliste[self.index_dict['question_pool_tag']][1], bg=self.label_color, fg=self.fg_color)
+        self.PoolTag_label['font'] = self.Label_Font
+        self.PoolTag_label.pack(anchor=N, fill=X, pady=(3, 0))
+        self.PoolTag_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_pool_tag']][0], bg=self.entry_color, fg=self.efg_color)
+        self.PoolTag_Entry['font'] = self.Entry_Font
+        self.PoolTag_Entry.pack(anchor=N, fill=X)
 
         self.Fragentext_label = Label(self.QD_frame, text=self.dbinhaltsliste[self.index_dict['question_description_main']][1], bg=self.label_color, fg=self.fg_color)
         self.Fragentext_label['font'] = self.Label_Font
@@ -153,37 +183,7 @@ class fragen_gui():
         self.Fragentext_Entry['font'] = self.Entry_Font
         self.Fragentext_Entry.place(rely=.1, relx=0, relwidth=1, relheight=.8)
 
-
-
-        self.PoolTag_label = Label(self.param_Frame, text=self.dbinhaltsliste[self.index_dict['question_pool_tag']][1], bg=self.label_color, fg=self.fg_color)
-        self.PoolTag_label['font'] = self.Label_Font
-        self.PoolTag_label.place(relx=0, rely=0.4, relwidth=1, relheight=.1)
-        self.PoolTag_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_pool_tag']][0], bg=self.entry_color, fg=self.efg_color)
-        self.PoolTag_Entry['font'] = self.Entry_Font
-        self.PoolTag_Entry.place(relx=0, rely=0.5, relwidth=1, relheight=.1)
-
-        self.Author_label = Label(self.title_Frame, text=self.dbinhaltsliste[self.index_dict['question_author']][1], bg=self.label_color, fg=self.fg_color)
-        self.Author_label['font'] = self.Label_Font
-        self.Author_label.place(relx=0, rely=0.4, relwidth=1, relheight=.1)
-        self.Author_Entry = Entry(self.title_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_author']][0], bg=self.entry_color, fg=self.efg_color)
-        self.Author_Entry['font'] = self.Entry_Font
-        self.Author_Entry.place(relx=0, rely=0.5, relwidth=1, relheight=.1)
-
-        self.Title_label = Label(self.title_Frame, text=self.dbinhaltsliste[self.index_dict['question_title']][1], bg=self.label_color, fg=self.fg_color)
-        self.Title_label.place(relx=0, rely=0.0, relwidth=1, relheight=.1)
-        self.Title_label['font'] = self.Label_Font
-        self.Title_Entry = Entry(self.title_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_title']][0], bg=self.entry_color, fg=self.efg_color)
-        self.Title_Entry['font'] = self.Entry_Font
-        self.Title_Entry.place(relx=0, rely=0.1, relwidth=1, relheight=.1)
-
-        self.Describtion_label = Label(self.title_Frame, text=self.dbinhaltsliste[self.index_dict['question_description_title']][1], bg=self.label_color, fg=self.fg_color)
-        self.Describtion_label['font'] = self.Label_Font
-        self.Describtion_label.place(relx=0, rely=0.2, relwidth=1, relheight=.1)
-        self.Describtion_Entry = Entry(self.title_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_description_title']][0], bg=self.entry_color, fg=self.efg_color)
-        self.Describtion_Entry['font'] = self.Entry_Font
-        self.Describtion_Entry.place(relx=0, rely=0.3, relwidth=1, relheight=.1)
-
-        self.Test_Time = Test_Time_UI(self.title_Frame,self.bg_color, self.label_color, self.Label_Font)
+        self.Test_Time = Test_Time_UI(self.param_Frame, self.bg_color, self.label_color, self.Label_Font)
 
 
 
@@ -248,13 +248,22 @@ class formelfrage(fragen_gui):
                             "res{}_prec",
                             "res{}_points",
                             "res{}_unit"]
-
+        rel_width = .5
         self.VarFrame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
-        self.VarFrame.place(relx=.5, rely=0, relwidth=.5, relheight=.5)
+        self.VarFrame.place(relx=.5, rely=0, relwidth=rel_width, relheight=.5)
+        self.width_scrl_UI = self.width * rel_width
+        self.Variablen_interface = variable_scrl_UI(varname_list_variable, self.bg_color, self.label_color,
+                                                    self.Label_Font, self.VarFrame, self.dbinhaltsliste,
+                                                    self.index_dict, self.width_scrl_UI, Rows=15, Columns=5,
+                                                    Header="Variablen",
+                                                    header_index=['Name.', 'Min.', 'Max', 'Präz.', 'Teilbar durch'],
+                                                    column_type_list=[0, 0, 0, 0, 0], columnwidth=(1, 1, 1, 1, 1))
+
+        rel_width = .5
         self.ResFrame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
-        self.ResFrame.place(relx=.5, rely=0.5, relwidth=.5, relheight=.5)
-        self.Variablen_interface = variable_scrl_UI(varname_list_variable, self.bg_color, self.label_color, self.Label_Font, self.VarFrame, self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=15, Columns=5, Header="Variablen", header_index=['Name.', 'Min.', 'Max', 'Präz.', 'Teilbar durch'], column_type_list=[0, 0, 0, 0, 0], columnwidth=(1, 1, 1, 1, 1))
-        self.Results_interface = variable_scrl_UI(varname_list_result, self.bg_color, self.label_color, self.Label_Font, self.ResFrame, self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=10, Columns=6, Header="Ergebnisse", header_index=['Name.', 'Min.', 'Max', 'Tol.', 'Punkte', 'Formel'], column_type_list=[0, 0, 0, 0, 0, 0], columnwidth=(1, 1, 1, 1, 1, 1))
+        self.ResFrame.place(relx=.5, rely=0.5, relwidth=rel_width, relheight=.5)
+        self.width_scrl_UI = self.width * rel_width
+        self.Results_interface = variable_scrl_UI(varname_list_result, self.bg_color, self.label_color, self.Label_Font, self.ResFrame, self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10, Columns=6, Header="Ergebnisse", header_index=['Name.', 'Min.', 'Max', 'Tol.', 'Punkte', 'Formel'], column_type_list=[0, 0, 0, 0, 0, 0], columnwidth=(1, 1, 1, 1, 1, 1))
 
 
 class singlechoice(fragen_gui):
@@ -265,8 +274,10 @@ class singlechoice(fragen_gui):
         fg_color = bg_color
         fragen_gui.__init__(self, table_dict, self.fragentyp, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, entry_color, label_color, button_color, fg_color, *args, **kwargs)
         self.response_frame = tk.Frame(self.Fragen_Window, bg=fg_color, bd=5)
-        self.response_frame.place(relx=.5, rely=0, relwidth=.5, relheight=1)
-        self.respose_input = variable_scrl_UI(varname_list, self.bg_color, self.label_color, self.Label_Font, self.response_frame, self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=10, Columns=3, Header="Choices", header_index=['Antworttext', 'Antwort-Grafik.', 'Punkte'], column_type_list=[0, 1, 0], columnwidth=(2, 3, 1))
+        rel_width = .5
+        self.response_frame.place(relx=.5, rely=0, relwidth=rel_width, relheight=1)
+        self.width_scrl_UI = self.width * rel_width
+        self.respose_input = variable_scrl_UI(varname_list, self.bg_color, self.label_color, self.Label_Font, self.response_frame, self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10, Columns=3, Header="Choices", header_index=['Antworttext', 'Antwort-Grafik.', 'Punkte'], column_type_list=[0, 1, 0], columnwidth=(2, 3, 1))
 
 
 class multiplechoice(fragen_gui):
@@ -279,9 +290,11 @@ class multiplechoice(fragen_gui):
         fragen_gui.__init__(self, table_dict, self.fragentyp, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict,
                             bg_color, entry_color, label_color, button_color, fg_color, *args, **kwargs)
         self.response_frame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
+        rel_width = .5
         self.response_frame.place(relx=.5, rely=0, relwidth=.5, relheight=1)
+        self.width_scrl_UI = self.width * rel_width
         self.respose_input = variable_scrl_UI(varname_list, self.bg_color, self.label_color, self.Label_Font, self.response_frame,
-                                              self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=10,
+                                              self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10,
                                               Columns=4, Header="Choices",
                                               header_index=['Antworttext', 'Antwort-Grafik.', 'Punkte','Punkteabzug'], column_type_list=[0,1,0,0], columnwidth=(2, 3, 1, 1))
 
@@ -298,26 +311,34 @@ class zuordnungsfrage(fragen_gui):
                             "assignment_pairs_{}_pts"]
         fragen_gui.__init__(self, table_dict, self.fragentyp, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, entry_color, label_color, button_color, fg_color, *args, **kwargs)
         self.response_frame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
-        self.response_frame.place(relx=.5, rely=0, relwidth=.5, relheight=.3)
-        self.response_frame_2 = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
-        self.response_frame_2.place(relx=.5, rely=0.3, relwidth=.5, relheight=.3)
-        self.response_frame_3 = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
-        self.response_frame_3.place(relx=.5, rely=0.6, relwidth=.5, relheight=.4)
-        self.respose_input = variable_scrl_UI(varname_1, self.bg_color, self.label_color, self.Label_Font, self.response_frame,
-                                              self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=10,
+        rel_width = .5
+        self.response_frame.place(relx=.5, rely=0, relwidth=rel_width, relheight=.3)
+        self.width_scrl_UI = self.width * rel_width
+        self.respose_input = variable_scrl_UI(varname_1, self.bg_color, self.label_color, self.Label_Font,
+                                              self.response_frame,
+                                              self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10,
                                               Columns=2, Header="Definition",
-                                              header_index=['Antworttext', 'Antwort-Grafik.'], column_type_list=[0,1],
+                                              header_index=['Antworttext', 'Antwort-Grafik.'], column_type_list=[0, 1],
                                               columnwidth=(3, 3))
+        rel_width = .5
+        self.response_frame_2 = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
+        self.width_scrl_UI = self.width * rel_width
+        self.response_frame_2.place(relx=.5, rely=0.3, relwidth=rel_width, relheight=.3)
         self.respose_input_2 = variable_scrl_UI(varname_2, self.bg_color, self.label_color, self.Label_Font,
                                                 self.response_frame_2,
-                                                self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=10,
+                                                self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10,
                                                 Columns=2, Header="Term",
-                                                header_index=['Antworttext', 'Antwort-Grafik.'], column_type_list=[0,1],
+                                                header_index=['Antworttext', 'Antwort-Grafik.'],
+                                                column_type_list=[0, 1],
                                                 columnwidth=(3, 3))
-        
+
+        rel_width = .5
+        self.response_frame_3 = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
+        self.response_frame_3.place(relx=.5, rely=0.6, relwidth=rel_width, relheight=.4)
+        self.width_scrl_UI = self.width * rel_width
         self.zuordnungspaare_1 = variable_scrl_UI(varname_3, self.bg_color, self.label_color, self.Label_Font,
                                                   self.response_frame_3,
-                                                  self.dbinhaltsliste, self.index_dict, (3 * self.width) / 2, Rows=10,
+                                                  self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10,
                                                   Columns=3, Header="Zuordnungspaare",
                                                   header_index=['Definition', 'Term', 'Punkte'], column_type_list=[2,2,0],
                                                   columnwidth=(4, 4, 1))

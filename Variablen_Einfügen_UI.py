@@ -52,20 +52,7 @@ class variable_scrl_UI():
             sections = sections + column
         relwidth = WIDTH / sections
 
-        # erstellt überschriften für jede Spalte
-        self.varlist = []
-        self.var_name_label = []
-        relx = 0
-        relw = 0
 
-        for column in range(Columns):
-            # Breite der einzelnen spalten setzt sich aus der Anzahl der sections einer Spalte mal die relwidth zusammen
-            relw = columnwidth[column] / sections
-            self.var_name_label.append(
-                Label(HeadingFrame, text=header_index[column], bg=self.label_color, fg=self.bg_color))
-            self.var_name_label[column]['font'] = self.Label_Font
-            self.var_name_label[column].place(relx=relx, rely=0.5, relwidth=relw, relheight=.5)
-            relx = relw + relx
 
         # erstellt eine Reihe die widerum die einnzelnen Spalten erstellt
         # alle reihen werden in einer liste gespeicher für einfachen zugriff bei erweiterung des Funktionsumfangs
@@ -81,6 +68,21 @@ class variable_scrl_UI():
         self.var_header_label['font'] = self.Label_Font
         self.var_header_label.place(relx=0, rely=0, relwidth=1, relheight=.5)
 
+
+        # erstellt überschriften für jede Spalte
+        self.varlist = []
+        self.var_name_label = []
+        relx = 0
+        relw = 0
+
+        for column in range(Columns):
+            # Breite der einzelnen spalten setzt sich aus der Anzahl der sections einer Spalte mal die relwidth zusammen
+            relw = columnwidth[column] / sections
+            self.var_name_label.append(
+                Label(HeadingFrame, text=header_index[column], bg=self.label_color, fg=self.bg_color))
+            self.var_name_label[column]['font'] = self.Label_Font
+            self.var_name_label[column].place(relx=relx, rely=0.5, relwidth=relw, relheight=.5)
+            relx = relw + relx
 
 
 class choice_column():
