@@ -3,7 +3,7 @@ import tkinter as tk
 import tkinter.font as font
 from DB_Treeview import UI
 from DB_interface import DB_Interface
-from XML_class import xml_interface
+import XML_class
 from ScrolledText_Functionality import Textformatierung
 class Main(tk.Frame):
 
@@ -49,11 +49,16 @@ class Main(tk.Frame):
         DBI = DB_Interface(mydb_name, mytempdb_name, root, table_dict, self.table_list)
         index_info = DBI.get_index_info()
         table_index_list = index_info[0]
-        table_index_dict = index_info[1]
+        table_index_dict = index_info[1]   # Enthält DICTS von ALLEN Tables (FF, SC, MC..), table_index_dict[0] -> FF
         print("das ist in Main", table_index_list)
         DBT = UI(table_dict, DBI, Left_Top_Frame, WIDTH, 0, table_index_list, table_index_dict, "Fragendatenbank", bg_color, button_color, label_color, Button_Font, Label_Font)
         Test_T = UI(table_dict, DBI, Left_Bottom_Frame, WIDTH, 2, table_index_list, table_index_dict, "Fragenauswahl für Test", bg_color, button_color, label_color, Button_Font, Label_Font)
         mytempdb_name = '../tempdb.db'
+
+        # xml_interface
+        #XML_class.Xml_Interface.__init__(self, DBI, table_index_dict)
+        XML = XML_class.Xml_Interface(DBI, table_dict, table_index_list, table_index_dict)
+
 
         #Menue
         Menu_lbl = Label(Right_Menu_Frame, text="Menü", bg=label_color, fg=bg_color)
@@ -65,7 +70,7 @@ class Main(tk.Frame):
         add_question = Button(Right_Menu_Frame, text="Frage zu für Test auswählen", bg=button_color, fg=bg_color, command=DBT.add_data_to_testdb)
         add_question['font'] = Button_Font
         add_question.pack(side="top", fill=X)
-        excel_import = Button(Right_Menu_Frame, text="Fragen aus Excel", bg=button_color, fg=bg_color)
+        excel_import = Button(Right_Menu_Frame, text="Fragen aus Excel importieren", bg=button_color, fg=bg_color, command=XML.excel_import_to_db)
         excel_import['font'] = Button_Font
         excel_import.pack(side="top", fill=X)
         datenbank_og = Button(Right_Menu_Frame, text="Datenbank wählen", bg=button_color, fg=bg_color)
@@ -74,9 +79,9 @@ class Main(tk.Frame):
         test_lbl = Label(Right_Menu_Frame, text="Test Menü", bg=label_color, fg=bg_color)
         test_lbl['font'] = Label_Font
         test_lbl.pack(side="top", fill=X)
-        #create_Test = Button(Right_Menu_Frame, text="Test aus Auswahl erstellen", bg=button_color, fg=bg_color, command=self.Test_aus_auswahl_erstellem)
-        #create_Test['font'] = Button_Font
-        #create_Test.pack(side="top", fill=X)
+        create_Test = Button(Right_Menu_Frame, text="Test aus Auswahl erstellen", bg=button_color, fg=bg_color, command=XML.create_test)
+        create_Test['font'] = Button_Font
+        create_Test.pack(side="top", fill=X)
         create_Test_excel = Button(Right_Menu_Frame, text="Test aus Excel erstellen", bg=button_color, fg=bg_color)
         create_Test_excel['font'] = Button_Font
         create_Test_excel.pack(side="top", fill=X)

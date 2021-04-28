@@ -68,11 +68,8 @@ class Pictures():
 
     def give_name(self, path):
 
-        print("path vorher", path)
-        while path.find('/'):
-            tobereplaced = path[0:path.find('/')]
-            path = path.replace(tobereplaced, '1')
-            print("path nachher", path)
+
+
 
         return path
 

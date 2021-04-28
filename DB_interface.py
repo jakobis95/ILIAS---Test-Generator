@@ -55,12 +55,15 @@ class DB_Interface():
             query = " SELECT * FROM " + table + " WHERE " + self.index_list[3][1] + " LIKE '" + q2 + "' "
        # print(self.query)
             self.cursor.execute(query)
-            zwischenspeicher.append(self.cursor.fetchone())
-        print("zwischenspeicher", zwischenspeicher)
-        self.db_data[id] = zwischenspeicher
-        #og_title = self.db_data[id][0][3]
-        #print(og_title)
-        print(self.db_data[id])
+
+
+        #self.db_data[id] = zwischenspeicher
+        #print("das ist in db_data", self.db_data[id])
+        #self.og_title = self.db_data[id][0][3]
+
+        #print("DAS IST DER og.Tiltle:", self.og_title)
+
+
         self.notify()
 
     def empty_fragenauswahl(self):
@@ -189,12 +192,19 @@ class DB_Interface():
         self.notify()
 
     def get_dbtemp_data(self):
+        print("___________________________")
+        self.test_data = []
+        self.question_types = ["formelfrage", "singlechoice", "multiplechoice", "zuordnungsfrage"]
 
-        self.query = "SELECT * FROM formelfrage"
-        self.cursorlist[2].execute(self.query)
-        test_data = self.cursorlist[2].fetchall()
+        # Durch alle tables suchen und Ergebnisse in einer Liste zusammenfassen
+        # "extend" fügt eine Liste einer anderen zu
+        for i in range(len(self.question_types)):
+            self.query = "SELECT * FROM " + str(self.question_types[i])
+            self.cursorlist[1].execute(self.query)  #cursorlist[2] Fehler bei Fragen auslesen?
+            self.test_data.extend((self.cursorlist[1].fetchall()))
 
-        return test_data
+
+        return self.test_data
 
 
 
