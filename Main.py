@@ -65,7 +65,7 @@ class Main(tk.Frame):
         add_question = Button(Right_Menu_Frame, text="Frage zu für Test auswählen", bg=button_color, fg=bg_color, command=DBT.add_data_to_testdb)
         add_question['font'] = Button_Font
         add_question.pack(side="top", fill=X)
-        excel_import = Button(Right_Menu_Frame, text="Fragen aus Excel", bg=button_color, fg=bg_color)
+        excel_import = Button(Right_Menu_Frame, text="Fragen aus Excel importieren", bg=button_color, fg=bg_color, command=xml_interface.excel_import_to_db)
         excel_import['font'] = Button_Font
         excel_import.pack(side="top", fill=X)
         datenbank_og = Button(Right_Menu_Frame, text="Datenbank wählen", bg=button_color, fg=bg_color)
@@ -77,9 +77,12 @@ class Main(tk.Frame):
         #create_Test = Button(Right_Menu_Frame, text="Test aus Auswahl erstellen", bg=button_color, fg=bg_color, command=self.Test_aus_auswahl_erstellem)
         #create_Test['font'] = Button_Font
         #create_Test.pack(side="top", fill=X)
-        create_Test_excel = Button(Right_Menu_Frame, text="Test erstellen", bg=button_color, fg=bg_color, command=xml_interface.create_test())
-        create_Test_excel['font'] = Button_Font
-        create_Test_excel.pack(side="top", fill=X)
+        create_Test = Button(Right_Menu_Frame, text="Test erstellen", bg=button_color, fg=bg_color, command=lambda: xml_interface.create_test_or_pool("ilias_test"))
+        create_Test['font'] = Button_Font
+        create_Test.pack(side="top", fill=X)
+        create_Pool = Button(Right_Menu_Frame, text="Pool erstellen", bg=button_color, fg=bg_color, command=lambda: xml_interface.create_test_or_pool("ilias_pool"))
+        create_Pool['font'] = Button_Font
+        create_Pool.pack(side="top", fill=X)
         #Put_btn = tk.Button(bottom_Frame, text="Add to Test")
         #Put_btn.place(relx=0, rely=0)
 
