@@ -28,6 +28,9 @@ class fragen_gui():
         self.table_dict = table_dict
         self.fragentyp = fragentyp
         self.dbinhaltsliste = dbinhaltsliste[table_dict[fragentyp]] #Stringvar und der index name aus der Datenbank
+
+        print("------", self.dbinhaltsliste)
+
         for i in self.dbinhaltsliste:
             i[0].set('')
         self.index_dict = index_dict[table_dict[fragentyp]] #welcher index gehört zu welchem eintrag on der Datenbank
@@ -190,6 +193,8 @@ class fragen_gui():
     def Add_data_to_DB(self):
         self.dbinhaltsliste[self.index_dict['question_description_main']][0].set(self.Fragentext_Entry.get("1.0", 'end-1c'))
         self.db_I.Add_data_to_DB(self.dbinhaltsliste, self.dbinhaltsliste[3][0].get())
+        print("----1 ---",self.dbinhaltsliste)
+        print("----2 ---",self.dbinhaltsliste[3][0].get())
 
 
 
