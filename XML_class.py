@@ -149,7 +149,7 @@ class XML_Interface():
             if self.test_data_question_types.count("formelfrage") == len(self.test_data_question_types) and self.test_data_question_types:
                 self.all_ff_questions_flag = 1
                 # höchste ID aus Ordner auslesen --  Wird benötigt um Pool-Ordner mit aufsteigender ID erstellen zu können
-                self.max_id = Xml_Interface.find_max_id_in_dir(self, self.formelfrage_files_path_pool_output, "formelfrage")
+                self.max_id = XML_Interface.find_max_id_in_dir(self, self.formelfrage_files_path_pool_output, "formelfrage")
 
                
 
@@ -158,22 +158,22 @@ class XML_Interface():
                 self.all_sc_questions_flag = 1
                 print("SC")
                 # höchste ID aus Ordner auslesen --  Wird benötigt um Pool-Ordner mit aufsteigender ID erstellen zu können
-                self.max_id = Xml_Interface.find_max_id_in_dir(self, self.singlechoice_files_path_pool_output, "singlechoice")
+                self.max_id = XML_Interface.find_max_id_in_dir(self, self.singlechoice_files_path_pool_output, "singlechoice")
                 
 
             elif self.test_data_question_types.count("multiplechoice") == len(self.test_data_question_types) and self.test_data_question_types:
                 self.all_mc_questions_flag = 1
                 # höchste ID aus Ordner auslesen --  Wird benötigt um Pool-Ordner mit aufsteigender ID erstellen zu können
-                self.max_id = Xml_Interface.find_max_id_in_dir(self, self.multiplechoice_files_path_pool_output, "multiplechoice")
+                self.max_id = XML_Interface.find_max_id_in_dir(self, self.multiplechoice_files_path_pool_output, "multiplechoice")
 
             elif self.test_data_question_types.count("zuordnungsfrage") == len(self.test_data_question_types) and self.test_data_question_types:
                 self.all_mq_questions_flag = 1
                 # höchste ID aus Ordner auslesen --  Wird benötigt um Pool-Ordner mit aufsteigender ID erstellen zu können
-                self.max_id = Xml_Interface.find_max_id_in_dir(self, self.zuordnungsfrage_files_path_pool_output, "zuordnungsfrage")
+                self.max_id = XML_Interface.find_max_id_in_dir(self, self.zuordnungsfrage_files_path_pool_output, "zuordnungsfrage")
 
             else:
                 self.mixed_questions_flag = 1
-                self.max_id = Xml_Interface.find_max_id_in_dir(self, self.gemischte_fragentypen_files_path_pool_output, "gemischte_fragentypen")
+                self.max_id = XML_Interface.find_max_id_in_dir(self, self.gemischte_fragentypen_files_path_pool_output, "gemischte_fragentypen")
             print("=============")
             print(self.max_id)
 
@@ -213,7 +213,7 @@ class XML_Interface():
             elif self.question_type_test_or_pool == "question_pool":
                 if self.all_ff_questions_flag == 1:
                     self.qti_file_path_output = self.formelfrage_pool_qti_file_path_output
-                    Xml_Interface.create_pool_dir_from_template(self, self.formelfrage_files_path_pool_output)
+                    XML_Interface.create_pool_dir_from_template(self, self.formelfrage_files_path_pool_output)
                     self.ff_mytree = ET.parse(self.formelfrage_pool_qti_file_path_template)
 
                     self.pool_qpl_file_path_template = self.formelfrage_pool_qpl_file_path_template
@@ -222,7 +222,7 @@ class XML_Interface():
 
                 elif self.all_sc_questions_flag == 1:
                     self.qti_file_path_output = self.singlechoice_pool_qti_file_path_output
-                    Xml_Interface.create_pool_dir_from_template(self, self.singlechoice_files_path_pool_output)
+                    XML_Interface.create_pool_dir_from_template(self, self.singlechoice_files_path_pool_output)
                     self.ff_mytree = ET.parse(self.singlechoice_pool_qti_file_path_template)
 
                     self.pool_qpl_file_path_template = self.singlechoice_pool_qpl_file_path_template
@@ -231,7 +231,7 @@ class XML_Interface():
 
                 else:
                     self.qti_file_path_output = self.gemischte_fragentypen_pool_qti_file_path_output
-                    Xml_Interface.create_pool_dir_from_template(self, self.gemischte_fragentypen_files_path_pool_output)
+                    XML_Interface.create_pool_dir_from_template(self, self.gemischte_fragentypen_files_path_pool_output)
                     self.ff_mytree = ET.parse(self.gemischte_fragentypen_pool_qti_file_path_template)
 
                     self.pool_qpl_file_path_template = self.gemischte_fragentypen_pool_qpl_file_path_template
@@ -248,10 +248,10 @@ class XML_Interface():
                 print(self.test_data[i][2].lower())
 
                 if self.test_data[i][2].lower() == "formelfrage":
-                    Xml_Interface.ff_question_structure(self, self.test_data[i], self.table_index_dict, self.id_nr, self.pool_qpl_file_path_template, self.pool_qpl_file_path_output, self.qpl_file_path)
+                    XML_Interface.ff_question_structure(self, self.test_data[i], self.table_index_dict, self.id_nr, self.pool_qpl_file_path_template, self.pool_qpl_file_path_output, self.qpl_file_path)
 
                 if self.test_data[i][2].lower() == "singlechoice":
-                   Xml_Interface.sc_question_structure(self, self.test_data[i], self.table_index_dict, self.id_nr, self.pool_qpl_file_path_template, self.pool_qpl_file_path_output, self.qpl_file_path)
+                   XML_Interface.sc_question_structure(self, self.test_data[i], self.table_index_dict, self.id_nr, self.pool_qpl_file_path_template, self.pool_qpl_file_path_output, self.qpl_file_path)
 
 
                 self.id_nr += 1
@@ -277,14 +277,14 @@ class XML_Interface():
 
                 #self.ff_question_description_main = test_generator_modul_taxonomie_und_textformatierung.Textformatierung.format_description_text_in_xml(self, self.ff_var_use_latex_on_text_check.get(), test_data_list[table_index_dict[0]['question_description_main']])
                 # Abfrage LATEX fehlt
-                self.ff_question_description_main = Xml_Interface.format_description_text_in_xml(self, test_data_list[table_index_dict[0]['question_description_main']])
+                self.ff_question_description_main = XML_Interface.format_description_text_in_xml(self, test_data_list[table_index_dict[0]['question_description_main']])
 
 
         
                 # Bilder für die Beschreibung speichern
-                Xml_Interface.add_dir_for_images(self, test_data_list[table_index_dict[0]['description_img_name_1']], test_data_list[table_index_dict[0]['description_img_data_1']], id_nr, self.question_type_test_or_pool, self.formelfrage_test_img_file_path, self.formelfrage_pool_img_file_path)
-                Xml_Interface.add_dir_for_images(self, test_data_list[table_index_dict[0]['description_img_name_2']], test_data_list[table_index_dict[0]['description_img_data_2']], id_nr, self.question_type_test_or_pool, self.formelfrage_test_img_file_path, self.formelfrage_pool_img_file_path)
-                Xml_Interface.add_dir_for_images(self, test_data_list[table_index_dict[0]['description_img_name_3']], test_data_list[table_index_dict[0]['description_img_data_3']], id_nr, self.question_type_test_or_pool, self.formelfrage_test_img_file_path, self.formelfrage_pool_img_file_path)
+                XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[0]['description_img_name_1']], test_data_list[table_index_dict[0]['description_img_data_1']], id_nr, self.question_type_test_or_pool, self.formelfrage_test_img_file_path, self.formelfrage_pool_img_file_path)
+                XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[0]['description_img_name_2']], test_data_list[table_index_dict[0]['description_img_data_2']], id_nr, self.question_type_test_or_pool, self.formelfrage_test_img_file_path, self.formelfrage_pool_img_file_path)
+                XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[0]['description_img_name_3']], test_data_list[table_index_dict[0]['description_img_data_3']], id_nr, self.question_type_test_or_pool, self.formelfrage_test_img_file_path, self.formelfrage_pool_img_file_path)
 
 
                 # Aufbau für  Fragenstruktur "TEST"
@@ -303,7 +303,7 @@ class XML_Interface():
 
                     # Zusatz für Taxonomie-Einstellungen
 
-                    Xml_Interface.set_taxonomy_for_question(self,
+                    XML_Interface.set_taxonomy_for_question(self,
                                                            id_nr,
                                                            self.number_of_entrys,
                                                            item,
@@ -372,7 +372,7 @@ class XML_Interface():
 
                 # Fragen-Text (Text) einsetzen   -- "mattext_texttype" in xml -- Gibt die eigentliche Fragen-Beschreibung an
                 # Wenn Bild enthalten ist, dann in Fragenbeschreibung einbetten
-                question_description_mattext.text = Xml_Interface.add_picture_to_description_main(
+                question_description_mattext.text = XML_Interface.add_picture_to_description_main(
                                                     self,
                                                     test_data_list[table_index_dict[0]['description_img_name_1']], test_data_list[table_index_dict[0]['description_img_data_1']],
                                                     test_data_list[table_index_dict[0]['description_img_name_2']], test_data_list[table_index_dict[0]['description_img_data_2']],
@@ -383,35 +383,35 @@ class XML_Interface():
 
 
                 # ----------------------------------------------------------------------- Variable
-                Xml_Interface.ff_question_variables_structure(self, qtimetadata, "$v1", test_data_list[table_index_dict[0]['var1_min']], test_data_list[table_index_dict[0]['var1_max']], test_data_list[table_index_dict[0]['var1_prec']], test_data_list[table_index_dict[0]['var1_divby']], test_data_list[table_index_dict[0]['var1_unit']])
-                Xml_Interface.ff_question_variables_structure(self, qtimetadata, "$v2", test_data_list[table_index_dict[0]['var2_min']], test_data_list[table_index_dict[0]['var2_max']], test_data_list[table_index_dict[0]['var2_prec']], test_data_list[table_index_dict[0]['var2_divby']], test_data_list[table_index_dict[0]['var2_unit']])
-                Xml_Interface.ff_question_variables_structure(self, qtimetadata, "$v3", test_data_list[table_index_dict[0]['var3_min']], test_data_list[table_index_dict[0]['var3_max']], test_data_list[table_index_dict[0]['var3_prec']], test_data_list[table_index_dict[0]['var3_divby']], test_data_list[table_index_dict[0]['var3_unit']])
-                Xml_Interface.ff_question_variables_structure(self, qtimetadata, "$v4", test_data_list[table_index_dict[0]['var4_min']], test_data_list[table_index_dict[0]['var4_max']], test_data_list[table_index_dict[0]['var4_prec']], test_data_list[table_index_dict[0]['var4_divby']], test_data_list[table_index_dict[0]['var4_unit']])
-                Xml_Interface.ff_question_variables_structure(self, qtimetadata, "$v5", test_data_list[table_index_dict[0]['var5_min']], test_data_list[table_index_dict[0]['var5_max']], test_data_list[table_index_dict[0]['var5_prec']], test_data_list[table_index_dict[0]['var5_divby']], test_data_list[table_index_dict[0]['var6_unit']])
-                Xml_Interface.ff_question_variables_structure(self, qtimetadata, "$v6", test_data_list[table_index_dict[0]['var6_min']], test_data_list[table_index_dict[0]['var6_max']], test_data_list[table_index_dict[0]['var6_prec']], test_data_list[table_index_dict[0]['var6_divby']], test_data_list[table_index_dict[0]['var1_unit']])
-                Xml_Interface.ff_question_variables_structure(self, qtimetadata, "$v7", test_data_list[table_index_dict[0]['var7_min']], test_data_list[table_index_dict[0]['var7_max']], test_data_list[table_index_dict[0]['var7_prec']], test_data_list[table_index_dict[0]['var7_divby']], test_data_list[table_index_dict[0]['var7_unit']])
-                Xml_Interface.ff_question_variables_structure(self, qtimetadata, "$v8", test_data_list[table_index_dict[0]['var8_min']], test_data_list[table_index_dict[0]['var8_max']], test_data_list[table_index_dict[0]['var8_prec']], test_data_list[table_index_dict[0]['var8_divby']], test_data_list[table_index_dict[0]['var8_unit']])
-                Xml_Interface.ff_question_variables_structure(self, qtimetadata, "$v9", test_data_list[table_index_dict[0]['var9_min']], test_data_list[table_index_dict[0]['var9_max']], test_data_list[table_index_dict[0]['var9_prec']], test_data_list[table_index_dict[0]['var9_divby']], test_data_list[table_index_dict[0]['var9_unit']])
-                Xml_Interface.ff_question_variables_structure(self, qtimetadata, "$v10", test_data_list[table_index_dict[0]['var10_min']], test_data_list[table_index_dict[0]['var10_max']], test_data_list[table_index_dict[0]['var10_prec']], test_data_list[table_index_dict[0]['var10_divby']], test_data_list[table_index_dict[0]['var10_unit']])
-                Xml_Interface.ff_question_variables_structure(self, qtimetadata, "$v11", test_data_list[table_index_dict[0]['var11_min']], test_data_list[table_index_dict[0]['var11_max']], test_data_list[table_index_dict[0]['var11_prec']], test_data_list[table_index_dict[0]['var11_divby']], test_data_list[table_index_dict[0]['var11_unit']])
-                Xml_Interface.ff_question_variables_structure(self, qtimetadata, "$v12", test_data_list[table_index_dict[0]['var12_min']], test_data_list[table_index_dict[0]['var12_max']], test_data_list[table_index_dict[0]['var12_prec']], test_data_list[table_index_dict[0]['var12_divby']], test_data_list[table_index_dict[0]['var12_unit']])
-                Xml_Interface.ff_question_variables_structure(self, qtimetadata, "$v13", test_data_list[table_index_dict[0]['var13_min']], test_data_list[table_index_dict[0]['var13_max']], test_data_list[table_index_dict[0]['var13_prec']], test_data_list[table_index_dict[0]['var13_divby']], test_data_list[table_index_dict[0]['var13_unit']])
-                Xml_Interface.ff_question_variables_structure(self, qtimetadata, "$v14", test_data_list[table_index_dict[0]['var14_min']], test_data_list[table_index_dict[0]['var14_max']], test_data_list[table_index_dict[0]['var14_prec']], test_data_list[table_index_dict[0]['var14_divby']], test_data_list[table_index_dict[0]['var14_unit']])
-                Xml_Interface.ff_question_variables_structure(self, qtimetadata, "$v15", test_data_list[table_index_dict[0]['var15_min']], test_data_list[table_index_dict[0]['var15_max']], test_data_list[table_index_dict[0]['var15_prec']], test_data_list[table_index_dict[0]['var15_divby']], test_data_list[table_index_dict[0]['var15_unit']])
+                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v1", test_data_list[table_index_dict[0]['var1_min']], test_data_list[table_index_dict[0]['var1_max']], test_data_list[table_index_dict[0]['var1_prec']], test_data_list[table_index_dict[0]['var1_divby']], test_data_list[table_index_dict[0]['var1_unit']])
+                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v2", test_data_list[table_index_dict[0]['var2_min']], test_data_list[table_index_dict[0]['var2_max']], test_data_list[table_index_dict[0]['var2_prec']], test_data_list[table_index_dict[0]['var2_divby']], test_data_list[table_index_dict[0]['var2_unit']])
+                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v3", test_data_list[table_index_dict[0]['var3_min']], test_data_list[table_index_dict[0]['var3_max']], test_data_list[table_index_dict[0]['var3_prec']], test_data_list[table_index_dict[0]['var3_divby']], test_data_list[table_index_dict[0]['var3_unit']])
+                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v4", test_data_list[table_index_dict[0]['var4_min']], test_data_list[table_index_dict[0]['var4_max']], test_data_list[table_index_dict[0]['var4_prec']], test_data_list[table_index_dict[0]['var4_divby']], test_data_list[table_index_dict[0]['var4_unit']])
+                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v5", test_data_list[table_index_dict[0]['var5_min']], test_data_list[table_index_dict[0]['var5_max']], test_data_list[table_index_dict[0]['var5_prec']], test_data_list[table_index_dict[0]['var5_divby']], test_data_list[table_index_dict[0]['var6_unit']])
+                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v6", test_data_list[table_index_dict[0]['var6_min']], test_data_list[table_index_dict[0]['var6_max']], test_data_list[table_index_dict[0]['var6_prec']], test_data_list[table_index_dict[0]['var6_divby']], test_data_list[table_index_dict[0]['var1_unit']])
+                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v7", test_data_list[table_index_dict[0]['var7_min']], test_data_list[table_index_dict[0]['var7_max']], test_data_list[table_index_dict[0]['var7_prec']], test_data_list[table_index_dict[0]['var7_divby']], test_data_list[table_index_dict[0]['var7_unit']])
+                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v8", test_data_list[table_index_dict[0]['var8_min']], test_data_list[table_index_dict[0]['var8_max']], test_data_list[table_index_dict[0]['var8_prec']], test_data_list[table_index_dict[0]['var8_divby']], test_data_list[table_index_dict[0]['var8_unit']])
+                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v9", test_data_list[table_index_dict[0]['var9_min']], test_data_list[table_index_dict[0]['var9_max']], test_data_list[table_index_dict[0]['var9_prec']], test_data_list[table_index_dict[0]['var9_divby']], test_data_list[table_index_dict[0]['var9_unit']])
+                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v10", test_data_list[table_index_dict[0]['var10_min']], test_data_list[table_index_dict[0]['var10_max']], test_data_list[table_index_dict[0]['var10_prec']], test_data_list[table_index_dict[0]['var10_divby']], test_data_list[table_index_dict[0]['var10_unit']])
+                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v11", test_data_list[table_index_dict[0]['var11_min']], test_data_list[table_index_dict[0]['var11_max']], test_data_list[table_index_dict[0]['var11_prec']], test_data_list[table_index_dict[0]['var11_divby']], test_data_list[table_index_dict[0]['var11_unit']])
+                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v12", test_data_list[table_index_dict[0]['var12_min']], test_data_list[table_index_dict[0]['var12_max']], test_data_list[table_index_dict[0]['var12_prec']], test_data_list[table_index_dict[0]['var12_divby']], test_data_list[table_index_dict[0]['var12_unit']])
+                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v13", test_data_list[table_index_dict[0]['var13_min']], test_data_list[table_index_dict[0]['var13_max']], test_data_list[table_index_dict[0]['var13_prec']], test_data_list[table_index_dict[0]['var13_divby']], test_data_list[table_index_dict[0]['var13_unit']])
+                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v14", test_data_list[table_index_dict[0]['var14_min']], test_data_list[table_index_dict[0]['var14_max']], test_data_list[table_index_dict[0]['var14_prec']], test_data_list[table_index_dict[0]['var14_divby']], test_data_list[table_index_dict[0]['var14_unit']])
+                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v15", test_data_list[table_index_dict[0]['var15_min']], test_data_list[table_index_dict[0]['var15_max']], test_data_list[table_index_dict[0]['var15_prec']], test_data_list[table_index_dict[0]['var15_divby']], test_data_list[table_index_dict[0]['var15_unit']])
 
 
 
                 # ----------------------------------------------------------------------- Solution
-                Xml_Interface.ff_question_results_structure(self, qtimetadata, "$r1", test_data_list[table_index_dict[0]['res1_formula']], test_data_list[table_index_dict[0]['res1_min']], test_data_list[table_index_dict[0]['res1_max']], test_data_list[table_index_dict[0]['res1_prec']], test_data_list[table_index_dict[0]['res1_tol']], test_data_list[table_index_dict[0]['res1_points']], test_data_list[table_index_dict[0]['res1_unit']])
-                Xml_Interface.ff_question_results_structure(self, qtimetadata, "$r2", test_data_list[table_index_dict[0]['res2_formula']], test_data_list[table_index_dict[0]['res2_min']], test_data_list[table_index_dict[0]['res2_max']], test_data_list[table_index_dict[0]['res2_prec']], test_data_list[table_index_dict[0]['res2_tol']], test_data_list[table_index_dict[0]['res2_points']], test_data_list[table_index_dict[0]['res2_unit']])
-                Xml_Interface.ff_question_results_structure(self, qtimetadata, "$r3", test_data_list[table_index_dict[0]['res3_formula']], test_data_list[table_index_dict[0]['res3_min']], test_data_list[table_index_dict[0]['res3_max']], test_data_list[table_index_dict[0]['res3_prec']], test_data_list[table_index_dict[0]['res3_tol']], test_data_list[table_index_dict[0]['res3_points']], test_data_list[table_index_dict[0]['res3_unit']])
-                Xml_Interface.ff_question_results_structure(self, qtimetadata, "$r4", test_data_list[table_index_dict[0]['res4_formula']], test_data_list[table_index_dict[0]['res4_min']], test_data_list[table_index_dict[0]['res4_max']], test_data_list[table_index_dict[0]['res4_prec']], test_data_list[table_index_dict[0]['res4_tol']], test_data_list[table_index_dict[0]['res4_points']], test_data_list[table_index_dict[0]['res4_unit']])
-                Xml_Interface.ff_question_results_structure(self, qtimetadata, "$r5", test_data_list[table_index_dict[0]['res5_formula']], test_data_list[table_index_dict[0]['res5_min']], test_data_list[table_index_dict[0]['res5_max']], test_data_list[table_index_dict[0]['res5_prec']], test_data_list[table_index_dict[0]['res5_tol']], test_data_list[table_index_dict[0]['res5_points']], test_data_list[table_index_dict[0]['res5_unit']])
-                Xml_Interface.ff_question_results_structure(self, qtimetadata, "$r6", test_data_list[table_index_dict[0]['res6_formula']], test_data_list[table_index_dict[0]['res6_min']], test_data_list[table_index_dict[0]['res6_max']], test_data_list[table_index_dict[0]['res6_prec']], test_data_list[table_index_dict[0]['res6_tol']], test_data_list[table_index_dict[0]['res6_points']], test_data_list[table_index_dict[0]['res6_unit']])
-                Xml_Interface.ff_question_results_structure(self, qtimetadata, "$r7", test_data_list[table_index_dict[0]['res7_formula']], test_data_list[table_index_dict[0]['res7_min']], test_data_list[table_index_dict[0]['res7_max']], test_data_list[table_index_dict[0]['res7_prec']], test_data_list[table_index_dict[0]['res7_tol']], test_data_list[table_index_dict[0]['res7_points']], test_data_list[table_index_dict[0]['res7_unit']])
-                Xml_Interface.ff_question_results_structure(self, qtimetadata, "$r8", test_data_list[table_index_dict[0]['res8_formula']], test_data_list[table_index_dict[0]['res8_min']], test_data_list[table_index_dict[0]['res8_max']], test_data_list[table_index_dict[0]['res8_prec']], test_data_list[table_index_dict[0]['res8_tol']], test_data_list[table_index_dict[0]['res8_points']], test_data_list[table_index_dict[0]['res8_unit']])
-                Xml_Interface.ff_question_results_structure(self, qtimetadata, "$r9", test_data_list[table_index_dict[0]['res9_formula']], test_data_list[table_index_dict[0]['res9_min']], test_data_list[table_index_dict[0]['res9_max']], test_data_list[table_index_dict[0]['res9_prec']], test_data_list[table_index_dict[0]['res9_tol']], test_data_list[table_index_dict[0]['res9_points']], test_data_list[table_index_dict[0]['res9_unit']])
-                Xml_Interface.ff_question_results_structure(self, qtimetadata, "$r10", test_data_list[table_index_dict[0]['res10_formula']], test_data_list[table_index_dict[0]['res10_min']], test_data_list[table_index_dict[0]['res10_max']], test_data_list[table_index_dict[0]['res10_prec']], test_data_list[table_index_dict[0]['res10_tol']], test_data_list[table_index_dict[0]['res10_points']], test_data_list[table_index_dict[0]['res10_unit']])
+                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r1", test_data_list[table_index_dict[0]['res1_formula']], test_data_list[table_index_dict[0]['res1_min']], test_data_list[table_index_dict[0]['res1_max']], test_data_list[table_index_dict[0]['res1_prec']], test_data_list[table_index_dict[0]['res1_tol']], test_data_list[table_index_dict[0]['res1_points']], test_data_list[table_index_dict[0]['res1_unit']])
+                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r2", test_data_list[table_index_dict[0]['res2_formula']], test_data_list[table_index_dict[0]['res2_min']], test_data_list[table_index_dict[0]['res2_max']], test_data_list[table_index_dict[0]['res2_prec']], test_data_list[table_index_dict[0]['res2_tol']], test_data_list[table_index_dict[0]['res2_points']], test_data_list[table_index_dict[0]['res2_unit']])
+                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r3", test_data_list[table_index_dict[0]['res3_formula']], test_data_list[table_index_dict[0]['res3_min']], test_data_list[table_index_dict[0]['res3_max']], test_data_list[table_index_dict[0]['res3_prec']], test_data_list[table_index_dict[0]['res3_tol']], test_data_list[table_index_dict[0]['res3_points']], test_data_list[table_index_dict[0]['res3_unit']])
+                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r4", test_data_list[table_index_dict[0]['res4_formula']], test_data_list[table_index_dict[0]['res4_min']], test_data_list[table_index_dict[0]['res4_max']], test_data_list[table_index_dict[0]['res4_prec']], test_data_list[table_index_dict[0]['res4_tol']], test_data_list[table_index_dict[0]['res4_points']], test_data_list[table_index_dict[0]['res4_unit']])
+                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r5", test_data_list[table_index_dict[0]['res5_formula']], test_data_list[table_index_dict[0]['res5_min']], test_data_list[table_index_dict[0]['res5_max']], test_data_list[table_index_dict[0]['res5_prec']], test_data_list[table_index_dict[0]['res5_tol']], test_data_list[table_index_dict[0]['res5_points']], test_data_list[table_index_dict[0]['res5_unit']])
+                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r6", test_data_list[table_index_dict[0]['res6_formula']], test_data_list[table_index_dict[0]['res6_min']], test_data_list[table_index_dict[0]['res6_max']], test_data_list[table_index_dict[0]['res6_prec']], test_data_list[table_index_dict[0]['res6_tol']], test_data_list[table_index_dict[0]['res6_points']], test_data_list[table_index_dict[0]['res6_unit']])
+                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r7", test_data_list[table_index_dict[0]['res7_formula']], test_data_list[table_index_dict[0]['res7_min']], test_data_list[table_index_dict[0]['res7_max']], test_data_list[table_index_dict[0]['res7_prec']], test_data_list[table_index_dict[0]['res7_tol']], test_data_list[table_index_dict[0]['res7_points']], test_data_list[table_index_dict[0]['res7_unit']])
+                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r8", test_data_list[table_index_dict[0]['res8_formula']], test_data_list[table_index_dict[0]['res8_min']], test_data_list[table_index_dict[0]['res8_max']], test_data_list[table_index_dict[0]['res8_prec']], test_data_list[table_index_dict[0]['res8_tol']], test_data_list[table_index_dict[0]['res8_points']], test_data_list[table_index_dict[0]['res8_unit']])
+                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r9", test_data_list[table_index_dict[0]['res9_formula']], test_data_list[table_index_dict[0]['res9_min']], test_data_list[table_index_dict[0]['res9_max']], test_data_list[table_index_dict[0]['res9_prec']], test_data_list[table_index_dict[0]['res9_tol']], test_data_list[table_index_dict[0]['res9_points']], test_data_list[table_index_dict[0]['res9_unit']])
+                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r10", test_data_list[table_index_dict[0]['res10_formula']], test_data_list[table_index_dict[0]['res10_min']], test_data_list[table_index_dict[0]['res10_max']], test_data_list[table_index_dict[0]['res10_prec']], test_data_list[table_index_dict[0]['res10_tol']], test_data_list[table_index_dict[0]['res10_points']], test_data_list[table_index_dict[0]['res10_unit']])
 
 
 
@@ -596,7 +596,7 @@ class XML_Interface():
 
             #self.sc_question_description_main = test_generator_modul_taxonomie_und_textformatierung.Textformatierung.format_description_text_in_xml(self, self.sc_var_use_latex_on_text_check.get(), self.sc_question_description_main)
 
-            self.sc_question_description_main =Xml_Interface.format_description_text_in_xml(self, test_data_list[table_index_dict[1]['question_description_main']])
+            self.sc_question_description_main =XML_Interface.format_description_text_in_xml(self, test_data_list[table_index_dict[1]['question_description_main']])
 
 
 
@@ -605,9 +605,9 @@ class XML_Interface():
 
 
             # Bilder für die Beschreibung speichern
-            Xml_Interface.add_dir_for_images(self, test_data_list[table_index_dict[1]['description_img_name_1']], test_data_list[table_index_dict[1]['description_img_data_1']], id_nr, self.question_type_test_or_pool, self.singlechoice_test_img_file_path, self.singlechoice_pool_img_file_path)
-            Xml_Interface.add_dir_for_images(self, test_data_list[table_index_dict[1]['description_img_name_2']], test_data_list[table_index_dict[1]['description_img_data_2']], id_nr, self.question_type_test_or_pool, self.singlechoice_test_img_file_path, self.singlechoice_pool_img_file_path)
-            Xml_Interface.add_dir_for_images(self, test_data_list[table_index_dict[1]['description_img_name_3']], test_data_list[table_index_dict[1]['description_img_data_3']], id_nr, self.question_type_test_or_pool, self.singlechoice_test_img_file_path, self.singlechoice_pool_img_file_path)
+            XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[1]['description_img_name_1']], test_data_list[table_index_dict[1]['description_img_data_1']], id_nr, self.question_type_test_or_pool, self.singlechoice_test_img_file_path, self.singlechoice_pool_img_file_path)
+            XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[1]['description_img_name_2']], test_data_list[table_index_dict[1]['description_img_data_2']], id_nr, self.question_type_test_or_pool, self.singlechoice_test_img_file_path, self.singlechoice_pool_img_file_path)
+            XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[1]['description_img_name_3']], test_data_list[table_index_dict[1]['description_img_data_3']], id_nr, self.question_type_test_or_pool, self.singlechoice_test_img_file_path, self.singlechoice_pool_img_file_path)
             
             
             # Aufbau für  Fragenstruktur "TEST"
@@ -626,7 +626,7 @@ class XML_Interface():
 
                 # Zusatz für Taxonomie-Einstellungen
 
-                Xml_Interface.set_taxonomy_for_question(self,
+                XML_Interface.set_taxonomy_for_question(self,
                                                         id_nr,
                                                         self.number_of_entrys,
                                                         item,
@@ -724,7 +724,7 @@ class XML_Interface():
 
             # Fragen-Text (Text) einsetzen   -- "mattext_texttype" in xml -- Gibt die eigentliche Fragen-Beschreibung an
             # Wenn Bild enthalten ist, dann in Fragenbeschreibung einbetten
-            question_description_mattext.text = Xml_Interface.add_picture_to_description_main(
+            question_description_mattext.text = XML_Interface.add_picture_to_description_main(
                                                 self,
                                                 test_data_list[table_index_dict[1]['description_img_name_1']], test_data_list[table_index_dict[1]['description_img_data_1']],
                                                 test_data_list[table_index_dict[1]['description_img_name_2']], test_data_list[table_index_dict[1]['description_img_data_2']],
@@ -741,16 +741,16 @@ class XML_Interface():
 
 
             # Antworten erstellen
-            Xml_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_1_text']], test_data_list[table_index_dict[1]['response_1_pts']], test_data_list[table_index_dict[1]['response_1_img_path']], render_choice, resprocessing, item, "0")
-            Xml_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_2_text']], test_data_list[table_index_dict[1]['response_2_pts']], test_data_list[table_index_dict[1]['response_2_img_path']], render_choice, resprocessing, item, "1")
-            Xml_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_3_text']], test_data_list[table_index_dict[1]['response_3_pts']], test_data_list[table_index_dict[1]['response_3_img_path']], render_choice, resprocessing, item, "2")
-            Xml_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_4_text']], test_data_list[table_index_dict[1]['response_4_pts']], test_data_list[table_index_dict[1]['response_4_img_path']], render_choice, resprocessing, item, "3")
-            Xml_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_5_text']], test_data_list[table_index_dict[1]['response_5_pts']], test_data_list[table_index_dict[1]['response_5_img_path']], render_choice, resprocessing, item, "4")
-            Xml_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_6_text']], test_data_list[table_index_dict[1]['response_6_pts']], test_data_list[table_index_dict[1]['response_6_img_path']], render_choice, resprocessing, item, "5")
-            Xml_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_7_text']], test_data_list[table_index_dict[1]['response_7_pts']], test_data_list[table_index_dict[1]['response_7_img_path']], render_choice, resprocessing, item, "6")
-            Xml_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_8_text']], test_data_list[table_index_dict[1]['response_8_pts']], test_data_list[table_index_dict[1]['response_8_img_path']], render_choice, resprocessing, item, "7")
-            Xml_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_9_text']], test_data_list[table_index_dict[1]['response_9_pts']], test_data_list[table_index_dict[1]['response_9_img_path']], render_choice, resprocessing, item, "8")
-            Xml_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_10_text']], test_data_list[table_index_dict[1]['response_10_pts']], test_data_list[table_index_dict[1]['response_10_img_path']], render_choice, resprocessing, item, "9")
+            XML_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_1_text']], test_data_list[table_index_dict[1]['response_1_pts']], test_data_list[table_index_dict[1]['response_1_img_path']], render_choice, resprocessing, item, "0")
+            XML_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_2_text']], test_data_list[table_index_dict[1]['response_2_pts']], test_data_list[table_index_dict[1]['response_2_img_path']], render_choice, resprocessing, item, "1")
+            XML_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_3_text']], test_data_list[table_index_dict[1]['response_3_pts']], test_data_list[table_index_dict[1]['response_3_img_path']], render_choice, resprocessing, item, "2")
+            XML_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_4_text']], test_data_list[table_index_dict[1]['response_4_pts']], test_data_list[table_index_dict[1]['response_4_img_path']], render_choice, resprocessing, item, "3")
+            XML_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_5_text']], test_data_list[table_index_dict[1]['response_5_pts']], test_data_list[table_index_dict[1]['response_5_img_path']], render_choice, resprocessing, item, "4")
+            XML_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_6_text']], test_data_list[table_index_dict[1]['response_6_pts']], test_data_list[table_index_dict[1]['response_6_img_path']], render_choice, resprocessing, item, "5")
+            XML_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_7_text']], test_data_list[table_index_dict[1]['response_7_pts']], test_data_list[table_index_dict[1]['response_7_img_path']], render_choice, resprocessing, item, "6")
+            XML_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_8_text']], test_data_list[table_index_dict[1]['response_8_pts']], test_data_list[table_index_dict[1]['response_8_img_path']], render_choice, resprocessing, item, "7")
+            XML_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_9_text']], test_data_list[table_index_dict[1]['response_9_pts']], test_data_list[table_index_dict[1]['response_9_img_path']], render_choice, resprocessing, item, "8")
+            XML_Interface.sc_question_answer_structure(self, test_data_list[table_index_dict[1]['response_10_text']], test_data_list[table_index_dict[1]['response_10_pts']], test_data_list[table_index_dict[1]['response_10_img_path']], render_choice, resprocessing, item, "9")
 
             # Wenn es sich um einen ILIAS-Test handelt, beinhaltet die XML eine Struktur mit mehreren "Zweigen"
             # Der letzte "Zweig" --> "len(self.sc_myroot[0]) - 1" (beschreibt das letze Fach) beinhaltet die eigentlichen Fragen
@@ -1060,12 +1060,12 @@ class XML_Interface():
             self.pool_directory_output = pool_directory_output
 
             # Neuen Ordner erstellen
-            Xml_Interface.createFolder(self, os.path.normpath(os.path.join(self.pool_directory_output, self.ilias_id_pool_qpl_dir)))
+            XML_Interface.createFolder(self, os.path.normpath(os.path.join(self.pool_directory_output, self.ilias_id_pool_qpl_dir)))
             #print("======", os.path.normpath(os.path.join(self.pool_directory_output, self.ilias_id_pool_qpl_dir)))
 
             # Hier wird das Verzeichnis kopiert, um die Struktur vom Fragenpool-Ordner zu erhalten
             # Die Struktur stammt aus einem Vorlage-Ordner. Die notwendigen XML Dateien werden im Anschluss ersetzt bzw. mit Werten aktualisiert
-            Xml_Interface.copytree(self, os.path.normpath(os.path.join(self.project_root_path, "Vorlage_für_Fragenpool", 'Vorlage_1596569820__0__qpl_2074808')),
+            XML_Interface.copytree(self, os.path.normpath(os.path.join(self.project_root_path, "Vorlage_für_Fragenpool", 'Vorlage_1596569820__0__qpl_2074808')),
                      os.path.normpath(os.path.join(self.pool_directory_output, self.ilias_id_pool_qpl_dir)))
 
             # Da durch "copytree" alle Daten kopiert werden, werden hier die qpl.xml und die qti.xml auf die aktuelle Nummer umbenannt und später dadurch überschrieben
@@ -1114,7 +1114,7 @@ class XML_Interface():
                 if test_or_pool == "question_test":
 
                     if self.description_img_name_var != "" and self.description_img_name_var != "EMPTY":
-                        Xml_Interface.createFolder(self, self.question_test_img_path + '/' + 'il_0_mob_000000' + str(id_nr) + '/')
+                        XML_Interface.createFolder(self, self.question_test_img_path + '/' + 'il_0_mob_000000' + str(id_nr) + '/')
 
                         # img wird immer als PNG Datei abgelegt.
                         with open(os.path.join(self.question_test_img_path, "il_0_mob_000000" + str(id_nr), self.description_img_name_var + ".png"), 'wb') as image_file:
@@ -1125,7 +1125,7 @@ class XML_Interface():
 
                 else:  # image pool
                     if self.description_img_name_var != "" and self.description_img_name_var != "EMPTY":
-                        Xml_Interface.createFolder(self, self.question_pool_img_path + '/' + 'il_0_mob_000000' + str(id_nr) + '/')
+                        XML_Interface.createFolder(self, self.question_pool_img_path + '/' + 'il_0_mob_000000' + str(id_nr) + '/')
 
                         # img wird immer als PNG Datei abgelegt.
                         # with open(self.question_pool_img_path + "\\il_0_mob_000000" + str(id_nr) + "\\" + self.description_img_name_var + ".png", 'wb') as image_file:
@@ -1168,14 +1168,14 @@ class XML_Interface():
 
 
             if self.description_img_data_1 != "" and self.description_img_data_1 != "EMPTY":
-                self.question_description_mattext = Xml_Interface.set_picture_in_main(self, self.description_img_name_1, self.description_img_data_1, "%Bild1%", self.question_description_main, question_description_material, id_nr, "0")
+                self.question_description_mattext = XML_Interface.set_picture_in_main(self, self.description_img_name_1, self.description_img_data_1, "%Bild1%", self.question_description_main, question_description_material, id_nr, "0")
 
             if self.description_img_data_2 != "" and self.description_img_data_2 != "EMPTY":
-                self.question_description_mattext = Xml_Interface.set_picture_in_main(self, self.description_img_name_2, self.description_img_data_2, "%Bild2%", self.question_description_mattext, question_description_material, id_nr, "1")
+                self.question_description_mattext = XML_Interface.set_picture_in_main(self, self.description_img_name_2, self.description_img_data_2, "%Bild2%", self.question_description_mattext, question_description_material, id_nr, "1")
 
 
             if self.description_img_data_3 != "" and self.description_img_data_3 != "EMPTY":
-                self.question_description_mattext = Xml_Interface.set_picture_in_main(self, self.description_img_name_3, self.description_img_data_3, "%Bild3%", self.question_description_mattext, question_description_material, id_nr, "2")
+                self.question_description_mattext = XML_Interface.set_picture_in_main(self, self.description_img_name_3, self.description_img_data_3, "%Bild3%", self.question_description_mattext, question_description_material, id_nr, "2")
 
 
             if (self.description_img_data_1 == "" or self.description_img_data_1 == "EMPTY") and (self.description_img_data_2 == "" or self.description_img_data_2 == "EMPTY") and (self.description_img_data_3 == "" or self.description_img_data_3 == "EMPTY"):
