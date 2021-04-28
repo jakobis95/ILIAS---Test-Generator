@@ -3,7 +3,11 @@ import tkinter as tk
 import tkinter.font as font
 from DB_Treeview import UI
 from DB_interface import DB_Interface
+<<<<<<< HEAD
 import XML_class
+=======
+#from XML_class import xml_interface
+>>>>>>> 8d67c82cf35c18f51463495ca08f5d63711926b8
 from ScrolledText_Functionality import Textformatierung
 class Main(tk.Frame):
 
@@ -12,8 +16,7 @@ class Main(tk.Frame):
         #XML related data
 
 
-        #XML_interface erstellen
-        #XML_interface = xml_interface()
+
 
 
 
@@ -32,20 +35,18 @@ class Main(tk.Frame):
         button_color = '#3f37c9'
         fg_color = '#4cc9f0'  # general foregroundcolor
         table_dict = {'formelfrage': 0, 'singlechoice': 1, 'multiplechoice': 2, 'zuordnungsfrage': 3}
-        #Fragen_db = '../ilias_formelfrage_db.db'
+
         mydb_name = 'generaldb.db'         #Datenbank mit allen Fragentypen
         mytempdb_name = 'generaldb2.db' #Kopie der originalen Datenbank
-        #self.q = (StringVar(), 'Schwierigkeit'), (StringVar(), 'Typ'), (StringVar(), 'Titel'), (StringVar(), 'Author'), (StringVar(), 'Datum'), (StringVar(), 'Author2'), (StringVar(), 'Datum2')
         Left_Top_Frame = tk.Frame(bg=bg_color, bd=20)
         Left_Top_Frame.place(relx=0, rely=0, relwidth=.8, relheight=.5)
         Left_Bottom_Frame = tk.Frame(bg=bg_color, bd=20)
         Left_Bottom_Frame.place(relx=0, rely=0.5, relwidth=.8, relheight=.5)
         Right_Menu_Frame = tk.Frame(bg=bg_color, bd=20)
         Right_Menu_Frame.place(relx=.8, rely=0.0, relwidth=.2, relheight=1)
-        #bottom_Frame = tk.Frame(bg="blue")
-        #bottom_Frame.place(relx=0, rely=.9, relwidth=1, relheight=.1)
-        WIDTH = int(root.winfo_screenwidth() / 1.2)
-        HEIGHT = int(root.winfo_screenheight() / 2)
+
+        WIDTH = int(root.winfo_screenwidth())
+
         DBI = DB_Interface(mydb_name, mytempdb_name, root, table_dict, self.table_list)
         index_info = DBI.get_index_info()
         table_index_list = index_info[0]
@@ -55,10 +56,15 @@ class Main(tk.Frame):
         Test_T = UI(table_dict, DBI, Left_Bottom_Frame, WIDTH, 2, table_index_list, table_index_dict, "Fragenauswahl für Test", bg_color, button_color, label_color, Button_Font, Label_Font)
         mytempdb_name = '../tempdb.db'
 
+<<<<<<< HEAD
         # xml_interface
         #XML_class.Xml_Interface.__init__(self, DBI, table_index_dict)
         XML = XML_class.Xml_Interface(DBI, table_dict, table_index_list, table_index_dict)
 
+=======
+        # XML_interface erstellen, diese Klasse muss die DBI kennen. Daher wird dieses übergeben
+        # XML_interface = xml_interface(DBI)
+>>>>>>> 8d67c82cf35c18f51463495ca08f5d63711926b8
 
         #Menue
         Menu_lbl = Label(Right_Menu_Frame, text="Menü", bg=label_color, fg=bg_color)
