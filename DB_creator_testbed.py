@@ -579,106 +579,104 @@ class generate_db():
                             asignment_mode int,
         
                             definitions_response_1_text text,
-                            definitions_response_1_img_label text,
                             definitions_response_1_img_path text,
-                            definitions_response_1_img_string_base64_encoded text,
+                            
         
                             definitions_response_2_text text,
-                            definitions_response_2_img_label text,
+                            
                             definitions_response_2_img_path text,
-                            definitions_response_2_img_string_base64_encoded text,
+                            
         
                             definitions_response_3_text text,
-                            definitions_response_3_img_label text,
+                            
                             definitions_response_3_img_path text,
-                            definitions_response_3_img_string_base64_encoded text,
+                            
         
                             definitions_response_4_text text,
-                            definitions_response_4_img_label text,
+                            
                             definitions_response_4_img_path text,
-                            definitions_response_4_img_string_base64_encoded text,
+                            
         
                             definitions_response_5_text text,
-                            definitions_response_5_img_label text,
+                            
                             definitions_response_5_img_path text,
-                            definitions_response_5_img_string_base64_encoded text,
+                            
         
                             definitions_response_6_text text,
-                            definitions_response_6_img_label text,
+                           
                             definitions_response_6_img_path text,
-                            definitions_response_6_img_string_base64_encoded text,
+                            
         
                             definitions_response_7_text text,
-                            definitions_response_7_img_label text,
+                            
                             definitions_response_7_img_path text,
-                            definitions_response_7_img_string_base64_encoded text,
+                            
         
                             definitions_response_8_text text,
-                            definitions_response_8_img_label text,
+                            
                             definitions_response_8_img_path text,
-                            definitions_response_8_img_string_base64_encoded text,
+                            
         
                             definitions_response_9_text text,
-                            definitions_response_9_img_label text,
+                            
                             definitions_response_9_img_path text,
-                            definitions_response_9_img_string_base64_encoded text,
+                            
         
                             definitions_response_10_text text,
-                            definitions_response_10_img_label text,
+                            
                             definitions_response_10_img_path text,
-                            definitions_response_10_img_string_base64_encoded text,
+                            
         
         
         
                             terms_response_1_text text,
-                            terms_response_1_img_label text,
+                            
                             terms_response_1_img_path text,
-                            terms_response_1_img_string_base64_encoded text,
+                            
         
                             terms_response_2_text text,
-                            terms_response_2_img_label text,
+                            
                             terms_response_2_img_path text,
-                            terms_response_2_img_string_base64_encoded text,
+                            
         
                             terms_response_3_text text,
-                            terms_response_3_img_label text,
+                            
                             terms_response_3_img_path text,
-                            terms_response_3_img_string_base64_encoded text,
+                            
         
                             terms_response_4_text text,
-                            terms_response_4_img_label text,
+                            
                             terms_response_4_img_path text,
-                            terms_response_4_img_string_base64_encoded text,
+                            
         
                             terms_response_5_text text,
-                            terms_response_5_img_label text,
+                            
                             terms_response_5_img_path text,
-                            terms_response_5_img_string_base64_encoded text,
+                            
         
                             terms_response_6_text text,
-                            terms_response_6_img_label text,
+                            
                             terms_response_6_img_path text,
-                            terms_response_6_img_string_base64_encoded text,
+                            
         
                             terms_response_7_text text,
-                            terms_response_7_img_label text,
+                            
                             terms_response_7_img_path text,
-                            terms_response_7_img_string_base64_encoded text,
+                            
         
                             terms_response_8_text text,
-                            terms_response_8_img_label text,
+                            
                             terms_response_8_img_path text,
-                            terms_response_8_img_string_base64_encoded text,
+                            
         
                             terms_response_9_text text,
-                            terms_response_9_img_label text,
+                            
                             terms_response_9_img_path text,
-                            terms_response_9_img_string_base64_encoded text,
+                            
         
                             terms_response_10_text text,
-                            terms_response_10_img_label text,
                             terms_response_10_img_path text,
-                            terms_response_10_img_string_base64_encoded text,
+                            
         
         
         
