@@ -58,7 +58,7 @@ class DB_Interface():
             zwischenspeicher.append(self.cursor.fetchone())
         print("zwischenspeicher", zwischenspeicher)
         self.db_data[id] = zwischenspeicher
-        #og_title = self.db_data[id][0][3]
+        self.og_title = self.db_data[id][0][3]
         #print(og_title)
         print(self.db_data[id])
         self.notify()
