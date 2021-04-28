@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import DB_interface
 import sqlite3
 import xml.etree.ElementTree as ET
@@ -8,6 +9,371 @@ import shutil
 import base64
 from tkinter import filedialog
 import pandas as pd
+=======
+from DB_interface import DB_Interface
+
+#class xml_interface(DBI, self, db_entry_to_index_dict, ids_in_entry_box, question_type, pool_img_dir,
+                 #ilias_id_pool_qpl_dir, xml_read_qti_template_path, xml_qti_output_file_path,
+                 #xml_qpl_output_file_path, max_id_pool_qti_xml, max_id, taxonomy_file_question_pool):
+#DBI = DB_Interface
+#DBI.get_dbtemp_data gibt die daten aus formelfrage zurück
+    #self.DBI = DBI
+    # INIT
+    # ff_question_structure
+    # ff_question_variable_structure
+    # ff_question_results_structure
+
+    def create_test(self, db_entry_to_index_dict, ids_in_entry_box, question_type, pool_img_dir,
+                 ilias_id_pool_qpl_dir, xml_read_qti_template_path, xml_qti_output_file_path,
+                 xml_qpl_output_file_path, max_id_pool_qti_xml, max_id, taxonomy_file_question_pool):
+
+        # Gibt die ANzahl der Pools an
+        # Üblicherweise wird nur 1 Pool erzeugt. Nur bei "Taxonomie getrennt" Erstellung, werden mehrere Pools erzeugt
+        # self.number_of_pools = 1
+
+        self.ff_db_entry_to_index_dict = db_entry_to_index_dict
+        self.ff_test_entry_splitted = ids_in_entry_box.split(
+            ",")  # todo das sind die eingegebenen ids welche zu den gewünschten Testfragen gehören
+        self.qti_file_path_output = xml_qti_output_file_path
+        self.formelfrage_pool_qpl_file_path_output = xml_qpl_output_file_path
+        self.ff_mytree = ET.parse(xml_read_qti_template_path)
+        self.ff_myroot = self.ff_mytree.getroot()
+        self.ff_question_type_test_or_pool = question_type
+        self.formelfrage_pool_img_file_path = pool_img_dir  # Wird nur bei Erstellung eines Fragen-Pool verwendet. Ordnername wird erst bei Laufzeit erstellt)
+
+        self.all_entries_from_db_list = []
+        self.number_of_entrys = []
+
+        self.question_pool_id_list = []
+        self.question_title_list = []
+
+        self.ff_number_of_questions_generated = 1
+
+        self.ilias_id_pool_qpl_dir = ilias_id_pool_qpl_dir
+        self.ff_file_max_id = max_id
+        self.taxonomy_file_question_pool = taxonomy_file_question_pool
+        self.ilias_id_pool_qti_xml = max_id_pool_qti_xml
+
+        print("\n")
+
+        if self.ff_question_type_test_or_pool == "question_test":
+            print("FORMELFRAGE: ILIAS-TEST WIRD ERSTELLT...  ID: " + str(
+                ids_in_entry_box))  # todo die ID ist für eine Frage?
+
+        else:
+            print("FORMELFRAGE: ILIAS-POOL WIRD ERSTELLT...  ID: " + str(ids_in_entry_box))
+
+        # Mit FF_Datenbank verknüpfen
+        connect_ff_db = sqlite3.connect(self.database_formelfrage_path)
+        cursor = connect_ff_db.cursor()
+
+        # Prüfen ob alle Einträge generiert werden sollen (checkbox gesetzt)
+        if self.ff_var_create_question_pool_all_check.get() == 1 and self.ff_var_create_multiple_question_pools_from_tax_check.get() == 0:
+            conn = sqlite3.connect(self.database_formelfrage_path)
+            c = conn.cursor()
+            c.execute("SELECT *, oid FROM %s" % self.ff_database_table)
+
+            ff_db_records = c.fetchall()
+
+            for ff_db_record in ff_db_records:
+                self.all_entries_from_db_list.append(int(ff_db_record[len(ff_db_record) - 1]))
+
+            self.string_temp = ','.join(map(str, self.all_entries_from_db_list))
+            self.ff_test_entry_splitted = self.string_temp.split(",")
+
+            # Eintrag mit ID "1" entspricht der Vorlage und soll nicht mit erstellt werden
+            self.ff_test_entry_splitted.pop(0)
+
+            print(self.ff_test_entry_splitted)
+
+            # print("Number of Pools: " + str(len(self.list_of_lists)))
+            # self.number_of_pools = len(self.list_of_lists)
+
+        # Sämtliche Datenbank Einträge auslesen mit der entsprechenden "oid" (Datenbank ID)
+        # Datenbank ID wird automatisch bei einem neuen Eintrag erstellt (fortlaufend) und kann nicht beeinflusst werden
+        cursor.execute(
+            "SELECT *, oid FROM %s" % self.ff_database_table)  # todo Wo kommt das Database_table her?
+        ff_db_records = cursor.fetchall()
+        """
+        for pool_number in range(self.number_of_pools):
+
+            self.string2_temp = ','.join(map(str, self.list_of_lists[pool_number]))
+            self.ff_test_entry_splitted = self.string2_temp.split(",")
+            print("%%%%%%")
+            print(self.ff_test_entry_splitted)
+
+        """
+        # todo die einzelnen Inhalte werden aus DB records(zwischenspeicher) in einen weiteren zwischenspeicher der bereits den zutreffenden namen hat zugeordnet um damit eine Frage zu erstellen
+        for i in range(
+                len(self.ff_test_entry_splitted)):  # todo ein durchlauf für jede Frage in die zum test gehört
+            for ff_db_record in ff_db_records:  # todo Inhalt aller Fragen  oder nur einer Frage aus der Datenbank die in die Test sollen
+                if str(ff_db_record[len(ff_db_record) - 1]) == self.ff_test_entry_splitted[
+                    i]:  # todo da bin ich mir nicht sicher was es unterscheiden soll?
+                    for t in range(len(ff_db_record)):
+                        if ff_db_record[self.ff_db_entry_to_index_dict[
+                            'question_type']].lower() == self.ff_question_type_name.lower():
+                            self.ff_question_difficulty = ff_db_record[
+                                self.ff_db_entry_to_index_dict['question_difficulty']]
+                            self.ff_question_category = ff_db_record[
+                                self.ff_db_entry_to_index_dict['question_category']]
+                            self.ff_question_type = ff_db_record[
+                                self.ff_db_entry_to_index_dict['question_type']]
+                            self.ff_question_title = ff_db_record[
+                                self.ff_db_entry_to_index_dict['question_title']].replace('&', "&amp;")
+                            self.ff_question_description_title = ff_db_record[
+                                self.ff_db_entry_to_index_dict['question_description_title']].replace('&',
+                                                                                                      "&amp;")
+                            self.ff_question_description_main = ff_db_record[
+                                self.ff_db_entry_to_index_dict['question_description_main']]
+                            self.ff_res1_formula = ff_db_record[self.ff_db_entry_to_index_dict['res1_formula']]
+                            self.ff_res2_formula = ff_db_record[self.ff_db_entry_to_index_dict['res2_formula']]
+                            self.ff_res3_formula = ff_db_record[self.ff_db_entry_to_index_dict['res3_formula']]
+                            self.ff_res4_formula = ff_db_record[self.ff_db_entry_to_index_dict['res4_formula']]
+                            self.ff_res5_formula = ff_db_record[self.ff_db_entry_to_index_dict['res5_formula']]
+                            self.ff_res6_formula = ff_db_record[self.ff_db_entry_to_index_dict['res6_formula']]
+                            self.ff_res7_formula = ff_db_record[self.ff_db_entry_to_index_dict['res7_formula']]
+                            self.ff_res8_formula = ff_db_record[self.ff_db_entry_to_index_dict['res8_formula']]
+                            self.ff_res9_formula = ff_db_record[self.ff_db_entry_to_index_dict['res9_formula']]
+                            self.ff_res10_formula = ff_db_record[
+                                self.ff_db_entry_to_index_dict['res10_formula']]
+
+                            self.ff_var1_name = ff_db_record[self.ff_db_entry_to_index_dict['var1_name']]
+                            self.ff_var1_min = ff_db_record[self.ff_db_entry_to_index_dict['var1_min']]
+                            self.ff_var1_max = ff_db_record[self.ff_db_entry_to_index_dict['var1_max']]
+                            self.ff_var1_prec = ff_db_record[self.ff_db_entry_to_index_dict['var1_prec']]
+                            self.ff_var1_divby = ff_db_record[self.ff_db_entry_to_index_dict['var1_divby']]
+                            self.ff_var1_unit = ff_db_record[self.ff_db_entry_to_index_dict['var1_unit']]
+
+                            self.ff_var2_name = ff_db_record[self.ff_db_entry_to_index_dict['var2_name']]
+                            self.ff_var2_min = ff_db_record[self.ff_db_entry_to_index_dict['var2_min']]
+                            self.ff_var2_max = ff_db_record[self.ff_db_entry_to_index_dict['var2_max']]
+                            self.ff_var2_prec = ff_db_record[self.ff_db_entry_to_index_dict['var2_prec']]
+                            self.ff_var2_divby = ff_db_record[self.ff_db_entry_to_index_dict['var2_divby']]
+                            self.ff_var2_unit = ff_db_record[self.ff_db_entry_to_index_dict['var2_unit']]
+
+                            self.ff_var3_name = ff_db_record[self.ff_db_entry_to_index_dict['var3_name']]
+                            self.ff_var3_min = ff_db_record[self.ff_db_entry_to_index_dict['var3_min']]
+                            self.ff_var3_max = ff_db_record[self.ff_db_entry_to_index_dict['var3_max']]
+                            self.ff_var3_prec = ff_db_record[self.ff_db_entry_to_index_dict['var3_prec']]
+                            self.ff_var3_divby = ff_db_record[self.ff_db_entry_to_index_dict['var3_divby']]
+                            self.ff_var3_unit = ff_db_record[self.ff_db_entry_to_index_dict['var3_unit']]
+
+                            self.ff_var4_name = ff_db_record[self.ff_db_entry_to_index_dict['var4_name']]
+                            self.ff_var4_min = ff_db_record[self.ff_db_entry_to_index_dict['var4_min']]
+                            self.ff_var4_max = ff_db_record[self.ff_db_entry_to_index_dict['var4_max']]
+                            self.ff_var4_prec = ff_db_record[self.ff_db_entry_to_index_dict['var4_prec']]
+                            self.ff_var4_divby = ff_db_record[self.ff_db_entry_to_index_dict['var4_divby']]
+                            self.ff_var4_unit = ff_db_record[self.ff_db_entry_to_index_dict['var4_unit']]
+
+                            self.ff_var5_name = ff_db_record[self.ff_db_entry_to_index_dict['var5_name']]
+                            self.ff_var5_min = ff_db_record[self.ff_db_entry_to_index_dict['var5_min']]
+                            self.ff_var5_max = ff_db_record[self.ff_db_entry_to_index_dict['var5_max']]
+                            self.ff_var5_prec = ff_db_record[self.ff_db_entry_to_index_dict['var5_prec']]
+                            self.ff_var5_divby = ff_db_record[self.ff_db_entry_to_index_dict['var5_divby']]
+                            self.ff_var5_unit = ff_db_record[self.ff_db_entry_to_index_dict['var5_unit']]
+
+                            self.ff_var6_name = ff_db_record[self.ff_db_entry_to_index_dict['var6_name']]
+                            self.ff_var6_min = ff_db_record[self.ff_db_entry_to_index_dict['var6_min']]
+                            self.ff_var6_max = ff_db_record[self.ff_db_entry_to_index_dict['var6_max']]
+                            self.ff_var6_prec = ff_db_record[self.ff_db_entry_to_index_dict['var6_prec']]
+                            self.ff_var6_divby = ff_db_record[self.ff_db_entry_to_index_dict['var6_divby']]
+                            self.ff_var6_unit = ff_db_record[self.ff_db_entry_to_index_dict['var6_unit']]
+
+                            self.ff_var7_name = ff_db_record[self.ff_db_entry_to_index_dict['var7_name']]
+                            self.ff_var7_min = ff_db_record[self.ff_db_entry_to_index_dict['var7_min']]
+                            self.ff_var7_max = ff_db_record[self.ff_db_entry_to_index_dict['var7_max']]
+                            self.ff_var7_prec = ff_db_record[self.ff_db_entry_to_index_dict['var7_prec']]
+                            self.ff_var7_divby = ff_db_record[self.ff_db_entry_to_index_dict['var7_divby']]
+                            self.ff_var7_unit = ff_db_record[self.ff_db_entry_to_index_dict['var7_unit']]
+
+                            self.ff_var8_name = ff_db_record[self.ff_db_entry_to_index_dict['var8_name']]
+                            self.ff_var8_min = ff_db_record[self.ff_db_entry_to_index_dict['var8_min']]
+                            self.ff_var8_max = ff_db_record[self.ff_db_entry_to_index_dict['var8_max']]
+                            self.ff_var8_prec = ff_db_record[self.ff_db_entry_to_index_dict['var8_prec']]
+                            self.ff_var8_divby = ff_db_record[self.ff_db_entry_to_index_dict['var8_divby']]
+                            self.ff_var8_unit = ff_db_record[self.ff_db_entry_to_index_dict['var8_unit']]
+
+                            self.ff_var9_name = ff_db_record[self.ff_db_entry_to_index_dict['var9_name']]
+                            self.ff_var9_min = ff_db_record[self.ff_db_entry_to_index_dict['var9_min']]
+                            self.ff_var9_max = ff_db_record[self.ff_db_entry_to_index_dict['var9_max']]
+                            self.ff_var9_prec = ff_db_record[self.ff_db_entry_to_index_dict['var9_prec']]
+                            self.ff_var9_divby = ff_db_record[self.ff_db_entry_to_index_dict['var9_divby']]
+                            self.ff_var9_unit = ff_db_record[self.ff_db_entry_to_index_dict['var9_unit']]
+
+                            self.ff_var10_name = ff_db_record[self.ff_db_entry_to_index_dict['var10_name']]
+                            self.ff_var10_min = ff_db_record[self.ff_db_entry_to_index_dict['var10_min']]
+                            self.ff_var10_max = ff_db_record[self.ff_db_entry_to_index_dict['var10_max']]
+                            self.ff_var10_prec = ff_db_record[self.ff_db_entry_to_index_dict['var10_prec']]
+                            self.ff_var10_divby = ff_db_record[self.ff_db_entry_to_index_dict['var10_divby']]
+                            self.ff_var10_unit = ff_db_record[self.ff_db_entry_to_index_dict['var10_unit']]
+
+                            self.ff_var11_name = ff_db_record[self.ff_db_entry_to_index_dict['var11_name']]
+                            self.ff_var11_min = ff_db_record[self.ff_db_entry_to_index_dict['var11_min']]
+                            self.ff_var11_max = ff_db_record[self.ff_db_entry_to_index_dict['var11_max']]
+                            self.ff_var11_prec = ff_db_record[self.ff_db_entry_to_index_dict['var11_prec']]
+                            self.ff_var11_divby = ff_db_record[self.ff_db_entry_to_index_dict['var11_divby']]
+                            self.ff_var11_unit = ff_db_record[self.ff_db_entry_to_index_dict['var11_unit']]
+
+                            self.ff_var12_name = ff_db_record[self.ff_db_entry_to_index_dict['var12_name']]
+                            self.ff_var12_min = ff_db_record[self.ff_db_entry_to_index_dict['var12_min']]
+                            self.ff_var12_max = ff_db_record[self.ff_db_entry_to_index_dict['var12_max']]
+                            self.ff_var12_prec = ff_db_record[self.ff_db_entry_to_index_dict['var12_prec']]
+                            self.ff_var12_divby = ff_db_record[self.ff_db_entry_to_index_dict['var12_divby']]
+                            self.ff_var12_unit = ff_db_record[self.ff_db_entry_to_index_dict['var12_unit']]
+
+                            self.ff_var13_name = ff_db_record[self.ff_db_entry_to_index_dict['var13_name']]
+                            self.ff_var13_min = ff_db_record[self.ff_db_entry_to_index_dict['var13_min']]
+                            self.ff_var13_max = ff_db_record[self.ff_db_entry_to_index_dict['var13_max']]
+                            self.ff_var13_prec = ff_db_record[self.ff_db_entry_to_index_dict['var13_prec']]
+                            self.ff_var13_divby = ff_db_record[self.ff_db_entry_to_index_dict['var13_divby']]
+                            self.ff_var13_unit = ff_db_record[self.ff_db_entry_to_index_dict['var13_unit']]
+
+                            self.ff_var14_name = ff_db_record[self.ff_db_entry_to_index_dict['var14_name']]
+                            self.ff_var14_min = ff_db_record[self.ff_db_entry_to_index_dict['var14_min']]
+                            self.ff_var14_max = ff_db_record[self.ff_db_entry_to_index_dict['var14_max']]
+                            self.ff_var14_prec = ff_db_record[self.ff_db_entry_to_index_dict['var14_prec']]
+                            self.ff_var14_divby = ff_db_record[self.ff_db_entry_to_index_dict['var14_divby']]
+                            self.ff_var14_unit = ff_db_record[self.ff_db_entry_to_index_dict['var14_unit']]
+
+                            self.ff_var15_name = ff_db_record[self.ff_db_entry_to_index_dict['var15_name']]
+                            self.ff_var15_min = ff_db_record[self.ff_db_entry_to_index_dict['var15_min']]
+                            self.ff_var15_max = ff_db_record[self.ff_db_entry_to_index_dict['var15_max']]
+                            self.ff_var15_prec = ff_db_record[self.ff_db_entry_to_index_dict['var15_prec']]
+                            self.ff_var15_divby = ff_db_record[self.ff_db_entry_to_index_dict['var15_divby']]
+                            self.ff_var15_unit = ff_db_record[self.ff_db_entry_to_index_dict['var15_unit']]
+
+                            self.ff_res1_name = ff_db_record[self.ff_db_entry_to_index_dict['res1_name']]
+                            self.ff_res1_min = ff_db_record[self.ff_db_entry_to_index_dict['res1_min']]
+                            self.ff_res1_max = ff_db_record[self.ff_db_entry_to_index_dict['res1_max']]
+                            self.ff_res1_prec = ff_db_record[self.ff_db_entry_to_index_dict['res1_prec']]
+                            self.ff_res1_tol = ff_db_record[self.ff_db_entry_to_index_dict['res1_tol']]
+                            self.ff_res1_points = ff_db_record[self.ff_db_entry_to_index_dict['res1_points']]
+                            self.ff_res1_unit = ff_db_record[self.ff_db_entry_to_index_dict['res1_unit']]
+
+                            self.ff_res2_name = ff_db_record[self.ff_db_entry_to_index_dict['res2_name']]
+                            self.ff_res2_min = ff_db_record[self.ff_db_entry_to_index_dict['res2_min']]
+                            self.ff_res2_max = ff_db_record[self.ff_db_entry_to_index_dict['res2_max']]
+                            self.ff_res2_prec = ff_db_record[self.ff_db_entry_to_index_dict['res2_prec']]
+                            self.ff_res2_tol = ff_db_record[self.ff_db_entry_to_index_dict['res2_tol']]
+                            self.ff_res2_points = ff_db_record[self.ff_db_entry_to_index_dict['res2_points']]
+                            self.ff_res2_unit = ff_db_record[self.ff_db_entry_to_index_dict['res2_unit']]
+
+                            self.ff_res3_name = ff_db_record[self.ff_db_entry_to_index_dict['res3_name']]
+                            self.ff_res3_min = ff_db_record[self.ff_db_entry_to_index_dict['res3_min']]
+                            self.ff_res3_max = ff_db_record[self.ff_db_entry_to_index_dict['res3_max']]
+                            self.ff_res3_prec = ff_db_record[self.ff_db_entry_to_index_dict['res3_prec']]
+                            self.ff_res3_tol = ff_db_record[self.ff_db_entry_to_index_dict['res3_tol']]
+                            self.ff_res3_points = ff_db_record[self.ff_db_entry_to_index_dict['res3_points']]
+                            self.ff_res3_unit = ff_db_record[self.ff_db_entry_to_index_dict['res3_unit']]
+
+                            self.ff_res4_name = ff_db_record[self.ff_db_entry_to_index_dict['res4_name']]
+                            self.ff_res4_min = ff_db_record[self.ff_db_entry_to_index_dict['res4_min']]
+                            self.ff_res4_max = ff_db_record[self.ff_db_entry_to_index_dict['res4_max']]
+                            self.ff_res4_prec = ff_db_record[self.ff_db_entry_to_index_dict['res4_prec']]
+                            self.ff_res4_tol = ff_db_record[self.ff_db_entry_to_index_dict['res4_tol']]
+                            self.ff_res4_points = ff_db_record[self.ff_db_entry_to_index_dict['res4_points']]
+                            self.ff_res4_unit = ff_db_record[self.ff_db_entry_to_index_dict['res4_unit']]
+
+                            self.ff_res5_name = ff_db_record[self.ff_db_entry_to_index_dict['res5_name']]
+                            self.ff_res5_min = ff_db_record[self.ff_db_entry_to_index_dict['res5_min']]
+                            self.ff_res5_max = ff_db_record[self.ff_db_entry_to_index_dict['res5_max']]
+                            self.ff_res5_prec = ff_db_record[self.ff_db_entry_to_index_dict['res5_prec']]
+                            self.ff_res5_tol = ff_db_record[self.ff_db_entry_to_index_dict['res5_tol']]
+                            self.ff_res5_points = ff_db_record[self.ff_db_entry_to_index_dict['res5_points']]
+                            self.ff_res5_unit = ff_db_record[self.ff_db_entry_to_index_dict['res5_unit']]
+
+                            self.ff_res6_name = ff_db_record[self.ff_db_entry_to_index_dict['res6_name']]
+                            self.ff_res6_min = ff_db_record[self.ff_db_entry_to_index_dict['res6_min']]
+                            self.ff_res6_max = ff_db_record[self.ff_db_entry_to_index_dict['res6_max']]
+                            self.ff_res6_prec = ff_db_record[self.ff_db_entry_to_index_dict['res6_prec']]
+                            self.ff_res6_tol = ff_db_record[self.ff_db_entry_to_index_dict['res6_tol']]
+                            self.ff_res6_points = ff_db_record[self.ff_db_entry_to_index_dict['res6_points']]
+                            self.ff_res6_unit = ff_db_record[self.ff_db_entry_to_index_dict['res6_unit']]
+
+                            self.ff_res7_name = ff_db_record[self.ff_db_entry_to_index_dict['res7_name']]
+                            self.ff_res7_min = ff_db_record[self.ff_db_entry_to_index_dict['res7_min']]
+                            self.ff_res7_max = ff_db_record[self.ff_db_entry_to_index_dict['res7_max']]
+                            self.ff_res7_prec = ff_db_record[self.ff_db_entry_to_index_dict['res7_prec']]
+                            self.ff_res7_tol = ff_db_record[self.ff_db_entry_to_index_dict['res7_tol']]
+                            self.ff_res7_points = ff_db_record[self.ff_db_entry_to_index_dict['res7_points']]
+                            self.ff_res7_unit = ff_db_record[self.ff_db_entry_to_index_dict['res7_unit']]
+
+                            self.ff_es8_name = ff_db_record[self.ff_db_entry_to_index_dict['res8_name']]
+                            self.ff_res8_min = ff_db_record[self.ff_db_entry_to_index_dict['res8_min']]
+                            self.ff_res8_max = ff_db_record[self.ff_db_entry_to_index_dict['res8_max']]
+                            self.ff_res8_prec = ff_db_record[self.ff_db_entry_to_index_dict['res8_prec']]
+                            self.ff_res8_tol = ff_db_record[self.ff_db_entry_to_index_dict['res8_tol']]
+                            self.ff_res8_points = ff_db_record[self.ff_db_entry_to_index_dict['res8_points']]
+                            self.ff_res8_unit = ff_db_record[self.ff_db_entry_to_index_dict['res8_unit']]
+
+                            self.ff_res9_name = ff_db_record[self.ff_db_entry_to_index_dict['res9_name']]
+                            self.ff_res9_min = ff_db_record[self.ff_db_entry_to_index_dict['res9_min']]
+                            self.ff_res9_max = ff_db_record[self.ff_db_entry_to_index_dict['res9_max']]
+                            self.ff_res9_prec = ff_db_record[self.ff_db_entry_to_index_dict['res9_prec']]
+                            self.ff_res9_tol = ff_db_record[self.ff_db_entry_to_index_dict['res9_tol']]
+                            self.ff_res9_points = ff_db_record[self.ff_db_entry_to_index_dict['res9_points']]
+                            self.ff_res9_unit = ff_db_record[self.ff_db_entry_to_index_dict['res9_unit']]
+
+                            self.ff_res10_name = ff_db_record[self.ff_db_entry_to_index_dict['res10_name']]
+                            self.ff_res10_min = ff_db_record[self.ff_db_entry_to_index_dict['res10_min']]
+                            self.ff_res10_max = ff_db_record[self.ff_db_entry_to_index_dict['res10_max']]
+                            self.ff_res10_prec = ff_db_record[self.ff_db_entry_to_index_dict['res10_prec']]
+                            self.ff_res10_tol = ff_db_record[self.ff_db_entry_to_index_dict['res10_tol']]
+                            self.ff_res10_points = ff_db_record[self.ff_db_entry_to_index_dict['res10_points']]
+                            self.ff_res10_unit = ff_db_record[self.ff_db_entry_to_index_dict['res10_unit']]
+
+                            self.ff_description_img_name_1 = ff_db_record[
+                                self.ff_db_entry_to_index_dict['description_img_name_1']]
+                            self.ff_description_img_data_1 = ff_db_record[
+                                self.ff_db_entry_to_index_dict['description_img_data_1']]
+                            self.ff_description_img_path_1 = ff_db_record[
+                                self.ff_db_entry_to_index_dict['description_img_path_1']]
+                            self.ff_description_img_name_2 = ff_db_record[
+                                self.ff_db_entry_to_index_dict['description_img_name_2']]
+                            self.ff_description_img_data_2 = ff_db_record[
+                                self.ff_db_entry_to_index_dict['description_img_data_2']]
+                            self.ff_description_img_path_2 = ff_db_record[
+                                self.ff_db_entry_to_index_dict['description_img_path_2']]
+                            self.ff_description_img_name_3 = ff_db_record[
+                                self.ff_db_entry_to_index_dict['description_img_name_3']]
+                            self.ff_description_img_data_3 = ff_db_record[
+                                self.ff_db_entry_to_index_dict['description_img_data_3']]
+                            self.ff_description_img_path_3 = ff_db_record[
+                                self.ff_db_entry_to_index_dict['description_img_path_3']]
+
+                            self.ff_test_time = ff_db_record[self.ff_db_entry_to_index_dict['test_time']]
+                            self.ff_var_number = ff_db_record[self.ff_db_entry_to_index_dict['var_number']]
+                            self.ff_res_number = ff_db_record[self.ff_db_entry_to_index_dict['res_number']]
+                            self.ff_question_pool_tag = ff_db_record[
+                                self.ff_db_entry_to_index_dict['question_pool_tag']]
+                            self.ff_question_author = ff_db_record[
+                                self.ff_db_entry_to_index_dict['question_author']].replace('&', "&amp;")
+
+            Create_Formelfrage_Questions.ff_question_structure(self, i)
+
+    def ff_question_structure(self, id_nr):  # todo wird von der Funktion oben drüber aufgerufen
+        """Diese Funktion wandelt die SQL-Einträge in die .xml um, welche anschließend in ILIAS eingespielt werden kann"""
+
+        # VARIABLEN
+        self.ff_response_counter = 0  # wird verwendet zu zählen, wieviele Anworten pro Frage verwendet werden. Bei einer neuer Antwort -> +1
+
+        self.ff_question_description_main = test_generator_modul_taxonomie_und_textformatierung.Textformatierung.format_description_text_in_xml(
+            self, self.ff_var_use_latex_on_text_check.get(), self.ff_question_description_main)
+
+        # todo es wurden doch bereits alle daten zugeordnet warum wird die Datenbank nochmal verwendet?
+        # Verbindung zur FF-Datenank
+        ff_connect = sqlite3.connect(self.database_formelfrage_path)
+        ff_cursor = ff_connect.cursor()
+
+        # Alle Einträge auslesen
+        ff_cursor.execute("SELECT *, oid FROM %s" % self.ff_database_table)
+        ff_db_records = ff_cursor.fetchall()
+
+        for ff_db_record in ff_db_records:
+
+            # Hier werden die Fragen anhand der ID's erstellt
+            if str(ff_db_record[len(ff_db_record) - 1]) == self.ff_test_entry_splitted[id_nr]:
+>>>>>>> 8d67c82cf35c18f51463495ca08f5d63711926b8
 
 
 
