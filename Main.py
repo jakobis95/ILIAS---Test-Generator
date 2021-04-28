@@ -3,7 +3,7 @@ import tkinter as tk
 import tkinter.font as font
 from DB_Treeview import UI
 from DB_interface import DB_Interface
-#from XML_class import xml_interface
+from XML_class import XML_Interface
 from ScrolledText_Functionality import Textformatierung
 class Main(tk.Frame):
 
@@ -52,8 +52,8 @@ class Main(tk.Frame):
         Test_T = UI(table_dict, DBI, Left_Bottom_Frame, WIDTH, 2, table_index_list, table_index_dict, "Fragenauswahl für Test", bg_color, button_color, label_color, Button_Font, Label_Font)
         mytempdb_name = '../tempdb.db'
 
-        # XML_interface erstellen, diese Klasse muss die DBI kennen. Daher wird dieses übergeben
-        # XML_interface = xml_interface(DBI)
+        #XML_Interface erstellen, diese Klasse muss die DBI kennen. Daher wird dieses übergeben
+        xml_interface = XML_Interface(DBI, table_dict, table_index_list, table_index_dict)
 
         #Menue
         Menu_lbl = Label(Right_Menu_Frame, text="Menü", bg=label_color, fg=bg_color)
@@ -77,7 +77,7 @@ class Main(tk.Frame):
         #create_Test = Button(Right_Menu_Frame, text="Test aus Auswahl erstellen", bg=button_color, fg=bg_color, command=self.Test_aus_auswahl_erstellem)
         #create_Test['font'] = Button_Font
         #create_Test.pack(side="top", fill=X)
-        create_Test_excel = Button(Right_Menu_Frame, text="Test aus Excel erstellen", bg=button_color, fg=bg_color)
+        create_Test_excel = Button(Right_Menu_Frame, text="Test erstellen", bg=button_color, fg=bg_color, command=xml_interface.create_test())
         create_Test_excel['font'] = Button_Font
         create_Test_excel.pack(side="top", fill=X)
         #Put_btn = tk.Button(bottom_Frame, text="Add to Test")
