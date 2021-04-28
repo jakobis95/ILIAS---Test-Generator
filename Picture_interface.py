@@ -1,13 +1,9 @@
 from tkinter import *
-import tkinter as tk
 import tkinter.font as font
 from tkinter import filedialog
-#import tkFileDialog
-from tkinter.scrolledtext import ScrolledText
-from Time_input_UI import Test_Time_UI
-
 from PIL import Image, ImageTk
 
+<<<<<<< HEAD
 class Pictures():
     def __init__(self, Var, VarDict, Frame, Number, bg_color, label_color, button_color, fg_color, Label_Font, Entry_Font):
         self.Label_Font = Label_Font
@@ -121,7 +117,10 @@ class Pictures():
         self.Image_Label = Label(work_window, image=self.image0)
         self.Image_Label.place(relwidth=1, relheight=1, relx=0, rely=0)
 
+=======
+>>>>>>> 8d67c82cf35c18f51463495ca08f5d63711926b8
 class picture_choice():
+
     def __init__(self, Var,  Frame, bg_color="#4cc9f0", label_color='#3a0ca3', button_color='#3f37c9', fg_color="#4cc9f0"):
         self.Label_Font = font.Font(family='Verdana', size=10, weight='bold')
         self.Entry_Font = font.Font(family='Verdana', size=10, weight='normal')
@@ -134,16 +133,8 @@ class picture_choice():
 
 
         self.image = None
-
-
-        #self.ImageIndex = self.VarDict["description_img_data_{}".format(Number)]
-        #self.NameIndex = self.VarDict["description_img_name_{}".format(Number)]
         self.path = self.Var.get()
         print("das ist der pfad", self.path)
-
-
-        #self.image = self.Var[self.ImageIndex][0].get()
-        #self.Name = self.Var[0].get()
 
         self.Interaction_btn = Button(Frame, bg=self.button_color, fg=self.fg_color)
         self.Interaction_btn['font'] = self.Entry_Font
@@ -161,8 +152,10 @@ class picture_choice():
         if len(self.path) >= 1:
             print("test test", self.Var.get())
             self.add_picture()
-            # self.image = Image.open(self.Var[self.ImageIndex][0].get()) #öffnet original bild
-            # self.image0 = ImageTk.PhotoImage(self.image)
+
+    def change_font(self, lable_font, entry_font):
+        self.Label_Font = lable_font
+        self.Entry_Font = entry_font
 
     def delete_picture(self):
         print("Pfad {} wird gelöscht".format(self.Var.get()))
@@ -172,7 +165,6 @@ class picture_choice():
         self.update_btn()
 
     def update_btn(self):
-
 
         if len(self.path) < 1:
             self.Interaction_btn.configure(text="Add Picture", command=self.choose_picture)
@@ -200,10 +192,6 @@ class picture_choice():
 
             self.resized = self.original.resize((new_widht, new_height), Image.ANTIALIAS)
             self.image0 = ImageTk.PhotoImage(self.resized)
-            #self.Var[self.NameIndex][0].set(self.image0)
-
-
-            #self.Var[self.ImageIndex][0].set(ImageTk.PhotoImage(self.resized))
 
         self.update_btn()
 
