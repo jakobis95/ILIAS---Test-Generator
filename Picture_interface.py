@@ -3,7 +3,7 @@ import tkinter.font as font
 from tkinter import filedialog
 from PIL import Image, ImageTk
 
-<<<<<<< HEAD
+
 class Pictures():
     def __init__(self, Var, VarDict, Frame, Number, bg_color, label_color, button_color, fg_color, Label_Font, Entry_Font):
         self.Label_Font = Label_Font
@@ -117,8 +117,7 @@ class Pictures():
         self.Image_Label = Label(work_window, image=self.image0)
         self.Image_Label.place(relwidth=1, relheight=1, relx=0, rely=0)
 
-=======
->>>>>>> 8d67c82cf35c18f51463495ca08f5d63711926b8
+
 class picture_choice():
 
     def __init__(self, Var,  Frame, bg_color="#4cc9f0", label_color='#3a0ca3', button_color='#3f37c9', fg_color="#4cc9f0"):
