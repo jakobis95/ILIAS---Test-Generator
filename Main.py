@@ -4,7 +4,7 @@ import tkinter.font as font
 from DB_Treeview import UI
 from DB_interface import DB_Interface
 #from XML_class import xml_interface
-#from ScrolledText_Functionality import Textformatierung
+from ScrolledText_Functionality import Textformatierung
 class Main(tk.Frame):
 
     def __init__(self, *args, **kwargs):
