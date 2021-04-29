@@ -55,7 +55,11 @@ class DB_Interface():
             query = " SELECT * FROM " + table + " WHERE " + self.index_list[3][1] + " LIKE '" + q2 + "' "
        # print(self.query)
             self.cursor.execute(query)
-            zwischenspeicher.append(self.cursor.fetchone())
+            test = self.cursor.fetchone()
+            if test == None:
+                zwischenspeicher.append("leer")
+            else:
+                zwischenspeicher.append(test)
         print("zwischenspeicher", zwischenspeicher)
         self.db_data[id] = zwischenspeicher
         self.og_title = self.db_data[id][0][3]
