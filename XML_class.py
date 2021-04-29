@@ -117,6 +117,23 @@ class XML_Interface():
                 self.multiplechoice_pool_qpl_file_path_template = os.path.normpath(os.path.join(self.multiplechoice_files_path, "mc_pool_qti_und_qpl_dateien_vorlage", "ilias_pool_vorlage__qpl__.xml"))
                 
                 
+                ##### Pfade für zuordnungsfrage #############################
+
+                # Pfad für ILIAS-Test Vorlage
+                self.zuordnungsfrage_test_qti_file_path_template = os.path.normpath(os.path.join(self.zuordnungsfrage_files_path, "mq_test_qti_und_tst_dateien_vorlage", "ilias_test_vorlage__qti__.xml"))
+                self.zuordnungsfrage_test_tst_file_path_template = os.path.normpath(os.path.join(self.zuordnungsfrage_files_path, "mq_test_qti_und_tst_dateien_vorlage", "ilias_test_vorlage__tst__.xml"))
+
+                # Pfad für ILIAS-Test Dateien (zum hochladen in ILIAS)
+                self.zuordnungsfrage_test_qti_file_path_output = os.path.normpath(os.path.join(self.zuordnungsfrage_files_path, "mq_ilias_test_abgabe", "1604407426__0__tst_2040314", "1604407426__0__qti_2040314.xml"))
+                self.zuordnungsfrage_test_tst_file_path_output = os.path.normpath(os.path.join(self.zuordnungsfrage_files_path, "mq_ilias_test_abgabe", "1604407426__0__tst_2040314", "1604407426__0__tst_2040314.xml"))
+                self.zuordnungsfrage_test_img_file_path = os.path.normpath(os.path.join(self.zuordnungsfrage_files_path, "mq_ilias_test_abgabe", "1604407426__0__tst_2040314", "objects"))
+
+
+                # Pfad für ILIAS-Pool Vorlage
+                self.zuordnungsfrage_pool_qti_file_path_template = os.path.normpath(os.path.join(self.zuordnungsfrage_files_path, "mq_pool_qti_und_qpl_dateien_vorlage", "ilias_pool_vorlage__qti__.xml"))
+                self.zuordnungsfrage_pool_qpl_file_path_template = os.path.normpath(os.path.join(self.zuordnungsfrage_files_path, "mq_pool_qti_und_qpl_dateien_vorlage", "ilias_pool_vorlage__qpl__.xml"))
+                
+                
                 
                 ##### Pfade für gemischte Fragentypen ####################
                 # Pfad für ILIAS-Test Vorlage
@@ -180,10 +197,8 @@ class XML_Interface():
 
             elif self.test_data_question_types.count("singlechoice") == len(self.test_data_question_types) and self.test_data_question_types:
                 self.all_sc_questions_flag = 1
-                print("SC")
                 # höchste ID aus Ordner auslesen --  Wird benötigt um Pool-Ordner mit aufsteigender ID erstellen zu können
                 self.max_id = XML_Interface.find_max_id_in_dir(self, self.singlechoice_files_path_pool_output, "singlechoice")
-                
 
             elif self.test_data_question_types.count("multiplechoice") == len(self.test_data_question_types) and self.test_data_question_types:
                 self.all_mc_questions_flag = 1
@@ -215,11 +230,14 @@ class XML_Interface():
             self.singlechoice_pool_qpl_file_path_output = os.path.normpath(os.path.join(self.singlechoice_files_path, "sc_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), self.ilias_id_pool_qpl_xml))
             self.singlechoice_pool_img_file_path        = os.path.normpath(os.path.join(self.singlechoice_files_path, "sc_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), "objects"))
             
-            self.multiplechoice_pool_qti_file_path_output = os.path.normpath(os.path.join(self.multiplechoice_files_path, "sc_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), self.ilias_id_pool_qti_xml))
-            self.multiplechoice_pool_qpl_file_path_output = os.path.normpath(os.path.join(self.multiplechoice_files_path, "sc_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), self.ilias_id_pool_qpl_xml))
-            self.multiplechoice_pool_img_file_path        = os.path.normpath(os.path.join(self.multiplechoice_files_path, "sc_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), "objects"))
-
+            self.multiplechoice_pool_qti_file_path_output = os.path.normpath(os.path.join(self.multiplechoice_files_path, "mc_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), self.ilias_id_pool_qti_xml))
+            self.multiplechoice_pool_qpl_file_path_output = os.path.normpath(os.path.join(self.multiplechoice_files_path, "mc_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), self.ilias_id_pool_qpl_xml))
+            self.multiplechoice_pool_img_file_path        = os.path.normpath(os.path.join(self.multiplechoice_files_path, "mc_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), "objects"))
             
+            self.zuordnungsfrage_pool_qti_file_path_output = os.path.normpath(os.path.join(self.zuordnungsfrage_files_path, "mq_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), self.ilias_id_pool_qti_xml))
+            self.zuordnungsfrage_pool_qpl_file_path_output = os.path.normpath(os.path.join(self.zuordnungsfrage_files_path, "mq_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), self.ilias_id_pool_qpl_xml))
+            self.zuordnungsfrage_pool_img_file_path        = os.path.normpath(os.path.join(self.zuordnungsfrage_files_path, "mq_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), "objects"))
+
             self.gemischte_fragentypen_pool_qti_file_path_output = os.path.normpath(os.path.join(self.gemischte_fragentypen_files_path, "mixed_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), self.ilias_id_pool_qti_xml))
             self.gemischte_fragentypen_pool_qpl_file_path_output = os.path.normpath(os.path.join(self.gemischte_fragentypen_files_path, "mixed_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), self.ilias_id_pool_qpl_xml))
             self.gemischte_fragentypen_pool_img_file_path        = os.path.normpath(os.path.join(self.gemischte_fragentypen_files_path, "mixed_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), "objects"))
@@ -239,7 +257,11 @@ class XML_Interface():
                 elif self.all_mc_questions_flag == 1:
                     self.qti_file_path_output = self.multiplechoice_test_qti_file_path_output
                     self.ff_mytree = ET.parse(self.multiplechoice_test_qti_file_path_template)
-
+                
+                elif self.all_mq_questions_flag == 1:
+                    self.qti_file_path_output = self.zuordnungsfrage_test_qti_file_path_output
+                    self.ff_mytree = ET.parse(self.zuordnungsfrage_test_qti_file_path_template)
+                
                 else:
                     self.qti_file_path_output = self.gemischte_fragentypen_test_qti_file_path_output
                     self.ff_mytree = ET.parse(self.gemischte_fragentypen_test_qti_file_path_template)
@@ -273,6 +295,16 @@ class XML_Interface():
                     self.pool_qpl_file_path_template = self.multiplechoice_pool_qpl_file_path_template
                     self.pool_qpl_file_path_output = self.multiplechoice_pool_qpl_file_path_output
                     self.qpl_file_path = self.multiplechoice_pool_qpl_file_path_output
+                    
+                elif self.all_mq_questions_flag == 1:
+                    print("MQ_FRAGE ERKANNT")
+                    self.qti_file_path_output = self.zuordnungsfrage_pool_qti_file_path_output
+                    XML_Interface.create_pool_dir_from_template(self, self.zuordnungsfrage_files_path_pool_output)
+                    self.ff_mytree = ET.parse(self.zuordnungsfrage_pool_qti_file_path_template)
+
+                    self.pool_qpl_file_path_template = self.zuordnungsfrage_pool_qpl_file_path_template
+                    self.pool_qpl_file_path_output = self.zuordnungsfrage_pool_qpl_file_path_output
+                    self.qpl_file_path = self.zuordnungsfrage_pool_qpl_file_path_output
 
                 else:
                     self.qti_file_path_output = self.gemischte_fragentypen_pool_qti_file_path_output
@@ -299,6 +331,9 @@ class XML_Interface():
 
                 if self.test_data[i][2].lower() == "multiplechoice":
                    XML_Interface.mc_question_structure(self, self.test_data[i], self.table_index_dict, self.id_nr, self.pool_qpl_file_path_template, self.pool_qpl_file_path_output, self.qpl_file_path)
+                
+                if self.test_data[i][2].lower() == "zuordnungsfrage":
+                   XML_Interface.mq_question_structure(self, self.test_data[i], self.table_index_dict, self.id_nr, self.pool_qpl_file_path_template, self.pool_qpl_file_path_output, self.qpl_file_path)
 
 
 
@@ -901,7 +936,7 @@ class XML_Interface():
 
             # self.sc_question_description_main = test_generator_modul_taxonomie_und_textformatierung.Textformatierung.format_description_text_in_xml(self, self.sc_var_use_latex_on_text_check.get(), self.sc_question_description_main)
 
-            self.sc_question_description_main = XML_Interface.format_description_text_in_xml(self, test_data_list[table_index_dict[1]['question_description_main']])
+            self.mc_question_description_main = XML_Interface.format_description_text_in_xml(self, test_data_list[table_index_dict[2]['question_description_main']])
 
 
 
@@ -1031,7 +1066,7 @@ class XML_Interface():
                                                 test_data_list[table_index_dict[2]['description_img_name_1']], test_data_list[table_index_dict[2]['description_img_data_1']],
                                                 test_data_list[table_index_dict[2]['description_img_name_2']], test_data_list[table_index_dict[2]['description_img_data_2']],
                                                 test_data_list[table_index_dict[2]['description_img_name_3']], test_data_list[table_index_dict[2]['description_img_data_3']],
-                                                self.sc_question_description_main, question_description_mattext, question_description_material, id_nr)
+                                                self.mc_question_description_main, question_description_mattext, question_description_material, id_nr)
 
 
             # "MCMR --> Multiplechoice Identifier für xml datei
@@ -1159,6 +1194,379 @@ class XML_Interface():
                 itemfeedback.set('view', "All")
                 itemfeedback_mattext.set('texttype', "text/plain")
 
+        ###### ZUORDNUNGSFRAGE FUNKTIONEN ##############
+        
+        def mq_question_structure(self, test_data_list, table_index_dict, id_nr, pool_qpl_file_path_template , pool_qpl_file_path_output, qpl_file_path):
+            """Diese Funktion wandelt die SQL-Einträge in die .xml um, welche anschließend in ILIAS eingespielt werden kann"""
+
+
+            self.assignment_pairs_definitions_terms_to_id_dict = {"Definition 1": 0, "Definition 2": 1, "Definition 3": 2, "Definition 4": 3, "Definition 5": 4,
+                                                                  "Definition 6": 5, "Definition 7": 6, "Definition 8": 7, "Definition 9": 8, "Definition 10": 9,
+
+                                                                  "Term 1": 10, "Term 2": 11, "Term 3": 12, "Term 4": 13, "Term 5": 14,
+                                                                  "Term 6": 15, "Term 7": 16, "Term 8": 17, "Term 9": 18, "Term 10": 19
+                                                            }
+
+            self.pool_qpl_file_path_template = pool_qpl_file_path_template
+            self.pool_qpl_file_path_output = pool_qpl_file_path_output
+            self.qpl_file_path = qpl_file_path
+    
+            self.mq_question_description_main = XML_Interface.format_description_text_in_xml(self, test_data_list[table_index_dict[3]['question_description_main']])
+
+       
+            XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[3]['description_img_name_1']], test_data_list[table_index_dict[3]['description_img_data_1']], id_nr, self.create_ilias_test_or_pool, self.zuordnungsfrage_test_img_file_path, self.zuordnungsfrage_pool_img_file_path)
+            XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[3]['description_img_name_2']], test_data_list[table_index_dict[3]['description_img_data_2']], id_nr, self.create_ilias_test_or_pool, self.zuordnungsfrage_test_img_file_path, self.zuordnungsfrage_pool_img_file_path)
+            XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[3]['description_img_name_3']], test_data_list[table_index_dict[3]['description_img_data_3']], id_nr, self.create_ilias_test_or_pool, self.zuordnungsfrage_test_img_file_path, self.zuordnungsfrage_pool_img_file_path)
+            
+
+             # Aufbau für  Fragenstruktur "TEST"
+            if self.create_ilias_test_or_pool == "ilias_test":
+                # XML Struktur aus XML Datei festlegen. Muss nur einmal angelegt werden
+                questestinterop = ET.Element('questestinterop')
+                assessment = ET.SubElement(questestinterop, 'assessment')
+                section = ET.SubElement(assessment, 'section')
+                item = ET.SubElement(section, 'item')
+
+            # Aufbau für  Fragenstruktur "POOL"
+            else:
+                # XML Struktur aus XML Datei festlegen. Muss nur einmal angelegt werden
+                questestinterop = ET.Element('questestinterop')
+                item = ET.SubElement(questestinterop, 'item')
+
+                # Zusatz für Taxonomie-Einstellungen
+                XML_Interface.set_taxonomy_for_question(self,
+                                                       id_nr,
+                                                       self.number_of_entrys,
+                                                       item,
+                                                       self.pool_qpl_file_path_template,
+                                                       self.pool_qpl_file_path_output)
+
+
+
+            # Struktur für den Zuordnungsfrage - Fragen/Antworten Teil  -- HEADER
+            # Muss für jede Frage neu angelegt/hinzugefügt werden
+            qticomment = ET.SubElement(item, 'qticomment')
+            duration = ET.SubElement(item, 'duration')
+            itemmetadata = ET.SubElement(item, 'itemmetadata')
+            presentation = ET.SubElement(item, 'presentation')
+            resprocessing = ET.SubElement(item, 'resprocessing')
+
+            # Struktur für den Zuordnungsfrage - Fragen/Antworten Teil  -- MAIN
+            # Muss für jede Frage neu angelegt/hinzugefügt werden
+            flow = ET.SubElement(presentation, 'flow')
+            question_description_material = ET.SubElement(flow, 'material')
+            question_description_mattext = ET.SubElement(question_description_material, 'mattext')
+            response_grp = ET.SubElement(flow, 'response_grp')
+            render_choice = ET.SubElement(response_grp, 'render_choice')
+
+            qtimetadata = ET.SubElement(itemmetadata, 'qtimetadata')
+            qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
+
+
+            ### ------------------------------------------------------- XML Einträge mit Werten füllen
+
+            # Fragen-Titel -- "item title" in xml
+            item_ident_nr = format(id_nr, "06")
+            item.set('ident', "il_0_qst_" + str(item_ident_nr))
+            item.set('title', test_data_list[table_index_dict[3]['question_title']])
+            item.set('maxattempts', "0")
+
+            # Fragen-Titel Beschreibung
+            qticomment.text = test_data_list[table_index_dict[3]['question_description_title']]
+
+            # Testdauer -- "duration" in xml
+            # wird keine Testzeit eingetragen, wird 1h vorausgewählt
+            duration.text = test_data_list[table_index_dict[3]['test_time']]
+            if duration.text == "":
+                duration.text = "P0Y0M0DT1H0M0S"
+
+            """ Prüfen ob ILIAS Version ausgelesen werden kann"""
+            # -----------------------------------------------------------------------ILIAS VERSION
+            qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
+            fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
+            fieldlabel.text = "ILIAS_VERSION"
+            fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
+            fieldentry.text = "5.4.14 2020-07-31"
+            # -----------------------------------------------------------------------QUESTIONTYPE
+            qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
+            fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
+            fieldlabel.text = "QUESTIONTYPE"
+            fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
+            fieldentry.text = "MATCHING QUESTION"
+            # -----------------------------------------------------------------------AUTHOR
+            qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
+            fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
+            fieldlabel.text = "AUTHOR"
+            fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
+            fieldentry.text = test_data_list[table_index_dict[3]['question_author']]
+            # -----------------------------------------------------------------------ADDITIONAL_CONT_EDIT_MODE
+            qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
+            fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
+            fieldlabel.text = "additional_cont_edit_mode"
+            fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
+            fieldentry.text = "default"
+            # -----------------------------------------------------------------------EXTERNAL_ID
+            qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
+            fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
+            fieldlabel.text = "externalId"
+            fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
+            fieldentry.text = "5f11d3ed9af3e5.53678796"
+            # -----------------------------------------------------------------------SHUFFLE
+            qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
+            fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
+            fieldlabel.text = "shuffle"
+            fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
+            fieldentry.text = str(test_data_list[table_index_dict[3]['mix_answers']])
+            # -----------------------------------------------------------------------THUMB_GEOMETRY
+            qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
+            fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
+            fieldlabel.text = "thumb_geometry"
+            fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
+            fieldentry.text = str(test_data_list[table_index_dict[3]['picture_preview_pixel']])
+            # -----------------------------------------------------------------------MATCHING MODE
+            qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
+            fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
+            fieldlabel.text = "matching_mode"
+            fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
+            fieldentry.text = str(test_data_list[table_index_dict[3]['asignment_mode']])
+
+
+            # Fragentitel einsetzen -- "presentation label" in xml
+            presentation.set('label', test_data_list[table_index_dict[3]['question_title']])
+
+            # Fragen-Text (Format) einsetzen -- "mattext_texttype" in xml -- Gibt das Format des Textes an
+            question_description_mattext.set('texttype', "text/html")
+
+            # Fragen-Text (Text) einsetzen   -- "mattext_texttype" in xml -- Gibt die eigentliche Fragen-Beschreibung an
+            # Wenn Bild enthalten ist, dann in Fragenbeschreibung einbetten
+            # Fragen-Text (Text) einsetzen   -- "mattext_texttype" in xml -- Gibt die eigentliche Fragen-Beschreibung an
+            # Wenn Bild enthalten ist, dann in Fragenbeschreibung einbetten
+            question_description_mattext.text = XML_Interface.add_picture_to_description_main(
+                                                self,
+                                                test_data_list[table_index_dict[3]['description_img_name_1']], test_data_list[table_index_dict[3]['description_img_data_1']],
+                                                test_data_list[table_index_dict[3]['description_img_name_2']], test_data_list[table_index_dict[3]['description_img_data_2']],
+                                                test_data_list[table_index_dict[3]['description_img_name_3']], test_data_list[table_index_dict[3]['description_img_data_3']],
+                                                self.mq_question_description_main, question_description_mattext, question_description_material, id_nr)
+
+
+
+            # "MQ --> Matching Question Identifier für xml datei
+            response_grp.set('ident', "MQ")
+            response_grp.set('rcardinality', "Multiple")
+            render_choice.set('shuffle', "Yes")
+
+
+            self.mq_number_of_terms_used = []
+
+            if test_data_list[table_index_dict[3]['assignment_pairs_term_1']] != "":
+                self.mq_number_of_terms_used.append(self.assignment_pairs_definitions_terms_to_id_dict[test_data_list[table_index_dict[3]['assignment_pairs_term_1']]])
+            if test_data_list[table_index_dict[3]['assignment_pairs_term_2']] != "":
+                self.mq_number_of_terms_used.append(self.assignment_pairs_definitions_terms_to_id_dict[test_data_list[table_index_dict[3]['assignment_pairs_term_2']]])
+            if test_data_list[table_index_dict[3]['assignment_pairs_term_3']] != "":
+                self.mq_number_of_terms_used.append(self.assignment_pairs_definitions_terms_to_id_dict[test_data_list[table_index_dict[3]['assignment_pairs_term_3']]])
+            if test_data_list[table_index_dict[3]['assignment_pairs_term_4']] != "":
+                self.mq_number_of_terms_used.append(self.assignment_pairs_definitions_terms_to_id_dict[test_data_list[table_index_dict[3]['assignment_pairs_term_4']]])
+            if test_data_list[table_index_dict[3]['assignment_pairs_term_5']] != "":
+                self.mq_number_of_terms_used.append(self.assignment_pairs_definitions_terms_to_id_dict[test_data_list[table_index_dict[3]['assignment_pairs_term_5']]])
+            if test_data_list[table_index_dict[3]['assignment_pairs_term_6']] != "":
+                self.mq_number_of_terms_used.append(self.assignment_pairs_definitions_terms_to_id_dict[test_data_list[table_index_dict[3]['assignment_pairs_term_6']]])
+            if test_data_list[table_index_dict[3]['assignment_pairs_term_7']] != "":
+                self.mq_number_of_terms_used.append(self.assignment_pairs_definitions_terms_to_id_dict[test_data_list[table_index_dict[3]['assignment_pairs_term_7']]])
+            if test_data_list[table_index_dict[3]['assignment_pairs_term_8']] != "":
+                self.mq_number_of_terms_used.append(self.assignment_pairs_definitions_terms_to_id_dict[test_data_list[table_index_dict[3]['assignment_pairs_term_8']]])
+            if test_data_list[table_index_dict[3]['assignment_pairs_term_9']] != "":
+                self.mq_number_of_terms_used.append(self.assignment_pairs_definitions_terms_to_id_dict[test_data_list[table_index_dict[3]['assignment_pairs_term_9']]])
+            if test_data_list[table_index_dict[3]['assignment_pairs_term_10']] != "":
+                self.mq_number_of_terms_used.append(self.assignment_pairs_definitions_terms_to_id_dict[test_data_list[table_index_dict[3]['assignment_pairs_term_10']]])
+
+            self.mq_number_of_terms_used_string = str(self.mq_number_of_terms_used)
+            self.mq_number_of_terms_used_string = self.mq_number_of_terms_used_string[1:-1]
+
+
+
+
+            #Antworten erstellen
+            # Antworten erstellen
+            XML_Interface.mq_question_answer_structure_definitions(self, test_data_list[table_index_dict[3]['definitions_response_1_text']], test_data_list[table_index_dict[3]['definitions_response_1_img_path']], render_choice, "0", self.mq_number_of_terms_used_string)
+            XML_Interface.mq_question_answer_structure_definitions(self, test_data_list[table_index_dict[3]['definitions_response_2_text']], test_data_list[table_index_dict[3]['definitions_response_2_img_path']], render_choice, "1", self.mq_number_of_terms_used_string)
+            XML_Interface.mq_question_answer_structure_definitions(self, test_data_list[table_index_dict[3]['definitions_response_3_text']], test_data_list[table_index_dict[3]['definitions_response_3_img_path']], render_choice, "2", self.mq_number_of_terms_used_string)
+            XML_Interface.mq_question_answer_structure_definitions(self, test_data_list[table_index_dict[3]['definitions_response_4_text']], test_data_list[table_index_dict[3]['definitions_response_4_img_path']], render_choice, "3", self.mq_number_of_terms_used_string)
+            XML_Interface.mq_question_answer_structure_definitions(self, test_data_list[table_index_dict[3]['definitions_response_5_text']], test_data_list[table_index_dict[3]['definitions_response_5_img_path']], render_choice, "4", self.mq_number_of_terms_used_string)
+            XML_Interface.mq_question_answer_structure_definitions(self, test_data_list[table_index_dict[3]['definitions_response_6_text']], test_data_list[table_index_dict[3]['definitions_response_6_img_path']], render_choice, "5", self.mq_number_of_terms_used_string)
+            XML_Interface.mq_question_answer_structure_definitions(self, test_data_list[table_index_dict[3]['definitions_response_7_text']], test_data_list[table_index_dict[3]['definitions_response_7_img_path']], render_choice, "6", self.mq_number_of_terms_used_string)
+            XML_Interface.mq_question_answer_structure_definitions(self, test_data_list[table_index_dict[3]['definitions_response_8_text']], test_data_list[table_index_dict[3]['definitions_response_8_img_path']], render_choice, "7", self.mq_number_of_terms_used_string)
+            XML_Interface.mq_question_answer_structure_definitions(self, test_data_list[table_index_dict[3]['definitions_response_9_text']], test_data_list[table_index_dict[3]['definitions_response_9_img_path']], render_choice, "8", self.mq_number_of_terms_used_string)
+            XML_Interface.mq_question_answer_structure_definitions(self, test_data_list[table_index_dict[3]['definitions_response_10_text']], test_data_list[table_index_dict[3]['definitions_response_10_img_path']], render_choice, "9", self.mq_number_of_terms_used_string)
+
+            XML_Interface.mq_question_answer_structure_terms(self, test_data_list[table_index_dict[3]['terms_response_1_text']], test_data_list[table_index_dict[3]['terms_response_1_img_path']], render_choice, "10")
+            XML_Interface.mq_question_answer_structure_terms(self, test_data_list[table_index_dict[3]['terms_response_2_text']], test_data_list[table_index_dict[3]['terms_response_2_img_path']], render_choice, "11")
+            XML_Interface.mq_question_answer_structure_terms(self, test_data_list[table_index_dict[3]['terms_response_3_text']], test_data_list[table_index_dict[3]['terms_response_3_img_path']], render_choice, "12")
+            XML_Interface.mq_question_answer_structure_terms(self, test_data_list[table_index_dict[3]['terms_response_4_text']], test_data_list[table_index_dict[3]['terms_response_4_img_path']], render_choice, "13")
+            XML_Interface.mq_question_answer_structure_terms(self, test_data_list[table_index_dict[3]['terms_response_5_text']], test_data_list[table_index_dict[3]['terms_response_5_img_path']], render_choice, "14")
+            XML_Interface.mq_question_answer_structure_terms(self, test_data_list[table_index_dict[3]['terms_response_6_text']], test_data_list[table_index_dict[3]['terms_response_6_img_path']], render_choice, "15")
+            XML_Interface.mq_question_answer_structure_terms(self, test_data_list[table_index_dict[3]['terms_response_7_text']], test_data_list[table_index_dict[3]['terms_response_7_img_path']], render_choice, "16")
+            XML_Interface.mq_question_answer_structure_terms(self, test_data_list[table_index_dict[3]['terms_response_8_text']], test_data_list[table_index_dict[3]['terms_response_8_img_path']], render_choice, "17")
+            XML_Interface.mq_question_answer_structure_terms(self, test_data_list[table_index_dict[3]['terms_response_9_text']], test_data_list[table_index_dict[3]['terms_response_9_img_path']], render_choice, "18")
+            XML_Interface.mq_question_answer_structure_terms(self, test_data_list[table_index_dict[3]['terms_response_10_text']], test_data_list[table_index_dict[3]['terms_response_10_img_path']], render_choice, "19")
+
+            XML_Interface.mq_question_answer_structure_assignment_pairs(self, test_data_list[table_index_dict[3]['assignment_pairs_definition_1']], test_data_list[table_index_dict[3]['assignment_pairs_term_1']], test_data_list[table_index_dict[3]['assignment_pairs_1_pts']], resprocessing, item)
+            XML_Interface.mq_question_answer_structure_assignment_pairs(self, test_data_list[table_index_dict[3]['assignment_pairs_definition_2']], test_data_list[table_index_dict[3]['assignment_pairs_term_2']], test_data_list[table_index_dict[3]['assignment_pairs_2_pts']], resprocessing, item)
+            XML_Interface.mq_question_answer_structure_assignment_pairs(self, test_data_list[table_index_dict[3]['assignment_pairs_definition_3']], test_data_list[table_index_dict[3]['assignment_pairs_term_3']], test_data_list[table_index_dict[3]['assignment_pairs_3_pts']], resprocessing, item)
+            XML_Interface.mq_question_answer_structure_assignment_pairs(self, test_data_list[table_index_dict[3]['assignment_pairs_definition_4']], test_data_list[table_index_dict[3]['assignment_pairs_term_4']], test_data_list[table_index_dict[3]['assignment_pairs_4_pts']], resprocessing, item)
+            XML_Interface.mq_question_answer_structure_assignment_pairs(self, test_data_list[table_index_dict[3]['assignment_pairs_definition_5']], test_data_list[table_index_dict[3]['assignment_pairs_term_5']], test_data_list[table_index_dict[3]['assignment_pairs_5_pts']], resprocessing, item)
+            XML_Interface.mq_question_answer_structure_assignment_pairs(self, test_data_list[table_index_dict[3]['assignment_pairs_definition_6']], test_data_list[table_index_dict[3]['assignment_pairs_term_6']], test_data_list[table_index_dict[3]['assignment_pairs_6_pts']], resprocessing, item)
+            XML_Interface.mq_question_answer_structure_assignment_pairs(self, test_data_list[table_index_dict[3]['assignment_pairs_definition_7']], test_data_list[table_index_dict[3]['assignment_pairs_term_7']], test_data_list[table_index_dict[3]['assignment_pairs_7_pts']], resprocessing, item)
+            XML_Interface.mq_question_answer_structure_assignment_pairs(self, test_data_list[table_index_dict[3]['assignment_pairs_definition_8']], test_data_list[table_index_dict[3]['assignment_pairs_term_8']], test_data_list[table_index_dict[3]['assignment_pairs_8_pts']], resprocessing, item)
+            XML_Interface.mq_question_answer_structure_assignment_pairs(self, test_data_list[table_index_dict[3]['assignment_pairs_definition_9']], test_data_list[table_index_dict[3]['assignment_pairs_term_9']], test_data_list[table_index_dict[3]['assignment_pairs_9_pts']], resprocessing, item)
+            XML_Interface.mq_question_answer_structure_assignment_pairs(self, test_data_list[table_index_dict[3]['assignment_pairs_definition_10']], test_data_list[table_index_dict[3]['assignment_pairs_term_10']], test_data_list[table_index_dict[3]['assignment_pairs_10_pts']], resprocessing, item)
+            
+
+
+            # Wenn es sich um einen ILIAS-Test handelt, beinhaltet die XML eine Struktur mit mehreren "Zweigen"
+            # Der letzte "Zweig" --> "len(self.mq_myroot[0]) - 1" (beschreibt das letze Fach) beinhaltet die eigentlichen Fragen
+            if self.create_ilias_test_or_pool == "ilias_test":
+                self.ff_myroot[0][len(self.ff_myroot[0]) - 1].append(item)
+
+            # Wenn es sich um einen ILIAS-Pool handelt, beinhaltet die XML keine Struktur
+            # Die Frage kann einfach angehangen werden
+            else:
+                self.ff_myroot.append(item)
+
+
+            print(str(id_nr) + ".) Zuordnungsfrage Frage erstellt! ---> Titel: " + test_data_list[table_index_dict[3]['question_title']])
+
+
+
+            if self.create_ilias_test_or_pool == "ilias_pool":
+                ######  Anpassung der Datei "qpl". Akualisierung des Dateinamens
+                self.qpl_file_path = qpl_file_path
+
+                self.mytree = ET.parse(self.qpl_file_path)
+                self.myroot = self.mytree.getroot()
+
+                for ident_id in self.myroot.iter('Identifier'):
+                    ident_id.set('Entry', "il_0_qpl_" + str(self.max_id + str(1)))
+                self.mytree.write(self.qpl_file_path)
+
+    ####################### QUESTION_ANSWER STRUCTURE #############################
+        def mq_question_answer_structure_definitions(self, mq_definitions_response_var_text, mq_definitions_response_var_img_path,  xml_render_choice, mq_definition_id, mq_number_of_terms_used):
+
+            self.mq_number_of_terms_used = mq_number_of_terms_used
+
+            ### Bild-Daten in base64 speichern. Die XML Datei enthält die Bilder der Antworten in base64 encoded
+            # "encoded64_string_raw enthält die Daten als String in der Form b'String'
+            # Um die Daten in der richtigen Form zu erhalten (nur den String ohne b''), wird die Funktion .decode('utf-8') verwendet
+            # Dieser String kann in der .xml Datei verwendet werden um im Ilias ein Bild zu erzeugen
+            if mq_definitions_response_var_img_path != "":
+                with open(mq_definitions_response_var_img_path, "rb") as image_file:
+                    self.encoded64_string_raw = base64.b64encode(image_file.read())
+                    self.mq_definitions_response_var_img_string_base64_encoded = self.encoded64_string_raw.decode('utf-8')
+
+
+
+            # Antworten für Definitionen
+            if mq_definitions_response_var_text != "":
+                response_label = ET.SubElement(xml_render_choice, 'response_label')
+                question_answer_material = ET.SubElement(response_label, 'material')
+                question_answer_mattext = ET.SubElement(question_answer_material, 'mattext')
+
+                response_label.set('ident', str(mq_definition_id))
+                response_label.set('match_max', "1")
+                response_label.set('match_group', str(self.mq_number_of_terms_used))
+
+
+                question_answer_mattext.set('texttype', "text/plain")
+                question_answer_mattext.text = mq_definitions_response_var_text
+                if self.mq_definitions_response_var_img_string_base64_encoded != "":
+                    question_answer_matimage = ET.SubElement(question_answer_material, 'matimage')
+
+                    if str(mq_definitions_response_var_img_path.rpartition('.')[-1]) == "jpg" or str(mq_definitions_response_var_img_path.rpartition('.')[-1]) == "jpeg":
+                        question_answer_matimage.set('imagtype', "image/jpeg")
+                    elif str(mq_definitions_response_var_img_path.rpartition('.')[-1]) == "png":
+                        question_answer_matimage.set('imagtype', "image/png")
+                    elif str(mq_definitions_response_var_img_path.rpartition('.')[-1]) == "gif":
+                        question_answer_matimage.set('imagtype', "image/gif")
+                    else:
+                        print("Bildformat ist nicht jpg/jpeg/png/gif und wird von ILIAS nicht unterstützt!")
+
+                    question_answer_matimage.set('label', mq_definitions_response_var_img_path.rpartition('/')[-1])
+                    question_answer_matimage.set('embedded', "base64")
+                    question_answer_matimage.text = str(self.mq_definitions_response_var_img_string_base64_encoded)
+
+        def mq_question_answer_structure_terms(self, mq_terms_response_var_text, mq_terms_response_var_img_path, xml_render_choice, mq_response_counter):
+
+            ### Bild-Daten in base64 speichern. Die XML Datei enthält die Bilder der Antworten in base64 encoded
+            # "encoded64_string_raw enthält die Daten als String in der Form b'String'
+            # Um die Daten in der richtigen Form zu erhalten (nur den String ohne b''), wird die Funktion .decode('utf-8') verwendet
+            # Dieser String kann in der .xml Datei verwendet werden um im Ilias ein Bild zu erzeugen
+            if mq_terms_response_var_img_path != "":
+                with open(mq_terms_response_var_img_path, "rb") as image_file:
+                    self.encoded64_string_raw = base64.b64encode(image_file.read())
+                    self.mq_terms_response_var_img_string_base64_encoded = self.encoded64_string_raw.decode('utf-8')
+
+
+            #Antworten für Terme
+            if mq_terms_response_var_text != "":
+
+
+                response_label = ET.SubElement(xml_render_choice, 'response_label')
+                question_answer_material = ET.SubElement(response_label, 'material')
+                question_answer_mattext = ET.SubElement(question_answer_material, 'mattext')
+
+                response_label.set('ident', str(mq_response_counter))
+
+                question_answer_mattext.set('texttype', "text/plain")
+                question_answer_mattext.text = mq_terms_response_var_text
+                if self.mq_terms_response_var_img_string_base64_encoded != "":
+                    question_answer_matimage = ET.SubElement(question_answer_material, 'matimage')
+
+                    if str(mq_terms_response_var_img_path.rpartition('.')[-1]) == "jpg" or str(mq_terms_response_var_img_path.rpartition('.')[-1]) == "jpeg":
+                        question_answer_matimage.set('imagtype', "image/jpeg")
+                    elif str(mq_terms_response_var_img_path.rpartition('.')[-1]) == "png":
+                        question_answer_matimage.set('imagtype', "image/png")
+                    elif str(mq_terms_response_var_img_path.rpartition('.')[-1]) == "gif":
+                        question_answer_matimage.set('imagtype', "image/gif")
+                    else:
+                        print("Bildformat ist nicht jpg/jpeg/png/gif und wird von ILIAS nicht unterstützt!")
+
+                    question_answer_matimage.set('label', mq_terms_response_var_img_path.rpartition('/')[-1])
+                    question_answer_matimage.set('embedded', "base64")
+                    question_answer_matimage.text = str(self.mq_terms_response_var_img_string_base64_encoded)
+
+        def mq_question_answer_structure_assignment_pairs(self, mq_assignment_pairs_definition_var, mq_assignment_pairs_term_var, mq_assignment_pairs_var_pts, xml_resprocessing, xml_item):
+
+            if mq_assignment_pairs_term_var != "" and mq_assignment_pairs_definition_var != "":
+                #Zuordnugspaare definieren
+                respcondition = ET.SubElement(xml_resprocessing, 'respcondition')
+                respcondition.set('continue', "Yes")
+                outcomes = ET.SubElement(xml_resprocessing, 'outcomes')
+                decvar = ET.SubElement(outcomes, 'decvar')
+                conditionvar = ET.SubElement(respcondition, 'conditionvar')
+                varsubset = ET.SubElement(conditionvar, 'varsubset')
+                varsubset.set('respident', "MQ")  # MQ --> Matching Question Ident
+                varsubset.text = str(self.assignment_pairs_definitions_terms_to_id_dict[mq_assignment_pairs_term_var]) + "," + str(self.assignment_pairs_definitions_terms_to_id_dict[mq_assignment_pairs_definition_var])  # ID der Antwort inkrementiert für jede Antwort
+
+                setvar = ET.SubElement(respcondition, 'setvar')
+                setvar.set('action', "Add")
+                setvar.text = str(mq_assignment_pairs_var_pts)  # Punktevergabe für die Antwort
+                displayfeedback = ET.SubElement(respcondition, 'displayfeedback')
+                displayfeedback.set('feedbacktype', "Response")
+                displayfeedback.set('linkrefid', "correct_" + str(self.assignment_pairs_definitions_terms_to_id_dict[mq_assignment_pairs_term_var]) + "_")
+
+                # --------------------------------------------------------ZUSATZ FÜR ANTWORT
+
+                itemfeedback = ET.SubElement(xml_item, 'itemfeedback')
+                itemfeedback_flow_mat = ET.SubElement(itemfeedback, 'flow_mat')
+                itemfeedback_material = ET.SubElement(itemfeedback_flow_mat, 'material')
+                itemfeedback_mattext = ET.SubElement(itemfeedback_material, 'mattext')
+
+                itemfeedback.set('ident', "correct_" + str(self.assignment_pairs_definitions_terms_to_id_dict[mq_assignment_pairs_term_var]) + "_" + str(self.assignment_pairs_definitions_terms_to_id_dict[mq_assignment_pairs_definition_var]))
+                itemfeedback.set('view', "All")
+
+
+
+
+        
         ###### EXCEL IMPORT FUNKTION ###############
         def excel_import_to_db(self):
 
@@ -1549,7 +1957,9 @@ class XML_Interface():
 
             self.number_of_entrys.append(format(self.id_int_numbers, '06d'))  # Zahlenfolge muss 6-stellig sein.
 
-            item.set('ident', "il_0_qst_" + self.number_of_entrys[id_nr])
+            print("----- IDNR", id_nr, " ---- ")
+
+            item.set('ident', "il_0_qst_" + str(self.id_int_numbers))
 
             # Hier wird die QPL bearbeitet - Taxonomie
             self.mytree = ET.parse(self.question_type_pool_qpl_file_path_template)
