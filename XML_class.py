@@ -68,7 +68,7 @@ class XML_Interface():
 
 
 
-                ##### Pfade für Formelfrage
+                ##### Pfade für Formelfrage #############################
                 # Pfad für ILIAS-Test Vorlage
                 self.formelfrage_test_qti_file_path_template = os.path.normpath(os.path.join(self.formelfrage_files_path, "ff_test_qti_und_tst_dateien_vorlage", "ilias_test_vorlage__qti__.xml"))
                 self.formelfrage_test_tst_file_path_template = os.path.normpath(os.path.join(self.formelfrage_files_path, "ff_test_qti_und_tst_dateien_vorlage", "ilias_test_vorlage__tst__.xml"))
@@ -84,7 +84,7 @@ class XML_Interface():
                 self.formelfrage_pool_qpl_file_path_template = os.path.normpath(os.path.join(self.formelfrage_files_path, "ff_pool_qti_und_qpl_dateien_vorlage", "ilias_pool_vorlage__qpl__.xml"))
 
 
-                ##### Pfade für singlechoice
+                ##### Pfade für singlechoice #############################
 
                 # Pfad für ILIAS-Test Vorlage
                 self.singlechoice_test_qti_file_path_template = os.path.normpath(os.path.join(self.singlechoice_files_path, "sc_test_qti_und_tst_dateien_vorlage", "ilias_test_vorlage__qti__.xml"))
@@ -100,9 +100,25 @@ class XML_Interface():
                 self.singlechoice_pool_qti_file_path_template = os.path.normpath(os.path.join(self.singlechoice_files_path, "sc_pool_qti_und_qpl_dateien_vorlage", "ilias_pool_vorlage__qti__.xml"))
                 self.singlechoice_pool_qpl_file_path_template = os.path.normpath(os.path.join(self.singlechoice_files_path, "sc_pool_qti_und_qpl_dateien_vorlage", "ilias_pool_vorlage__qpl__.xml"))
                 
-                
-                 ##### Pfade für singlechoice
+                ##### Pfade für multiplechoice #############################
 
+                # Pfad für ILIAS-Test Vorlage
+                self.multiplechoice_test_qti_file_path_template = os.path.normpath(os.path.join(self.multiplechoice_files_path, "mc_test_qti_und_tst_dateien_vorlage", "ilias_test_vorlage__qti__.xml"))
+                self.multiplechoice_test_tst_file_path_template = os.path.normpath(os.path.join(self.multiplechoice_files_path, "mc_test_qti_und_tst_dateien_vorlage", "ilias_test_vorlage__tst__.xml"))
+
+                # Pfad für ILIAS-Test Dateien (zum hochladen in ILIAS)
+                self.multiplechoice_test_qti_file_path_output = os.path.normpath(os.path.join(self.multiplechoice_files_path, "mc_ilias_test_abgabe", "1604407426__0__tst_2040314", "1604407426__0__qti_2040314.xml"))
+                self.multiplechoice_test_tst_file_path_output = os.path.normpath(os.path.join(self.multiplechoice_files_path, "mc_ilias_test_abgabe", "1604407426__0__tst_2040314", "1604407426__0__tst_2040314.xml"))
+                self.multiplechoice_test_img_file_path = os.path.normpath(os.path.join(self.multiplechoice_files_path, "mc_ilias_test_abgabe", "1604407426__0__tst_2040314", "objects"))
+
+
+                # Pfad für ILIAS-Pool Vorlage
+                self.multiplechoice_pool_qti_file_path_template = os.path.normpath(os.path.join(self.multiplechoice_files_path, "mc_pool_qti_und_qpl_dateien_vorlage", "ilias_pool_vorlage__qti__.xml"))
+                self.multiplechoice_pool_qpl_file_path_template = os.path.normpath(os.path.join(self.multiplechoice_files_path, "mc_pool_qti_und_qpl_dateien_vorlage", "ilias_pool_vorlage__qpl__.xml"))
+                
+                
+                
+                ##### Pfade für gemischte Fragentypen ####################
                 # Pfad für ILIAS-Test Vorlage
                 self.gemischte_fragentypen_test_qti_file_path_template = os.path.normpath(os.path.join(self.gemischte_fragentypen_files_path, "mixed_test_qti_und_tst_dateien_vorlage", "ilias_test_vorlage__qti__.xml"))
                 self.gemischte_fragentypen_test_tst_file_path_template = os.path.normpath(os.path.join(self.gemischte_fragentypen_files_path, "mixed_test_qti_und_tst_dateien_vorlage", "ilias_test_vorlage__tst__.xml"))
@@ -182,7 +198,8 @@ class XML_Interface():
             else:
                 self.mixed_questions_flag = 1
                 self.max_id = XML_Interface.find_max_id_in_dir(self, self.gemischte_fragentypen_files_path_pool_output, "gemischte_fragentypen")
-            print("=============")
+            
+
             print(self.max_id)
 
 
@@ -197,7 +214,12 @@ class XML_Interface():
             self.singlechoice_pool_qti_file_path_output = os.path.normpath(os.path.join(self.singlechoice_files_path, "sc_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), self.ilias_id_pool_qti_xml))
             self.singlechoice_pool_qpl_file_path_output = os.path.normpath(os.path.join(self.singlechoice_files_path, "sc_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), self.ilias_id_pool_qpl_xml))
             self.singlechoice_pool_img_file_path        = os.path.normpath(os.path.join(self.singlechoice_files_path, "sc_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), "objects"))
+            
+            self.multiplechoice_pool_qti_file_path_output = os.path.normpath(os.path.join(self.multiplechoice_files_path, "sc_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), self.ilias_id_pool_qti_xml))
+            self.multiplechoice_pool_qpl_file_path_output = os.path.normpath(os.path.join(self.multiplechoice_files_path, "sc_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), self.ilias_id_pool_qpl_xml))
+            self.multiplechoice_pool_img_file_path        = os.path.normpath(os.path.join(self.multiplechoice_files_path, "sc_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), "objects"))
 
+            
             self.gemischte_fragentypen_pool_qti_file_path_output = os.path.normpath(os.path.join(self.gemischte_fragentypen_files_path, "mixed_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), self.ilias_id_pool_qti_xml))
             self.gemischte_fragentypen_pool_qpl_file_path_output = os.path.normpath(os.path.join(self.gemischte_fragentypen_files_path, "mixed_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), self.ilias_id_pool_qpl_xml))
             self.gemischte_fragentypen_pool_img_file_path        = os.path.normpath(os.path.join(self.gemischte_fragentypen_files_path, "mixed_ilias_pool_abgabe", "1596569820__0__qpl_" + str(self.max_id), "objects"))
@@ -213,6 +235,10 @@ class XML_Interface():
                 elif self.all_sc_questions_flag == 1:
                     self.qti_file_path_output = self.singlechoice_test_qti_file_path_output
                     self.ff_mytree = ET.parse(self.singlechoice_test_qti_file_path_template)
+                    
+                elif self.all_mc_questions_flag == 1:
+                    self.qti_file_path_output = self.multiplechoice_test_qti_file_path_output
+                    self.ff_mytree = ET.parse(self.multiplechoice_test_qti_file_path_template)
 
                 else:
                     self.qti_file_path_output = self.gemischte_fragentypen_test_qti_file_path_output
@@ -237,6 +263,16 @@ class XML_Interface():
                     self.pool_qpl_file_path_template = self.singlechoice_pool_qpl_file_path_template
                     self.pool_qpl_file_path_output = self.singlechoice_pool_qpl_file_path_output
                     self.qpl_file_path = self.singlechoice_pool_qpl_file_path_output
+                    
+                elif self.all_mc_questions_flag == 1:
+                    print("MC_FRAGE ERKANNT")
+                    self.qti_file_path_output = self.multiplechoice_pool_qti_file_path_output
+                    XML_Interface.create_pool_dir_from_template(self, self.multiplechoice_files_path_pool_output)
+                    self.ff_mytree = ET.parse(self.multiplechoice_pool_qti_file_path_template)
+
+                    self.pool_qpl_file_path_template = self.multiplechoice_pool_qpl_file_path_template
+                    self.pool_qpl_file_path_output = self.multiplechoice_pool_qpl_file_path_output
+                    self.qpl_file_path = self.multiplechoice_pool_qpl_file_path_output
 
                 else:
                     self.qti_file_path_output = self.gemischte_fragentypen_pool_qti_file_path_output
@@ -869,14 +905,15 @@ class XML_Interface():
 
 
 
-            XML_Interface.add_dir_for_images(self,self.mc_description_img_name_1,self.mc_description_img_data_1,id_nr,self.mc_question_type_test_or_pool,self.multiplechoice_test_img_file_path,self.multiplechoice_pool_img_file_path)
-            XML_Interface.add_dir_for_images(self,self.mc_description_img_name_2,self.mc_description_img_data_2,id_nr,self.mc_question_type_test_or_pool,self.multiplechoice_test_img_file_path,self.multiplechoice_pool_img_file_path)
-            XML_Interface.add_dir_for_images(self,self.mc_description_img_name_3,self.mc_description_img_data_3,id_nr,self.mc_question_type_test_or_pool,self.multiplechoice_test_img_file_path,self.multiplechoice_pool_img_file_path)
+             # Bilder für die Beschreibung speichern
+            XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[2]['description_img_name_1']], test_data_list[table_index_dict[2]['description_img_data_1']], id_nr, self.create_ilias_test_or_pool, self.multiplechoice_test_img_file_path, self.multiplechoice_pool_img_file_path)
+            XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[2]['description_img_name_2']], test_data_list[table_index_dict[2]['description_img_data_2']], id_nr, self.create_ilias_test_or_pool, self.multiplechoice_test_img_file_path, self.multiplechoice_pool_img_file_path)
+            XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[2]['description_img_name_3']], test_data_list[table_index_dict[2]['description_img_data_3']], id_nr, self.create_ilias_test_or_pool, self.multiplechoice_test_img_file_path, self.multiplechoice_pool_img_file_path)
 
 
 
             # Aufbau für  Fragenstruktur "TEST"
-            if self.mc_question_type_test_or_pool == "question_test":
+            if self.create_ilias_test_or_pool == "ilias_test":
                 # XML Struktur aus XML Datei festlegen. Muss nur einmal angelegt werden
                 questestinterop = ET.Element('questestinterop')
                 assessment = ET.SubElement(questestinterop, 'assessment')
@@ -895,8 +932,8 @@ class XML_Interface():
                                                        id_nr,
                                                        self.number_of_entrys,
                                                        item,
-                                                       self.multiplechoice_pool_qpl_file_path_template,
-                                                       self.multiplechoice_pool_qpl_file_path_output)
+                                                        self.pool_qpl_file_path_template,
+                                                        self.pool_qpl_file_path_output)
 
             # Struktur für den MultipleChoice - Fragen/Antworten Teil  -- HEADER
             # Muss für jede Frage neu angelegt/hinzugefügt werden
