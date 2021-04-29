@@ -158,9 +158,6 @@ class XML_Interface():
 
 
 
-
-
-
         def create_test_or_pool(self, ilias_test_or_pool):
             # Daten aus DB abgreifen
             self.test_data = self.DBI.get_dbtemp_data()
@@ -1688,6 +1685,84 @@ class XML_Interface():
             print("     Datei geladen!")
 
 
+        ###### TAXONOMIE FUNKTIONEN ###############
+        # Taxonomie aus DB schreiben
+        def set_taxonomy_for_question(self, id_nr, number_of_entrys, item, question_type_pool_qpl_file_path_template, question_type_pool_qpl_file_path_output):
+            # Zusatz für Taxonomie-Einstellungen
+            self.number_of_entrys = number_of_entrys
+            self.question_type_pool_qpl_file_path_template = question_type_pool_qpl_file_path_template
+            self.question_type_pool_qpl_file_path_output = question_type_pool_qpl_file_path_output
+
+            self.id_int_numbers = 400000 + id_nr
+
+            self.number_of_entrys.append(format(self.id_int_numbers, '06d'))  # Zahlenfolge muss 6-stellig sein.
+
+            print("----- IDNR", id_nr, " ---- ")
+
+            item.set('ident', "il_0_qst_" + str(self.id_int_numbers))
+
+            # Hier wird die QPL bearbeitet - Taxonomie
+            self.mytree = ET.parse(self.question_type_pool_qpl_file_path_template)
+            self.myroot = self.mytree.getroot()
+
+            print("....................")
+            print(id_nr)
+            # Hinzufügen von Question QRef in qpl Datei
+            for i in range(id_nr):
+                ContentObject = ET.Element('ContentObject')
+                MetaData = ET.SubElement(ContentObject, 'MetaData')
+                Settings = ET.SubElement(ContentObject, 'Settings')
+                PageObject = ET.SubElement(ContentObject, 'PageObject')
+                PageContent = ET.SubElement(PageObject, 'PageContent')
+                Question = ET.SubElement(PageContent, 'Question')
+                Question.set('QRef', "il_0_qst_" + self.number_of_entrys[i])
+                print("------->","il_0_qst_" + self.number_of_entrys[i] )
+                QuestionSkillAssignments = ET.SubElement(ContentObject, 'QuestionSkillAssignments')
+                TriggerQuestion = ET.SubElement(QuestionSkillAssignments, 'TriggerQuestion')
+                TriggerQuestion.set('Id', self.number_of_entrys[i])
+
+                self.myroot.append(PageObject)
+                # self.myroot.append(QuestionSkillAssignments)
+
+                self.mytree.write(self.question_type_pool_qpl_file_path_output)
+
+            # Hinzufügen von TriggerQuestion ID in qpl Datei
+            for i in range(id_nr):
+                ContentObject = ET.Element('ContentObject')
+                MetaData = ET.SubElement(ContentObject, 'MetaData')
+                Settings = ET.SubElement(ContentObject, 'Settings')
+                PageObject = ET.SubElement(ContentObject, 'PageObject')
+                PageContent = ET.SubElement(PageObject, 'PageContent')
+                Question = ET.SubElement(PageContent, 'Question')
+                Question.set('QRef', "il_0_qst_" + self.number_of_entrys[i])
+                QuestionSkillAssignments = ET.SubElement(ContentObject, 'QuestionSkillAssignments')
+                TriggerQuestion = ET.SubElement(QuestionSkillAssignments, 'TriggerQuestion')
+                TriggerQuestion.set('Id', self.number_of_entrys[i])
+
+                self.myroot.append(QuestionSkillAssignments)
+                self.mytree.write(self.question_type_pool_qpl_file_path_output)
+
+        def taxonomy_file_refresh(self, file_location):
+            self.file_location = file_location
+            # print("refresh_file_location: " + str(self.file_location))
+            with open(self.file_location, 'r') as xml_file:
+                xml_str = xml_file.read()
+            xml_str = xml_str.replace('ns0:', 'exp:')
+            xml_str = xml_str.replace('ns2:', 'ds:')
+            xml_str = xml_str.replace('ns3:', '')  # replace "x" with "new value for x"
+            xml_str = xml_str.replace(
+                '<exp:Export xmlns:ns0="http://www.ilias.de/Services/Export/exp/4_1" xmlns:ns2="http://www.ilias.de/Services/DataSet/ds/4_3" xmlns:ns3="http://www.ilias.de/Services/Taxonomy/tax/4_3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" InstallationId="0" InstallationUrl="https://ilias.th-koeln.de" Entity="tax" SchemaVersion="4.3.0" TargetRelease="5.4.0" xsi:schemaLocation="http://www.ilias.de/Services/Export/exp/4_1 https://ilias.th-koeln.de/xml/ilias_export_4_1.xsd http://www.ilias.de/Services/Taxonomy/tax/4_3 https://ilias.th-koeln.de/xml/ilias_tax_4_3.xsd http://www.ilias.de/Services/DataSet/ds/4_3 https://ilias.th-koeln.de/xml/ilias_ds_4_3.xsd">',
+                '<exp:Export InstallationId="0" InstallationUrl="https://ilias.th-koeln.de" Entity="tax" SchemaVersion="4.3.0" TargetRelease="5.4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:exp="http://www.ilias.de/Services/Export/exp/4_1" xsi:schemaLocation="http://www.ilias.de/Services/Export/exp/4_1 https://ilias.th-koeln.de/xml/ilias_export_4_1.xsd http://www.ilias.de/Services/Taxonomy/tax/4_3 https://ilias.th-koeln.de/xml/ilias_tax_4_3.xsd http://www.ilias.de/Services/DataSet/ds/4_3 https://ilias.th-koeln.de/xml/ilias_ds_4_3.xsd" xmlns="http://www.ilias.de/Services/Taxonomy/tax/4_3" xmlns:ds="http://www.ilias.de/Services/DataSet/ds/4_3">')
+            xml_str = xml_str.replace(
+                '<exp:Export xmlns:ns0="http://www.ilias.de/Services/Export/exp/4_1" xmlns:ns2="http://www.ilias.de/Services/DataSet/ds/4_3" xmlns:ns3="http://www.ilias.de/Services/Taxonomy/tax/4_3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Entity="tax" InstallationId="0" InstallationUrl="https://ilias.th-koeln.de" SchemaVersion="4.3.0" TargetRelease="5.4.0" xsi:schemaLocation="http://www.ilias.de/Services/Export/exp/4_1 https://ilias.th-koeln.de/xml/ilias_export_4_1.xsd http://www.ilias.de/Services/Taxonomy/tax/4_3 https://ilias.th-koeln.de/xml/ilias_tax_4_3.xsd http://www.ilias.de/Services/DataSet/ds/4_3 https://ilias.th-koeln.de/xml/ilias_ds_4_3.xsd">',
+                '<exp:Export InstallationId="0" InstallationUrl="https://ilias.th-koeln.de" Entity="tax" SchemaVersion="4.3.0" TargetRelease="5.4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:exp="http://www.ilias.de/Services/Export/exp/4_1" xsi:schemaLocation="http://www.ilias.de/Services/Export/exp/4_1 https://ilias.th-koeln.de/xml/ilias_export_4_1.xsd http://www.ilias.de/Services/Taxonomy/tax/4_3 https://ilias.th-koeln.de/xml/ilias_tax_4_3.xsd http://www.ilias.de/Services/DataSet/ds/4_3 https://ilias.th-koeln.de/xml/ilias_ds_4_3.xsd" xmlns="http://www.ilias.de/Services/Taxonomy/tax/4_3" xmlns:ds="http://www.ilias.de/Services/DataSet/ds/4_3">')
+
+            with open(self.file_location, 'w') as replaced_xml_file:
+                replaced_xml_file.write(xml_str)
+
+
+        
+
 
 
 
@@ -1943,79 +2018,7 @@ class XML_Interface():
             return question_description_mattext
 
 
-        # Taxonomie
-        def set_taxonomy_for_question(self, id_nr, number_of_entrys, item, question_type_pool_qpl_file_path_template, question_type_pool_qpl_file_path_output):
-            # Zusatz für Taxonomie-Einstellungen
-            self.number_of_entrys = number_of_entrys
-            self.question_type_pool_qpl_file_path_template = question_type_pool_qpl_file_path_template
-            self.question_type_pool_qpl_file_path_output = question_type_pool_qpl_file_path_output
 
-            self.id_int_numbers = 400000 + id_nr
-
-            self.number_of_entrys.append(format(self.id_int_numbers, '06d'))  # Zahlenfolge muss 6-stellig sein.
-
-            print("----- IDNR", id_nr, " ---- ")
-
-            item.set('ident', "il_0_qst_" + str(self.id_int_numbers))
-
-            # Hier wird die QPL bearbeitet - Taxonomie
-            self.mytree = ET.parse(self.question_type_pool_qpl_file_path_template)
-            self.myroot = self.mytree.getroot()
-
-            print("....................")
-            print(id_nr)
-            # Hinzufügen von Question QRef in qpl Datei
-            for i in range(id_nr):
-                ContentObject = ET.Element('ContentObject')
-                MetaData = ET.SubElement(ContentObject, 'MetaData')
-                Settings = ET.SubElement(ContentObject, 'Settings')
-                PageObject = ET.SubElement(ContentObject, 'PageObject')
-                PageContent = ET.SubElement(PageObject, 'PageContent')
-                Question = ET.SubElement(PageContent, 'Question')
-                Question.set('QRef', "il_0_qst_" + self.number_of_entrys[i])
-                print("------->","il_0_qst_" + self.number_of_entrys[i] )
-                QuestionSkillAssignments = ET.SubElement(ContentObject, 'QuestionSkillAssignments')
-                TriggerQuestion = ET.SubElement(QuestionSkillAssignments, 'TriggerQuestion')
-                TriggerQuestion.set('Id', self.number_of_entrys[i])
-
-                self.myroot.append(PageObject)
-                # self.myroot.append(QuestionSkillAssignments)
-
-                self.mytree.write(self.question_type_pool_qpl_file_path_output)
-
-            # Hinzufügen von TriggerQuestion ID in qpl Datei
-            for i in range(id_nr):
-                ContentObject = ET.Element('ContentObject')
-                MetaData = ET.SubElement(ContentObject, 'MetaData')
-                Settings = ET.SubElement(ContentObject, 'Settings')
-                PageObject = ET.SubElement(ContentObject, 'PageObject')
-                PageContent = ET.SubElement(PageObject, 'PageContent')
-                Question = ET.SubElement(PageContent, 'Question')
-                Question.set('QRef', "il_0_qst_" + self.number_of_entrys[i])
-                QuestionSkillAssignments = ET.SubElement(ContentObject, 'QuestionSkillAssignments')
-                TriggerQuestion = ET.SubElement(QuestionSkillAssignments, 'TriggerQuestion')
-                TriggerQuestion.set('Id', self.number_of_entrys[i])
-
-                self.myroot.append(QuestionSkillAssignments)
-                self.mytree.write(self.question_type_pool_qpl_file_path_output)
-
-        def taxonomy_file_refresh(self, file_location):
-            self.file_location = file_location
-            # print("refresh_file_location: " + str(self.file_location))
-            with open(self.file_location, 'r') as xml_file:
-                xml_str = xml_file.read()
-            xml_str = xml_str.replace('ns0:', 'exp:')
-            xml_str = xml_str.replace('ns2:', 'ds:')
-            xml_str = xml_str.replace('ns3:', '')  # replace "x" with "new value for x"
-            xml_str = xml_str.replace(
-                '<exp:Export xmlns:ns0="http://www.ilias.de/Services/Export/exp/4_1" xmlns:ns2="http://www.ilias.de/Services/DataSet/ds/4_3" xmlns:ns3="http://www.ilias.de/Services/Taxonomy/tax/4_3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" InstallationId="0" InstallationUrl="https://ilias.th-koeln.de" Entity="tax" SchemaVersion="4.3.0" TargetRelease="5.4.0" xsi:schemaLocation="http://www.ilias.de/Services/Export/exp/4_1 https://ilias.th-koeln.de/xml/ilias_export_4_1.xsd http://www.ilias.de/Services/Taxonomy/tax/4_3 https://ilias.th-koeln.de/xml/ilias_tax_4_3.xsd http://www.ilias.de/Services/DataSet/ds/4_3 https://ilias.th-koeln.de/xml/ilias_ds_4_3.xsd">',
-                '<exp:Export InstallationId="0" InstallationUrl="https://ilias.th-koeln.de" Entity="tax" SchemaVersion="4.3.0" TargetRelease="5.4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:exp="http://www.ilias.de/Services/Export/exp/4_1" xsi:schemaLocation="http://www.ilias.de/Services/Export/exp/4_1 https://ilias.th-koeln.de/xml/ilias_export_4_1.xsd http://www.ilias.de/Services/Taxonomy/tax/4_3 https://ilias.th-koeln.de/xml/ilias_tax_4_3.xsd http://www.ilias.de/Services/DataSet/ds/4_3 https://ilias.th-koeln.de/xml/ilias_ds_4_3.xsd" xmlns="http://www.ilias.de/Services/Taxonomy/tax/4_3" xmlns:ds="http://www.ilias.de/Services/DataSet/ds/4_3">')
-            xml_str = xml_str.replace(
-                '<exp:Export xmlns:ns0="http://www.ilias.de/Services/Export/exp/4_1" xmlns:ns2="http://www.ilias.de/Services/DataSet/ds/4_3" xmlns:ns3="http://www.ilias.de/Services/Taxonomy/tax/4_3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Entity="tax" InstallationId="0" InstallationUrl="https://ilias.th-koeln.de" SchemaVersion="4.3.0" TargetRelease="5.4.0" xsi:schemaLocation="http://www.ilias.de/Services/Export/exp/4_1 https://ilias.th-koeln.de/xml/ilias_export_4_1.xsd http://www.ilias.de/Services/Taxonomy/tax/4_3 https://ilias.th-koeln.de/xml/ilias_tax_4_3.xsd http://www.ilias.de/Services/DataSet/ds/4_3 https://ilias.th-koeln.de/xml/ilias_ds_4_3.xsd">',
-                '<exp:Export InstallationId="0" InstallationUrl="https://ilias.th-koeln.de" Entity="tax" SchemaVersion="4.3.0" TargetRelease="5.4.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:exp="http://www.ilias.de/Services/Export/exp/4_1" xsi:schemaLocation="http://www.ilias.de/Services/Export/exp/4_1 https://ilias.th-koeln.de/xml/ilias_export_4_1.xsd http://www.ilias.de/Services/Taxonomy/tax/4_3 https://ilias.th-koeln.de/xml/ilias_tax_4_3.xsd http://www.ilias.de/Services/DataSet/ds/4_3 https://ilias.th-koeln.de/xml/ilias_ds_4_3.xsd" xmlns="http://www.ilias.de/Services/Taxonomy/tax/4_3" xmlns:ds="http://www.ilias.de/Services/DataSet/ds/4_3">')
-
-            with open(self.file_location, 'w') as replaced_xml_file:
-                replaced_xml_file.write(xml_str)
 
         # Textformatierung
         def format_description_text_in_xml(self, description_main_entry):
