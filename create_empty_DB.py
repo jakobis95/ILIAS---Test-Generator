@@ -1,7 +1,7 @@
 import sqlite3
 from DB_creator_testbed import generate_db
 
-old_dbname = 'generaldb.db'
+old_dbname = 'generaldb2.db'
 db = generate_db(old_dbname)
 
 
