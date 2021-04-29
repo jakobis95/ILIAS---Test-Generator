@@ -190,11 +190,18 @@ class DB_Interface():
 
     def get_dbtemp_data(self):
 
-        self.query = "SELECT * FROM formelfrage"
-        self.cursorlist[2].execute(self.query)
-        test_data = self.cursorlist[2].fetchall()
+        print("___________________________")
+        self.test_data = []
+        self.question_types = ["formelfrage", "singlechoice", "multiplechoice", "zuordnungsfrage"]
 
-        return test_data
+        # Durch alle tables suchen und Ergebnisse in einer Liste zusammenfassen
+        # "extend" fügt eine Liste einer anderen zu
+        for i in range(len(self.question_types)):
+            self.query = "SELECT * FROM " + str(self.question_types[i])
+            self.cursorlist[1].execute(self.query)  # cursorlist[2] Fehler bei Fragen auslesen?
+            self.test_data.extend((self.cursorlist[1].fetchall()))
+            print("query ############ ", self.cursorlist[1].fetchall())
+        return self.test_data
 
 
 
