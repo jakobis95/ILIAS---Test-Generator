@@ -4,6 +4,7 @@ import tkinter.font as font
 from DB_Treeview import UI
 from DB_interface import DB_Interface
 from XML_class import XML_Interface
+from Taxonomie_interface import TAX_Interface
 from ScrolledText_Functionality import Textformatierung
 class Main(tk.Frame):
 
@@ -55,6 +56,8 @@ class Main(tk.Frame):
         #XML_Interface erstellen, diese Klasse muss die DBI kennen. Daher wird dieses übergeben
         xml_interface = XML_Interface(DBI, table_dict, table_index_list, table_index_dict)
 
+        tax_interface = TAX_Interface(bg_color, button_color, label_color, Button_Font, Label_Font)
+
         #Menue
         Menu_lbl = Label(Right_Menu_Frame, text="Menü", bg=label_color, fg=bg_color)
         Menu_lbl['font'] = Label_Font
@@ -71,6 +74,9 @@ class Main(tk.Frame):
         datenbank_og = Button(Right_Menu_Frame, text="Datenbank wählen", bg=button_color, fg=bg_color)
         datenbank_og['font'] = Button_Font
         datenbank_og.pack(side="top", fill=X)
+        taxonomy_settings = Button(Right_Menu_Frame, text="Taxonomie bearbeiten", bg=button_color, fg=bg_color, command=tax_interface.edit_tax_of_existing_ilias_pool_file)
+        taxonomy_settings['font'] = Button_Font
+        taxonomy_settings.pack(side="top", fill=X)
         test_lbl = Label(Right_Menu_Frame, text="Test Menü", bg=label_color, fg=bg_color)
         test_lbl['font'] = Label_Font
         test_lbl.pack(side="top", fill=X)
