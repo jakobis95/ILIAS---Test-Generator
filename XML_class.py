@@ -850,7 +850,6 @@ class XML_Interface():
 
             if self.create_ilias_test_or_pool == "ilias_pool":
                 ######  Anpassung der Datei "qpl". Akualisierung des Dateinamens
-                self.qpl_file_path = qpl_file_path
 
                 self.mytree = ET.parse(self.qpl_file_path)
                 self.myroot = self.mytree.getroot()
@@ -1106,7 +1105,6 @@ class XML_Interface():
 
             if self.create_ilias_test_or_pool == "ilias_pool":
                 ######  Anpassung der Datei "qpl". Akualisierung des Dateinamens
-                self.qpl_file_path = qpl_file_path
 
                 self.mytree = ET.parse(self.qpl_file_path)
                 self.myroot = self.mytree.getroot()
@@ -1266,8 +1264,8 @@ class XML_Interface():
             ### ------------------------------------------------------- XML Einträge mit Werten füllen
 
             # Fragen-Titel -- "item title" in xml
-            item_ident_nr = format(id_nr, "06")
-            item.set('ident', "il_0_qst_" + str(item_ident_nr))
+            #item_ident_nr = format(id_nr, "06")
+            #item.set('ident', "il_0_qst_" + str(item_ident_nr))
             item.set('title', test_data_list[table_index_dict[3]['question_title']])
             item.set('maxattempts', "0")
 
@@ -1439,7 +1437,6 @@ class XML_Interface():
 
             if self.create_ilias_test_or_pool == "ilias_pool":
                 ######  Anpassung der Datei "qpl". Akualisierung des Dateinamens
-                self.qpl_file_path = qpl_file_path
 
                 self.mytree = ET.parse(self.qpl_file_path)
                 self.myroot = self.mytree.getroot()
@@ -1965,8 +1962,8 @@ class XML_Interface():
             self.mytree = ET.parse(self.question_type_pool_qpl_file_path_template)
             self.myroot = self.mytree.getroot()
 
-
-
+            print("....................")
+            print(id_nr)
             # Hinzufügen von Question QRef in qpl Datei
             for i in range(id_nr):
                 ContentObject = ET.Element('ContentObject')
@@ -1976,6 +1973,7 @@ class XML_Interface():
                 PageContent = ET.SubElement(PageObject, 'PageContent')
                 Question = ET.SubElement(PageContent, 'Question')
                 Question.set('QRef', "il_0_qst_" + self.number_of_entrys[i])
+                print("------->","il_0_qst_" + self.number_of_entrys[i] )
                 QuestionSkillAssignments = ET.SubElement(ContentObject, 'QuestionSkillAssignments')
                 TriggerQuestion = ET.SubElement(QuestionSkillAssignments, 'TriggerQuestion')
                 TriggerQuestion.set('Id', self.number_of_entrys[i])
