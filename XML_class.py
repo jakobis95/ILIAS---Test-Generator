@@ -77,7 +77,7 @@ class XML_Interface():
                 # Pfad für ILIAS-Test Dateien (zum hochladen in ILIAS)
                 self.formelfrage_test_qti_file_path_output = os.path.normpath(os.path.join(self.formelfrage_files_path, "ff_ilias_test_abgabe", "1604407426__0__tst_2040314", "1604407426__0__qti_2040314.xml"))
                 self.formelfrage_test_tst_file_path_output = os.path.normpath(os.path.join(self.formelfrage_files_path, "ff_ilias_test_abgabe", "1604407426__0__tst_2040314", "1604407426__0__tst_2040314.xml"))
-                self.formelfrage_test_img_file_path = os.path.normpath(os.path.join(self.formelfrage_files_path, "ff_ilias_test_abgabe", "1604407426__0__tst_2040314", "objects"))
+                self.formelfrage_test_img_file_path_output = os.path.normpath(os.path.join(self.formelfrage_files_path, "ff_ilias_test_abgabe", "1604407426__0__tst_2040314", "objects"))
 
 
                 # Pfad für ILIAS-Pool Vorlage
@@ -94,7 +94,7 @@ class XML_Interface():
                 # Pfad für ILIAS-Test Dateien (zum hochladen in ILIAS)
                 self.singlechoice_test_qti_file_path_output = os.path.normpath(os.path.join(self.singlechoice_files_path, "sc_ilias_test_abgabe", "1604407426__0__tst_2040314", "1604407426__0__qti_2040314.xml"))
                 self.singlechoice_test_tst_file_path_output = os.path.normpath(os.path.join(self.singlechoice_files_path, "sc_ilias_test_abgabe", "1604407426__0__tst_2040314", "1604407426__0__tst_2040314.xml"))
-                self.singlechoice_test_img_file_path = os.path.normpath(os.path.join(self.singlechoice_files_path, "sc_ilias_test_abgabe", "1604407426__0__tst_2040314", "objects"))
+                self.singlechoice_test_img_file_path_output = os.path.normpath(os.path.join(self.singlechoice_files_path, "sc_ilias_test_abgabe", "1604407426__0__tst_2040314", "objects"))
 
 
                 # Pfad für ILIAS-Pool Vorlage
@@ -110,7 +110,7 @@ class XML_Interface():
                 # Pfad für ILIAS-Test Dateien (zum hochladen in ILIAS)
                 self.multiplechoice_test_qti_file_path_output = os.path.normpath(os.path.join(self.multiplechoice_files_path, "mc_ilias_test_abgabe", "1604407426__0__tst_2040314", "1604407426__0__qti_2040314.xml"))
                 self.multiplechoice_test_tst_file_path_output = os.path.normpath(os.path.join(self.multiplechoice_files_path, "mc_ilias_test_abgabe", "1604407426__0__tst_2040314", "1604407426__0__tst_2040314.xml"))
-                self.multiplechoice_test_img_file_path = os.path.normpath(os.path.join(self.multiplechoice_files_path, "mc_ilias_test_abgabe", "1604407426__0__tst_2040314", "objects"))
+                self.multiplechoice_test_img_file_path_output = os.path.normpath(os.path.join(self.multiplechoice_files_path, "mc_ilias_test_abgabe", "1604407426__0__tst_2040314", "objects"))
 
 
                 # Pfad für ILIAS-Pool Vorlage
@@ -127,7 +127,7 @@ class XML_Interface():
                 # Pfad für ILIAS-Test Dateien (zum hochladen in ILIAS)
                 self.zuordnungsfrage_test_qti_file_path_output = os.path.normpath(os.path.join(self.zuordnungsfrage_files_path, "mq_ilias_test_abgabe", "1604407426__0__tst_2040314", "1604407426__0__qti_2040314.xml"))
                 self.zuordnungsfrage_test_tst_file_path_output = os.path.normpath(os.path.join(self.zuordnungsfrage_files_path, "mq_ilias_test_abgabe", "1604407426__0__tst_2040314", "1604407426__0__tst_2040314.xml"))
-                self.zuordnungsfrage_test_img_file_path = os.path.normpath(os.path.join(self.zuordnungsfrage_files_path, "mq_ilias_test_abgabe", "1604407426__0__tst_2040314", "objects"))
+                self.zuordnungsfrage_test_img_file_path_output = os.path.normpath(os.path.join(self.zuordnungsfrage_files_path, "mq_ilias_test_abgabe", "1604407426__0__tst_2040314", "objects"))
 
 
                 # Pfad für ILIAS-Pool Vorlage
@@ -144,7 +144,7 @@ class XML_Interface():
                 # Pfad für ILIAS-Test Dateien (zum hochladen in ILIAS)
                 self.gemischte_fragentypen_test_qti_file_path_output = os.path.normpath(os.path.join(self.gemischte_fragentypen_files_path, "mixed_ilias_test_abgabe", "1604407426__0__tst_2040314", "1604407426__0__qti_2040314.xml"))
                 self.gemischte_fragentypen_test_tst_file_path_output = os.path.normpath(os.path.join(self.gemischte_fragentypen_files_path, "mixed_ilias_test_abgabe", "1604407426__0__tst_2040314", "1604407426__0__tst_2040314.xml"))
-                self.gemischte_fragentypen_test_img_file_path = os.path.normpath(os.path.join(self.gemischte_fragentypen_files_path, "mixed_ilias_test_abgabe", "1604407426__0__tst_2040314", "objects"))
+                self.gemischte_fragentypen_test_img_file_path_output = os.path.normpath(os.path.join(self.gemischte_fragentypen_files_path, "mixed_ilias_test_abgabe", "1604407426__0__tst_2040314", "objects"))
 
 
                 # Pfad für ILIAS-Pool Vorlage
@@ -163,6 +163,8 @@ class XML_Interface():
             # Daten aus DB abgreifen
             self.test_data = self.DBI.get_dbtemp_data()
             self.create_ilias_test_or_pool = ilias_test_or_pool
+            self.qpl_file_path = ""
+            self.tst_file_path = ""
 
 
             ###### Prüft, ob die zu erstellenden Fragen, von EINEM Fragentyp sind
@@ -212,7 +214,7 @@ class XML_Interface():
 
 
 
-            print(self.max_id)
+            
 
 
             self.ilias_id_pool_qpl_dir = "1596569820__0__qpl_" + self.max_id
@@ -245,23 +247,34 @@ class XML_Interface():
             if self.create_ilias_test_or_pool == "ilias_test":
                 if self.all_ff_questions_flag == 1:
                     self.qti_file_path_output = self.formelfrage_test_qti_file_path_output
+                    self.img_file_path_output = self.formelfrage_test_img_file_path_output
                     self.ff_mytree = ET.parse(self.formelfrage_test_qti_file_path_template)
+                    self.tst_file_path = self.formelfrage_test_tst_file_path_output
                 
                 elif self.all_sc_questions_flag == 1:
                     self.qti_file_path_output = self.singlechoice_test_qti_file_path_output
+                    self.img_file_path_output = self.singlechoice_test_img_file_path_output
                     self.ff_mytree = ET.parse(self.singlechoice_test_qti_file_path_template)
+                    self.tst_file_path = self.singlechoice_test_tst_file_path_output
                     
                 elif self.all_mc_questions_flag == 1:
                     self.qti_file_path_output = self.multiplechoice_test_qti_file_path_output
+                    self.img_file_path_output = self.multiplechoice_test_img_file_path_output
                     self.ff_mytree = ET.parse(self.multiplechoice_test_qti_file_path_template)
-                
+                    self.tst_file_path = self.multiplechoice_test_tst_file_path_output
+
                 elif self.all_mq_questions_flag == 1:
                     self.qti_file_path_output = self.zuordnungsfrage_test_qti_file_path_output
                     self.ff_mytree = ET.parse(self.zuordnungsfrage_test_qti_file_path_template)
+
+                    self.img_file_path_output = self.zuordnungsfrage_test_img_file_path_output
+                    self.tst_file_path = self.zuordnungsfrage_test_tst_file_path_output
                 
                 else:
                     self.qti_file_path_output = self.gemischte_fragentypen_test_qti_file_path_output
+                    self.img_file_path_output = self.gemischte_fragentypen_test_img_file_path_output
                     self.ff_mytree = ET.parse(self.gemischte_fragentypen_test_qti_file_path_template)
+                    self.tst_file_path = self.gemischte_fragentypen_test_tst_file_path_output
 
             elif self.create_ilias_test_or_pool == "ilias_pool":
                 if self.all_ff_questions_flag == 1:
@@ -326,17 +339,31 @@ class XML_Interface():
             # Fragen in die XML schreiben
             for i in range(len(self.test_data)):
 
+
                 if self.test_data[i][2].lower() == "formelfrage":
-                    XML_Interface.ff_question_structure(self, self.test_data[i], self.table_index_dict, self.id_nr, self.pool_qpl_file_path_template, self.pool_qpl_file_path_output, self.qpl_file_path, self.img_file_path_output)
+                    XML_Interface.ff_question_structure(self, self.test_data[i], self.table_index_dict, self.id_nr, self.pool_qpl_file_path_template, self.pool_qpl_file_path_output, self.img_file_path_output)
 
                 if self.test_data[i][2].lower() == "singlechoice":
-                   XML_Interface.sc_question_structure(self, self.test_data[i], self.table_index_dict, self.id_nr, self.pool_qpl_file_path_template, self.pool_qpl_file_path_output, self.qpl_file_path, self.img_file_path_output)
+                   XML_Interface.sc_question_structure(self, self.test_data[i], self.table_index_dict, self.id_nr, self.pool_qpl_file_path_template, self.pool_qpl_file_path_output,  self.img_file_path_output)
 
                 if self.test_data[i][2].lower() == "multiplechoice":
-                   XML_Interface.mc_question_structure(self, self.test_data[i], self.table_index_dict, self.id_nr, self.pool_qpl_file_path_template, self.pool_qpl_file_path_output, self.qpl_file_path, self.img_file_path_output)
+                   XML_Interface.mc_question_structure(self, self.test_data[i], self.table_index_dict, self.id_nr, self.pool_qpl_file_path_template, self.pool_qpl_file_path_output,  self.img_file_path_output)
                 
                 if self.test_data[i][2].lower() == "zuordnungsfrage":
-                   XML_Interface.mq_question_structure(self, self.test_data[i], self.table_index_dict, self.id_nr, self.pool_qpl_file_path_template, self.pool_qpl_file_path_output, self.qpl_file_path, self.img_file_path_output)
+                   XML_Interface.mq_question_structure(self, self.test_data[i], self.table_index_dict, self.id_nr, self.pool_qpl_file_path_template, self.pool_qpl_file_path_output,  self.img_file_path_output)
+
+
+                if self.create_ilias_test_or_pool == "ilias_pool":
+
+                    ######  Anpassung der Datei "qpl". Akualisierung des Dateinamens
+                    self.mytree = ET.parse(self.qpl_file_path)
+                    self.myroot = self.mytree.getroot()
+
+                    for ident_id in self.myroot.iter('Identifier'):
+                        ident_id.set('Entry', "il_0_qpl_" + str(self.max_id+str(1)))
+                    self.mytree.write(self.qpl_file_path)
+
+
 
 
 
@@ -347,30 +374,24 @@ class XML_Interface():
             self.ff_mytree.write(self.qti_file_path_output)
             print("TEST DONE")
             XML_Interface.replace_amp_in_xml_file(self, self.qti_file_path_output)
-            print("&amp ersetzt")
+            
 
 
         ###### FORMELFRAGE FUNKTIONEN ################
-        def ff_question_structure(self, test_data_list, table_index_dict, id_nr, pool_qpl_file_path_template , pool_qpl_file_path_output, qpl_file_path, img_file_path):
+        def ff_question_structure(self, test_data_list, table_index_dict, id_nr, pool_qpl_file_path_template , pool_qpl_file_path_output, img_file_path):
                 """Diese Funktion wandelt die SQL-Einträge in die .xml um, welche anschließend in ILIAS eingespielt werden kann"""
 
 
                 self.pool_qpl_file_path_template = pool_qpl_file_path_template
                 self.pool_qpl_file_path_output = pool_qpl_file_path_output
-                self.qpl_file_path = qpl_file_path
+
                 self.img_file_path_output = img_file_path
 
                 #self.ff_question_description_main = test_generator_modul_taxonomie_und_textformatierung.Textformatierung.format_description_text_in_xml(self, self.ff_var_use_latex_on_text_check.get(), test_data_list[table_index_dict[0]['question_description_main']])
                 # Abfrage LATEX fehlt
                 self.ff_question_description_main = XML_Interface.format_description_text_in_xml(self, test_data_list[table_index_dict[0]['question_description_main']])
 
-                print("-----", self.ff_question_description_main)
 
-        
-                # Bilder für die Beschreibung speichern
-                #XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[0]['description_img_name_1']], test_data_list[table_index_dict[0]['description_img_data_1']], id_nr, self.create_ilias_test_or_pool, self.formelfrage_test_img_file_path, self.formelfrage_pool_img_file_path_output)
-                #XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[0]['description_img_name_2']], test_data_list[table_index_dict[0]['description_img_data_2']], id_nr, self.create_ilias_test_or_pool, self.formelfrage_test_img_file_path, self.formelfrage_pool_img_file_path_output)
-                #XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[0]['description_img_name_3']], test_data_list[table_index_dict[0]['description_img_data_3']], id_nr, self.create_ilias_test_or_pool, self.formelfrage_test_img_file_path, self.formelfrage_pool_img_file_path_output)
 
 
                 # Aufbau für  Fragenstruktur "TEST"
@@ -466,7 +487,7 @@ class XML_Interface():
                                                     self.img_file_path_output,
                                                     self.ff_question_description_main, question_description_mattext, question_description_material, id_nr)
 
-                print("________", question_description_mattext.text)
+
 
 
                 # ----------------------------------------------------------------------- Variable
@@ -542,15 +563,7 @@ class XML_Interface():
 
 
 
-                if self.create_ilias_test_or_pool == "ilias_pool":
-                    ######  Anpassung der Datei "qpl". Akualisierung des Dateinamens
 
-                    self.mytree = ET.parse(self.qpl_file_path)
-                    self.myroot = self.mytree.getroot()
-
-                    for ident_id in self.myroot.iter('Identifier'):
-                        ident_id.set('Entry', "il_0_qpl_" + str(self.max_id+str(1)))
-                    self.mytree.write(self.qpl_file_path)
 
         def ff_question_variables_structure(self, xml_qtimetadata,  ff_var_name, ff_var_min, ff_var_max, ff_var_prec, ff_var_divby, ff_var_unit):
 
@@ -674,12 +687,12 @@ class XML_Interface():
 
         ###### SINGLECHOICE FUNKTIONEN ##############
 
-        def sc_question_structure(self, test_data_list, table_index_dict, id_nr, pool_qpl_file_path_template , pool_qpl_file_path_output, qpl_file_path, img_file_path):
+        def sc_question_structure(self, test_data_list, table_index_dict, id_nr, pool_qpl_file_path_template , pool_qpl_file_path_output, img_file_path):
             """Diese Funktion wandelt die SQL-Einträge in die .xml um, welche anschließend in ILIAS eingespielt werden kann"""
 
             self.pool_qpl_file_path_template = pool_qpl_file_path_template
             self.pool_qpl_file_path_output = pool_qpl_file_path_output
-            self.qpl_file_path = qpl_file_path
+
             self.img_file_path_output = img_file_path
 
             #self.sc_question_description_main = test_generator_modul_taxonomie_und_textformatierung.Textformatierung.format_description_text_in_xml(self, self.sc_var_use_latex_on_text_check.get(), self.sc_question_description_main)
@@ -687,16 +700,6 @@ class XML_Interface():
             self.sc_question_description_main =XML_Interface.format_description_text_in_xml(self, test_data_list[table_index_dict[1]['question_description_main']])
 
 
-
-
-
-
-
-            # Bilder für die Beschreibung speichern
-            #XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[1]['description_img_name_1']], test_data_list[table_index_dict[1]['description_img_data_1']], id_nr, self.create_ilias_test_or_pool, self.singlechoice_test_img_file_path, self.singlechoice_pool_img_file_path_output)
-            #XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[1]['description_img_name_2']], test_data_list[table_index_dict[1]['description_img_data_2']], id_nr, self.create_ilias_test_or_pool, self.singlechoice_test_img_file_path, self.singlechoice_pool_img_file_path_output)
-            #XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[1]['description_img_name_3']], test_data_list[table_index_dict[1]['description_img_data_3']], id_nr, self.create_ilias_test_or_pool, self.singlechoice_test_img_file_path, self.singlechoice_pool_img_file_path_output)
-            
             
             # Aufbau für  Fragenstruktur "TEST"
             if self.create_ilias_test_or_pool == "ilias_test":
@@ -858,15 +861,7 @@ class XML_Interface():
 
             
 
-            if self.create_ilias_test_or_pool == "ilias_pool":
-                ######  Anpassung der Datei "qpl". Akualisierung des Dateinamens
 
-                self.mytree = ET.parse(self.qpl_file_path)
-                self.myroot = self.mytree.getroot()
-
-                for ident_id in self.myroot.iter('Identifier'):
-                    ident_id.set('Entry', "il_0_qpl_" + str(self.max_id + str(1)))
-                self.mytree.write(self.qpl_file_path)
 
 
         def sc_question_answer_structure(self, sc_response_var_text, sc_response_var_pts, sc_response_var_img_path,
@@ -936,12 +931,12 @@ class XML_Interface():
 
         ###### MULTIPLECHOICE FUNKTIONEN ##############
 
-        def mc_question_structure(self, test_data_list, table_index_dict, id_nr, pool_qpl_file_path_template , pool_qpl_file_path_output, qpl_file_path, img_file_path):
+        def mc_question_structure(self, test_data_list, table_index_dict, id_nr, pool_qpl_file_path_template , pool_qpl_file_path_output, img_file_path):
             """Diese Funktion wandelt die SQL-Einträge in die .xml um, welche anschließend in ILIAS eingespielt werden kann"""
 
             self.pool_qpl_file_path_template = pool_qpl_file_path_template
             self.pool_qpl_file_path_output = pool_qpl_file_path_output
-            self.qpl_file_path = qpl_file_path
+
             self.img_file_path_output = img_file_path
 
             # self.sc_question_description_main = test_generator_modul_taxonomie_und_textformatierung.Textformatierung.format_description_text_in_xml(self, self.sc_var_use_latex_on_text_check.get(), self.sc_question_description_main)
@@ -950,10 +945,6 @@ class XML_Interface():
 
 
 
-             # Bilder für die Beschreibung speichern
-            #XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[2]['description_img_name_1']], test_data_list[table_index_dict[2]['description_img_data_1']], id_nr, self.create_ilias_test_or_pool, self.multiplechoice_test_img_file_path, self.multiplechoice_pool_img_file_path_output)
-            #XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[2]['description_img_name_2']], test_data_list[table_index_dict[2]['description_img_data_2']], id_nr, self.create_ilias_test_or_pool, self.multiplechoice_test_img_file_path, self.multiplechoice_pool_img_file_path_output)
-            #XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[2]['description_img_name_3']], test_data_list[table_index_dict[2]['description_img_data_3']], id_nr, self.create_ilias_test_or_pool, self.multiplechoice_test_img_file_path, self.multiplechoice_pool_img_file_path_output)
 
 
 
@@ -1114,15 +1105,7 @@ class XML_Interface():
 
 
 
-            if self.create_ilias_test_or_pool == "ilias_pool":
-                ######  Anpassung der Datei "qpl". Akualisierung des Dateinamens
 
-                self.mytree = ET.parse(self.qpl_file_path)
-                self.myroot = self.mytree.getroot()
-
-                for ident_id in self.myroot.iter('Identifier'):
-                    ident_id.set('Entry', "il_0_qpl_" + str(self.max_id + str(1)))
-                self.mytree.write(self.qpl_file_path)
 
         def mc_question_answer_structure(self, mc_response_var_text, mc_response_var_img_path, mc_correct_response_var_pts, mc_false_response_var_pts,
                                          xml_render_choice, xml_resprocessing, xml_item, mc_response_counter):
@@ -1205,7 +1188,7 @@ class XML_Interface():
 
         ###### ZUORDNUNGSFRAGE FUNKTIONEN ##############
         
-        def mq_question_structure(self, test_data_list, table_index_dict, id_nr, pool_qpl_file_path_template , pool_qpl_file_path_output, qpl_file_path, img_file_path):
+        def mq_question_structure(self, test_data_list, table_index_dict, id_nr, pool_qpl_file_path_template , pool_qpl_file_path_output, img_file_path):
             """Diese Funktion wandelt die SQL-Einträge in die .xml um, welche anschließend in ILIAS eingespielt werden kann"""
 
 
@@ -1218,17 +1201,12 @@ class XML_Interface():
 
             self.pool_qpl_file_path_template = pool_qpl_file_path_template
             self.pool_qpl_file_path_output = pool_qpl_file_path_output
-            self.qpl_file_path = qpl_file_path
             self.img_file_path_output = img_file_path
 
 
             self.mq_question_description_main = XML_Interface.format_description_text_in_xml(self, test_data_list[table_index_dict[3]['question_description_main']])
 
        
-            #XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[3]['description_img_name_1']], test_data_list[table_index_dict[3]['description_img_data_1']], id_nr, self.create_ilias_test_or_pool, self.zuordnungsfrage_test_img_file_path, self.zuordnungsfrage_pool_img_file_path_output)
-            #XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[3]['description_img_name_2']], test_data_list[table_index_dict[3]['description_img_data_2']], id_nr, self.create_ilias_test_or_pool, self.zuordnungsfrage_test_img_file_path, self.zuordnungsfrage_pool_img_file_path_output)
-            #XML_Interface.add_dir_for_images(self, test_data_list[table_index_dict[3]['description_img_name_3']], test_data_list[table_index_dict[3]['description_img_data_3']], id_nr, self.create_ilias_test_or_pool, self.zuordnungsfrage_test_img_file_path, self.zuordnungsfrage_pool_img_file_path_output)
-            
 
              # Aufbau für  Fragenstruktur "TEST"
             if self.create_ilias_test_or_pool == "ilias_test":
@@ -1447,15 +1425,7 @@ class XML_Interface():
 
 
 
-            if self.create_ilias_test_or_pool == "ilias_pool":
-                ######  Anpassung der Datei "qpl". Akualisierung des Dateinamens
 
-                self.mytree = ET.parse(self.qpl_file_path)
-                self.myroot = self.mytree.getroot()
-
-                for ident_id in self.myroot.iter('Identifier'):
-                    ident_id.set('Entry', "il_0_qpl_" + str(self.max_id + str(1)))
-                self.mytree.write(self.qpl_file_path)
 
     ####################### QUESTION_ANSWER STRUCTURE #############################
         def mq_question_answer_structure_definitions(self, mq_definitions_response_var_text, mq_definitions_response_var_img_path,  xml_render_choice, mq_definition_id, mq_number_of_terms_used):
@@ -1643,27 +1613,6 @@ class XML_Interface():
             index_list = []
             index_dict = {}
             for ff_row in self.dataframe.itertuples():
-
-
-                # Bilder auslesen
-                # self.ff_description_img_data_1 = Import_Export_Database.excel_import_placeholder_to_data(self,
-                #                                                                                          ff_row,
-                #                                                                                          self.db_entry_to_index_dict[
-                #                                                                                              'description_img_data_1'],
-                #                                                                                          self.db_entry_to_index_dict[
-                #                                                                                              'description_img_path_1'])
-                # self.ff_description_img_data_2 = Import_Export_Database.excel_import_placeholder_to_data(self,
-                #                                                                                          ff_row,
-                #                                                                                          self.db_entry_to_index_dict[
-                #                                                                                              'description_img_data_2'],
-                #                                                                                          self.db_entry_to_index_dict[
-                #                                                                                              'description_img_path_2'])
-                # self.ff_description_img_data_3 = Import_Export_Database.excel_import_placeholder_to_data(self,
-                #                                                                                          ff_row,
-                #                                                                                          self.db_entry_to_index_dict[
-                #                                                                                              'description_img_data_3'],
-                #                                                                                          self.db_entry_to_index_dict[
-                #                                                                                              'description_img_path_3'])
 
                 if ff_row.question_type == "formelfrage":
 
@@ -1907,6 +1856,7 @@ class XML_Interface():
 
 
                 #Bild Datei kopieren
+                print("++++++++++++++++++++++",self.orig_img_file_path, self.object_img_dir_output_path )
                 shutil.copyfile(self.orig_img_file_path, self.object_img_dir_output_path)
 
 
@@ -1973,6 +1923,7 @@ class XML_Interface():
             self.img_file_path_output = img_file_path_output
             self.question_description_main = question_description_main
             self.question_description_mattext = question_description_mattext
+
 
 
             self.description_img_name_1, self.description_img_format_1  = XML_Interface.get_img_name_and_format_from_path(self, self.description_img_path_1)
