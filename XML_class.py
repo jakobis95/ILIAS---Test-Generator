@@ -2074,18 +2074,14 @@ class XML_Interface():
                     self.position_begin = i
                     self.position_end = self.description_main_entry.find(" ", self.position_begin)
                     self.index_list.append(self.position_end)
-                    self.description_main_entry = self.description_main_entry[
-                                                  :self.position_end] + ' </sub>' + self.description_main_entry[
-                                                                                    self.position_end:]
+                    self.description_main_entry = self.description_main_entry[:self.position_end] + ' </sub>' + self.description_main_entry[self.position_end:]
 
             for i in range(1, len(self.description_main_entry)):
                 if self.description_main_entry[i] == '^':
                     self.position_begin = i
                     self.position_end = self.description_main_entry.find(" ", self.position_begin)
                     self.index_list.append(self.position_end)
-                    self.description_main_entry = self.description_main_entry[
-                                                  :self.position_end] + ' </sup>' + self.description_main_entry[
-                                                                                    self.position_end:]
+                    self.description_main_entry = self.description_main_entry[:self.position_end] + ' </sup>' + self.description_main_entry[self.position_end:]
 
             self.description_main_entry = self.description_main_entry.replace('&', "&amp;")
             self.description_main_entry = self.description_main_entry.replace('\n', "&lt;/p&gt;&#13;&#10;&lt;p&gt;")
