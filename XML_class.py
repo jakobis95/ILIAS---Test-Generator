@@ -346,7 +346,8 @@ class XML_Interface():
             print(self.qti_file_path_output)
             self.ff_mytree.write(self.qti_file_path_output)
             print("TEST DONE")
-
+            XML_Interface.replace_amp_in_xml_file(self, self.qti_file_path_output)
+            print("&amp ersetzt")
 
 
         ###### FORMELFRAGE FUNKTIONEN ################
@@ -363,6 +364,7 @@ class XML_Interface():
                 # Abfrage LATEX fehlt
                 self.ff_question_description_main = XML_Interface.format_description_text_in_xml(self, test_data_list[table_index_dict[0]['question_description_main']])
 
+                print("-----", self.ff_question_description_main)
 
         
                 # Bilder für die Beschreibung speichern
@@ -464,7 +466,7 @@ class XML_Interface():
                                                     self.img_file_path_output,
                                                     self.ff_question_description_main, question_description_mattext, question_description_material, id_nr)
 
-
+                print("________", question_description_mattext.text)
 
 
                 # ----------------------------------------------------------------------- Variable
@@ -1969,17 +1971,14 @@ class XML_Interface():
             self.description_img_path_2 = description_img_path_2
             self.description_img_path_3 = description_img_path_3
             self.img_file_path_output = img_file_path_output
+            self.question_description_main = question_description_main
+            self.question_description_mattext = question_description_mattext
+
 
             self.description_img_name_1, self.description_img_format_1  = XML_Interface.get_img_name_and_format_from_path(self, self.description_img_path_1)
             self.description_img_name_2, self.description_img_format_2  = XML_Interface.get_img_name_and_format_from_path(self, self.description_img_path_2)
             self.description_img_name_3, self.description_img_format_3  = XML_Interface.get_img_name_and_format_from_path(self, self.description_img_path_3)
 
-
-            print("==============================")
-            print(self.description_img_name_1, self.description_img_format_1, self.description_img_path_1)
-            print(self.description_img_name_2, self.description_img_format_2, self.description_img_path_2)
-            print(self.description_img_name_3, self.description_img_format_3, self.description_img_path_3)
-            print("==============================")
 
             # Ordner erzeugen und Bild ablegen
             XML_Interface.add_dir_for_images(self, self.description_img_path_1, self.img_file_path_output, self.description_img_name_1, self.description_img_format_1, id_nr)
@@ -1996,12 +1995,8 @@ class XML_Interface():
             self.check_img_2_exists = False
             self.check_img_3_exists = False
 
-            self.question_description_main = question_description_main
-            self.question_description_mattext = question_description_mattext
-
-
-
-            self.question_description_mattext = XML_Interface.set_picture_in_main(self, self.description_img_path_1, self.description_img_name_1, self.description_img_format_1, "%Bild1%", self.question_description_main, question_description_material, id_nr, "0")
+            self.question_description_mattext = "<p>" + self.question_description_main + "</p>"
+            self.question_description_mattext = XML_Interface.set_picture_in_main(self, self.description_img_path_1, self.description_img_name_1, self.description_img_format_1, "%Bild1%", self.question_description_mattext, question_description_material, id_nr, "0")
             self.question_description_mattext = XML_Interface.set_picture_in_main(self, self.description_img_path_2, self.description_img_name_2, self.description_img_format_2, "%Bild2%", self.question_description_mattext, question_description_material, id_nr, "1")
             self.question_description_mattext = XML_Interface.set_picture_in_main(self, self.description_img_path_3, self.description_img_name_3, self.description_img_format_3, "%Bild3%", self.question_description_mattext, question_description_material, id_nr, "2")
 
@@ -2041,9 +2036,7 @@ class XML_Interface():
                 matimage.set('label', "il_0_mob_000000" + str(img_id_nr))  # Object -> Filename
                 matimage.set('uri', "objects/il_0_mob_000000" + str(id_nr) + "/" + self.img_name + "." + self.img_format)
 
-            # Frage enthält kein Bild
-            else:
-                question_description_mattext = "<p>" + question_description_mattext + "</p>"
+
 
 
 
@@ -2053,6 +2046,21 @@ class XML_Interface():
 
 
         # Textformatierung
+        def replace_amp_in_xml_file(self, file_path_qti_xml):
+            # Im Nachgang werden alle "&amp;" wieder gegen "&" getauscht
+            # "&" Zeichen kann XML nicht verarbeiten, daher wurde beim schreiben der Texte in die XML "&" gegen "&amp;" getauscht
+
+            # XML Datei zum lesen öffnen 'r' -> "read"
+            with open(file_path_qti_xml, 'r') as xml_file:
+                xml_str = xml_file.read()
+            xml_str = xml_str.replace('&amp;', '&')  # replace 'x' with 'new_x'
+
+            # In XML Datei schreiben 'w" -> "write"
+            with open(file_path_qti_xml, 'w') as replaced_xml_file:
+                replaced_xml_file.write(xml_str)
+
+            print("...XML_DATEI_QTI --  \"&amp;\"-ZEICHEN ÜBERARBEITUNG ABGESCHLOSSEN!")
+
         def format_description_text_in_xml(self, description_main_entry):
 
             #self.var_use_latex_on_text_check = var_use_latex_on_text_check
