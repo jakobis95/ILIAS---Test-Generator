@@ -206,7 +206,7 @@ class generate_db():
                             question_pool_tag text,
                             question_author text
                             )""")
-
+        mydb.commit()
 
         cursor.execute("""CREATE TABLE IF NOT EXISTS formelfrage_permutation_table (
                             question_difficulty text,
@@ -397,7 +397,7 @@ class generate_db():
                             question_pool_tag text,
                             question_author text
                             )""")
-
+        mydb.commit()
         cursor.execute("""CREATE TABLE IF NOT EXISTS singlechoice (
                             question_difficulty text,
                             question_category text,
@@ -475,7 +475,7 @@ class generate_db():
                             question_pool_tag text,
                             question_author text
                             )""")
-
+        mydb.commit()
         cursor.execute("""CREATE TABLE IF NOT EXISTS multiplechoice (
                                 question_difficulty text,
                                 question_category text,
@@ -567,7 +567,7 @@ class generate_db():
                                 question_pool_tag text,
                                 question_author text
                                 )""")
-
+        mydb.commit()
         cursor.execute("""CREATE TABLE IF NOT EXISTS zuordnungsfrage (
                             question_difficulty text,
                             question_category text,
@@ -743,7 +743,7 @@ class generate_db():
                             question_pool_tag text,
                             question_author text
                             )""")
-
+        mydb.commit()
         cursor.execute("""CREATE TABLE IF NOT EXISTS testeinstellungen (
                             entry_description text,
                             radio_select_question text,
@@ -783,7 +783,7 @@ class generate_db():
                             check_autosave text,
                             entry_autosave text,
                             entry_autosave_interval text,
-                            check_mix_questions,
+                            check_mix_questions text,
                             check_show_solutions_notes text,
                             check_direct_response text,
                             radio_select_user_response text,
@@ -800,3 +800,7 @@ class generate_db():
                             check_notification text
                             )""")
         mydb.commit()
+
+if __name__ == "__main__":
+    old_dbname = 'generaldb.db'
+    db = generate_db(old_dbname)
