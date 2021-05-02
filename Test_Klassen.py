@@ -18,6 +18,8 @@ class Testeinstellungen():
         self.work_window.geometry("%dx%d+%d+%d" % (Width/1.5, Width/2.7, Width/5, Width/8))
         self.DBI.subscribe(self.Fill_Entrys_From_DB)
 
+        print(index_list)
+        print(index_dict)
 
 
         self.frame1 = LabelFrame(self.work_window, text="Test Einstellungen", padx=5, pady=5)
@@ -26,8 +28,12 @@ class Testeinstellungen():
         self.frame2 = LabelFrame(self.work_window, text="Test Einstellungen", padx=5, pady=5)
         self.frame2.grid(row=0, column=1, padx=20, pady=10, sticky=NW)
 
+        self.Labels()
+        self.Checkboxes_Entrys()
+        self.Radiobuttons()
 
 
+    def Labels(self):
         self.res12_min_listbox_label = Label(self.frame1, text="EINSTELLUNGEN DES TESTS",
                                              font=('Helvetica', 10, 'bold'))
         self.res12_min_listbox_label.grid(row=0, column=0, sticky=W, padx=10, pady=(20, 0))
@@ -154,7 +160,7 @@ class Testeinstellungen():
         # --------------------------- DEFINE CHECKBOXES WITH ENTRYS ---------------------------------------
 
         # --------------------------- CHECKBOXES ---------------------------------------
-
+    def Checkboxes_Entrys(self):
         self.var_online = IntVar()
         self.check_online = Checkbutton(self.frame1, text="", variable=self.var_online, onvalue=1, offvalue=0)
         self.check_online.deselect()
@@ -163,96 +169,77 @@ class Testeinstellungen():
         self.var_time_limited = IntVar()
         self.time_limited_start_label = Label(self.frame1, text="Start")
         self.time_limited_start_day_label = Label(self.frame1, text="Tag")
-        self.time_limited_start_day_entry = Entry(self.frame1, width=3, textvariable=self.index_list(self.index_dict['time_limited_start_day_entry']))
+        self.time_limited_start_day_entry = Entry(self.frame1, width=3, textvariable=self.index_list[self.index_dict['entry_test_start_day']][0])
         self.time_limited_start_month_label = Label(self.frame1, text="Mo")
-        self.time_limited_start_month_entry = Entry(self.frame1, width=3, textvariable=self.index_list(self.index_dict['time_limited_start_month_entry']))
+        self.time_limited_start_month_entry = Entry(self.frame1, width=3, textvariable=self.index_list[self.index_dict['entry_test_start_month']][0])
         self.time_limited_start_year_label = Label(self.frame1, text="Jahr")
-        self.time_limited_start_year_entry = Entry(self.frame1, width=4, textvariable=self.index_list(self.index_dict['time_limited_start_year_entry']))
+        self.time_limited_start_year_entry = Entry(self.frame1, width=4, textvariable=self.index_list[self.index_dict['entry_test_start_year']][0])
         self.time_limited_start_hour_label = Label(self.frame1, text="Std")
-        self.time_limited_start_hour_entry = Entry(self.frame1, width=3, textvariable=self.index_list(self.index_dict['time_limited_start_hour_entry']))
+        self.time_limited_start_hour_entry = Entry(self.frame1, width=3, textvariable=self.index_list[self.index_dict['entry_test_start_hour']][0])
         self.time_limited_start_minute_label = Label(self.frame1, text="Min")
-        self.time_limited_start_minute_entry = Entry(self.frame1, width=3, textvariable=self.index_list(self.index_dict['time_limited_start_minute_entry']))
+        self.time_limited_start_minute_entry = Entry(self.frame1, width=3, textvariable=self.index_list[self.index_dict['entry_test_start_minute']][0])
 
         self.time_limited_end_label = Label(self.frame1, text="Ende")
         self.time_limited_end_day_label = Label(self.frame1, text="Tag")
-        self.time_limited_end_day_entry = Entry(self.frame1, width=3, textvariable=self.index_list(self.index_dict['time_limited_end_day_entry']))
+        self.time_limited_end_day_entry = Entry(self.frame1, width=3, textvariable=self.index_list[self.index_dict['entry_test_end_day']][0])
         self.time_limited_end_month_label = Label(self.frame1, text="Mo")
-        self.time_limited_end_month_entry = Entry(self.frame1, width=3, textvariable=self.index_list(self.index_dict['time_limited_end_month_entry']))
+        self.time_limited_end_month_entry = Entry(self.frame1, width=3, textvariable=self.index_list[self.index_dict['entry_test_end_month']][0])
         self.time_limited_end_year_label = Label(self.frame1, text="Jahr")
-        self.time_limited_end_year_entry = Entry(self.frame1, width=4, textvariable=self.index_list(self.index_dict['time_limited_end_year_entry']))
+        self.time_limited_end_year_entry = Entry(self.frame1, width=4, textvariable=self.index_list[self.index_dict['entry_test_end_year']][0])
         self.time_limited_end_hour_label = Label(self.frame1, text="Std")
-        self.time_limited_end_hour_entry = Entry(self.frame1, width=3, textvariable=self.index_list(self.index_dict['time_limited_end_hour_entry']))
+        self.time_limited_end_hour_entry = Entry(self.frame1, width=3, textvariable=self.index_list[self.index_dict['entry_test_end_hour']][0])
         self.time_limited_end_minute_label = Label(self.frame1, text="Min")
-        self.time_limited_end_minute_entry = Entry(self.frame1, width=3, textvariable=self.index_list(self.index_dict['time_limited_end_minute_entry']))
+        self.time_limited_end_minute_entry = Entry(self.frame1, width=3, textvariable=self.index_list[self.index_dict['entry_test_end_minute']][0])
 
-        # self.entry.grid(row=11, column=1, sticky=W, padx=20)
-        self.check_time_limited = Checkbutton(self.frame1, text="", variable=self.var_time_limited, onvalue=1,
+
+        self.check_time_limited = Checkbutton(self.frame1, text="", variable=self.index_list[self.index_dict['check_time_limited']][0], onvalue=1,
                                               offvalue=0,
                                               command=lambda
-                                                  v=self.var_time_limited: self.show_entry_time_limited_start(
+                                                  v=self.index_list[self.index_dict['check_time_limited']][0]: self.show_entry_time_limited_start(
                                                   self, v))
         self.check_time_limited.deselect()
         self.check_time_limited.grid(row=11, column=1, sticky=W)
 
-        self.var_introduction = IntVar()
-        self.check_introduction = Checkbutton(self.frame1, text="", variable=self.var_introduction, onvalue=1,
+
+        self.check_introduction = Checkbutton(self.frame1, text="", variable=self.index_list[self.index_dict['check_introduction']][0], onvalue=1,
                                               offvalue=0,
                                               command=lambda
-                                                  v=self.var_introduction: self.show_introduction_textfield(
+                                                  v=self.index_list[self.index_dict['check_introduction']][0]: self.show_introduction_textfield(
                                                   self, v))
         self.check_introduction.deselect()
         self.check_introduction.grid(row=15, column=1, sticky=W)
 
-        self.var_test_prop = IntVar()
-        self.check_test_prop = Checkbutton(self.frame1, text="", variable=self.var_test_prop, onvalue=1, offvalue=0)
+
+        self.check_test_prop = Checkbutton(self.frame1, text="", variable=self.index_list[self.index_dict['check_test_properties']][0], onvalue=1, offvalue=0)
         self.check_test_prop.deselect()
         self.check_test_prop.grid(row=16, column=1, sticky=W)
 
-        # self.var_test_password = IntVar()
-        # self.check_test_password = Checkbutton(self.frame1, text="", variable=self.var_test_password, onvalue=1, offvalue=0)
-        # self.check_test_password.deselect()
-        # self.check_test_password.grid(row=20, column=1, sticky=W)
 
-        self.var_specific_users = IntVar()
-        self.check_specific_users = Checkbutton(self.frame1, text="", variable=self.var_specific_users, onvalue=1,
+        self.check_specific_users = Checkbutton(self.frame1, text="", variable=self.index_list[self.index_dict['check_specific_users']][0], onvalue=1,
                                                 offvalue=0)
         self.check_specific_users.deselect()
         self.check_specific_users.grid(row=21, column=1, sticky=W)
 
-        # self.var_fixed_users = IntVar()
-        # self.check_fixed_users = Checkbutton(self.frame1, text="", variable=self.var_fixed_users, onvalue=1, offvalue=0)
-        # self.check_fixed_users.deselect()
-        # self.check_fixed_users.grid(row=22, column=1, sticky=W)
 
-        # self.var_limit_test_runs = IntVar()
-        # self.check_limit_test_runs = Checkbutton(self.frame1, text="", variable=self.var_limit_test_runs, onvalue=1, offvalue=0)
-        # self.check_limit_test_runs.deselect()
-        # self.check_limit_test_runs.grid(row=22, column=1, sticky=W)
 
-        # self.var_time_betw_test_runs = IntVar()
-        # self.check_time_betw_test_runs = Checkbutton(self.frame1, text="", variable=self.var_time_betw_test_runs, onvalue=1, offvalue=0)
-        # self.check_time_betw_test_runs.deselect()
-        # self.check_time_betw_test_runs.grid(row=25, column=1, sticky=W)
-
-        self.var_processing_time = IntVar()
-        self.check_processing_time = Checkbutton(self.frame1, text="", variable=self.var_processing_time, onvalue=1,
+        self.check_processing_time = Checkbutton(self.frame1, text="", variable=self.index_list[self.index_dict['check_processing_time']][0], onvalue=1,
                                                  offvalue=0)
         self.check_processing_time.deselect()
         self.check_processing_time.grid(row=27, column=1, sticky=W)
 
-        self.var_processing_time_reset = IntVar()
-        self.check_processing_time_reset = Checkbutton(self.frame1, text="", variable=self.var_processing_time_reset,
+
+        self.check_processing_time_reset = Checkbutton(self.frame1, text="", variable=self.index_list[self.index_dict['check_processing_time_reset']][0],
                                                        onvalue=1, offvalue=0)
         self.check_processing_time_reset.deselect()
         self.check_processing_time_reset.grid(row=29, column=1, sticky=W)
 
-        self.var_examview = IntVar()
-        self.check_examview = Checkbutton(self.frame1, text="", variable=self.var_examview, onvalue=1, offvalue=0)
+
+        self.check_examview = Checkbutton(self.frame1, text="", variable=self.index_list[self.index_dict['check_examview']][0], onvalue=1, offvalue=0)
         self.check_examview.deselect()
         self.check_examview.grid(row=30, column=1, sticky=W)
 
-        self.var_examview_test_title = IntVar()
-        self.check_examview_test_title = Checkbutton(self.frame1, text="", variable=self.var_examview_test_title,
+
+        self.check_examview_test_title = Checkbutton(self.frame1, text="", variable=self.index_list[self.index_dict['check_examview_test_title']][0],
                                                      onvalue=1, offvalue=0)
         self.check_examview_test_title.deselect()
         self.check_examview_test_title.grid(row=31, column=1, sticky=W)
@@ -355,7 +342,7 @@ class Testeinstellungen():
         self.check_notification.grid(row=24, column=3, sticky=W)
 
         # --------------------------- RADIO BUTTONS ---------------------------------------
-
+    def Radiobuttons(self):
         self.select_question = IntVar()
         self.select_question.set(0)
         self.select_question_radiobtn1 = Radiobutton(self.frame1, text="Fest definierte Fragenauswahl",
