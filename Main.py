@@ -89,6 +89,9 @@ class Main(tk.Frame):
         create_Pool = Button(Right_Menu_Frame, text="Pool erstellen", bg=button_color, fg=bg_color, command=lambda: xml_interface.create_test_or_pool("ilias_pool"))
         create_Pool['font'] = Button_Font
         create_Pool.pack(side="top", fill=X)
+        Test_einstellungen = Button(Right_Menu_Frame, text="Testeinstellungen", bg=button_color, fg=bg_color, command=self.DBT.Testeinstellungen_UI)
+        Test_einstellungen['font'] = Button_Font
+        Test_einstellungen.pack(side="top", fill=X)
         #Put_btn = tk.Button(bottom_Frame, text="Add to Test")
         #Put_btn.place(relx=0, rely=0)
 
