@@ -9,6 +9,9 @@ from Variablen_Einfügen_UI import variable_scrl_UI
 from Picture_interface import picture_choice
 from PIL import Image, ImageTk
 from ScrolledText_Functionality import Textformatierung
+import numpy as np
+import pandas as pd
+from pandas.core.reshape.util import cartesian_product
 
 class fragen_gui():
 
@@ -70,6 +73,10 @@ class fragen_gui():
         self.Save_btn = Button(self.Speichern_Frame, text="Save Changes", command=self.Save_Change_to_DB, bg=self.button_color, fg=self.fg_color)
         self.Save_btn['font'] = self.Button_Font
         self.Save_btn.pack(side=tk.RIGHT, padx=6, anchor="e", fill=Y)
+
+        self.calc_val_range_btn = Button(self.Speichern_Frame, text=" Wertebereich\nberechnen", command=self.calculate_value_range_function, bg=self.button_color, fg=self.fg_color)
+        self.calc_val_range_btn['font'] = self.Button_Font
+        self.calc_val_range_btn.pack(side=tk.RIGHT, padx=6, anchor="e", fill=Y)
 
         self.text_latex = Button(self.QD_frame, text="text latex", command=self.text_latex_call, bg=self.button_color, fg=self.fg_color) #todo change Farme
         self.text_latex.place(relx=0, rely=.9, relwidth=.25, relheight=.1)
@@ -213,6 +220,391 @@ class fragen_gui():
         self.image_interface_2.add_picture()
         self.image_interface_3.add_picture()
         self.dbinhaltsliste[self.index_dict["question_type"]][0].set(self.fragentyp)
+
+
+    def calculate_value_range_function(self):
+        # Wertebereich berechnen
+
+        self.number_of_variables = 15
+        self.number_of_results = 10
+        self.var_res_combined_min_entries_list = []
+        self.var_res_combined_max_entries_list = []
+        self.var_prec_entry_list = []
+        self.res_min_entry_list = []
+        self.res_max_entry_list = []
+
+        ############# VARIABLEN UND ERGEBNISSE _MIN SAMMLUNG
+        for i in range(self.number_of_variables):
+            self.var_res_combined_min_entries_list.append(self.dbinhaltsliste[self.index_dict["var" + str(i+1) + "_min"]][0])
+        for j in range(self.number_of_results):
+            self.var_res_combined_min_entries_list.append(self.dbinhaltsliste[self.index_dict["res" + str(j+1) + "_min"]][0])
+
+        ############# VARIABLEN UND ERGEBNISSE _MAX SAMMLUNG
+        for m in range(self.number_of_variables):
+            self.var_res_combined_max_entries_list.append(self.dbinhaltsliste[self.index_dict["var" + str(m+1) + "_max"]][0])
+        for n in range(self.number_of_results):
+            self.var_res_combined_max_entries_list.append(self.dbinhaltsliste[self.index_dict["res" + str(n+1) + "_max"]][0])
+
+        ############# VARIABLEN _PREC SAMMLUNG
+        for u in range(self.number_of_variables):
+            self.var_prec_entry_list.append(self.dbinhaltsliste[self.index_dict["var" + str(u+1) + "_prec"]][0])
+
+        ############# ERGEBNISSE _MIN SAMMLUNG
+        for v in range(self.number_of_results):
+            self.res_min_entry_list.append(self.dbinhaltsliste[self.index_dict["res" + str(v+1) + "_min"]][0])
+
+        ############# ERGEBNISSE _MAX SAMMLUNG
+        for w in range(self.number_of_results):
+            self.res_max_entry_list.append(self.dbinhaltsliste[self.index_dict["var" + str(w+1) + "_max"]][0])
+
+
+
+        for i in range(self.number_of_results):
+            if self.dbinhaltsliste[self.index_dict["res" + str(i+1) + "_formula"]][0].get() != "":
+                fragen_gui.calculate_value_range_from_formula_in_GUI(self, self.dbinhaltsliste[self.index_dict["res" + str(i+1) + "_formula"]][0], self.var_res_combined_min_entries_list, self.var_res_combined_max_entries_list, self.var_prec_entry_list, self.dbinhaltsliste[self.index_dict["res" + str(i+1) + "_min"]][0], self.dbinhaltsliste[self.index_dict["res" + str(i+1) + "_max"]][0], self.dbinhaltsliste[self.index_dict["res" + str(i+1) + "_prec"]][0], self.res_min_entry_list, self.res_max_entry_list)
+
+
+    def calculate_value_range_replace_formula_numpy(self, formula, var_res_combined_min_entries_list, var_res_combined_max_entries_list, res_min_entries_list, res_max_entries_list):
+
+        self.formula = formula.get()
+        self.formula_var_replaced = formula.get().replace('$', '_')
+        self.formula_var_replaced = self.formula_var_replaced.replace('^', '**')
+
+
+        self.np_variables_translator_dict = {"pi": "np.pi",
+                                   ",": ".",
+                                   "^": "**",
+                                   "e": "*10**",
+
+                                   "sin": "np.sin",
+                                   "cos": "np.cos",
+                                   "tan": "np.tan",
+                                   "arcsin": "np.arcsin",
+                                   "arccos": "np.arccos",
+                                   "arctan": "np.arctan",
+
+                                   "sinh": "np.sinh",
+                                   "cosh": "np.cosh",
+                                   "tanh": "np.tanh",
+                                   "arcsinh": "np.arcsinh",
+                                   "arccosh": "np.arccosh",
+                                   "arctanh": "np.arctanh",
+
+                                   "sqrt": "np.sqrt",
+                                   "abs": "np.abs",
+                                   "ln": "np.ln",
+                                   "log": "np.log",
+
+                                   "_v1": " row['a'] ",
+                                   "_v2": " row['b'] ",
+                                   "_v3": " row['c'] ",
+                                   "_v4": " row['d'] ",
+                                   "_v5": " row['e'] ",
+                                   "_v6": " row['f'] ",
+                                   "_v7": " row['g'] ",
+                                   "_v8": " row['h'] ",
+                                   "_v9": " row['i'] ",
+                                   "_v10": " row['j'] ",
+                                   "_v11": " row['k'] ",
+                                   "_v12": " row['l'] ",
+                                   "_v13": " row['m'] ",
+                                   "_v14": " row['n'] ",
+                                   "_v15": " row['o'] "}
+
+        self.np_results_translator_dict = {
+
+                                   "_r1": " row['p'] ",
+                                   "_r2": " row['q'] ",
+                                   "_r3": " row['r'] ",
+                                   "_r4": " row['s'] ",
+                                   "_r5": " row['t'] ",
+                                   "_r6": " row['u'] ",
+                                   "_r7": " row['v'] ",
+                                   "_r8": " row['w'] ",
+                                   "_r9": " row['x'] ",
+                                   "_r10": " row['y'] "}
+
+        print("----------------------")
+        #print("Übernehme Formel aus Eingabefeld:")
+        print("---> ", self.formula, end="", flush=True)
+        #print("Prüfe auf Grenzen")
+
+
+        def replace_var(match):
+            return self.np_variables_translator_dict[match.group(0)]
+
+        def replace_res(match):
+            return self.np_results_translator_dict[match.group(0)]
+
+
+
+        self.formula_var_replaced = re.sub('|'.join(r'\b%s\b' % re.escape(s) for s in self.np_variables_translator_dict),replace_var, self.formula_var_replaced)
+
+
+        #for key in self.np_variables_translator_dict.keys():
+        #    self.formula_var_replaced = self.formula_var_replaced.replace(key, self.np_variables_translator_dict[key])
+
+        self.formula_res_replaced = re.sub('|'.join(r'\b%s\b' % re.escape(s) for s in self.np_results_translator_dict),replace_res, self.formula_var_replaced)
+
+
+        print(" --- ", "NUMPY: ", self.formula_res_replaced)
+
+        #for key in self.np_results_translator_dict.keys():
+        #    self.formula_res_replaced = self.formula_res_replaced.replace(key, self.np_results_translator_dict[key])
+
+
+
+        for i in range(len(var_res_combined_min_entries_list)):
+            if "$v" + (str(i+1)) in formula.get() and var_res_combined_min_entries_list[i].get() != "" and var_res_combined_max_entries_list[i].get() != "":
+                self.formula = self.formula_var_replaced
+
+
+                for j in range(len(res_min_entries_list)):
+                    if "$r" + (str(j+1)) in formula.get():
+                        if res_min_entries_list[j].get() != "" and res_max_entries_list[j].get() != "":
+
+                            #print("Grenzen verfügbar! --> Ersetze alle Symbole mit numpy-symoblik")
+
+                            self.formula = self.formula_res_replaced
+
+                        else:
+                            self.formula = "NaN"
+
+
+            if "$r" + (str(i+1)) in formula.get() and var_res_combined_min_entries_list[i].get() != "" and var_res_combined_max_entries_list[i].get() != "":
+                self.formula = self.formula_res_replaced
+
+
+        return self.formula
+
+
+    def calculate_value_range_from_formula_in_GUI(self, formula, var_res_combined_min_entries_list, var_res_combined_max_entries_list, var_prec_entries_list,  res_min_entry, res_max_entry, res_prec_entry, res_min_entries_list, res_max_entries_list):
+
+
+        def value_range_lower_upper_bounds(var_res_combined_min_entries_list, var_res_combined_max_entries_list, var_lower_bound_list, var_upper_bound_list):
+
+                for u in range(len(var_res_combined_min_entries_list)):
+                    if var_res_combined_min_entries_list[u] != "":
+                        if bool(re.search(r'\d', var_res_combined_min_entries_list[u].get())) == True and bool(re.search(r'\d', var_res_combined_max_entries_list[u].get())) == True:
+                            try:
+                                var_lower_bound_list[u], var_upper_bound_list[u] = int(var_res_combined_min_entries_list[u].get()), int(var_res_combined_max_entries_list[u].get())
+                            except ValueError:
+                                var_lower_bound_list[u], var_upper_bound_list[u] = float(var_res_combined_min_entries_list[u].get()), float(var_res_combined_max_entries_list[u].get())
+                        else:
+                            var_lower_bound_list[u], var_upper_bound_list[u] = 0, 0
+
+        def min_max(col):
+            return pd.Series(index=['min', 'max'], data=[col.min(), col.max()])
+
+
+        # Alle Formeln berechnen die KEIN $r enthalten (nur variablen)
+
+
+        self.var1_lower, self.var1_upper = 0, 0
+        self.var2_lower, self.var2_upper = 0, 0
+        self.var3_lower, self.var3_upper = 0, 0
+        self.var4_lower, self.var4_upper = 0, 0
+        self.var5_lower, self.var5_upper = 0, 0
+        self.var6_lower, self.var6_upper = 0, 0
+        self.var7_lower, self.var7_upper = 0, 0
+        self.var8_lower, self.var8_upper = 0, 0
+        self.var9_lower, self.var9_upper = 0, 0
+        self.var10_lower, self.var10_upper = 0, 0
+        self.var11_lower, self.var11_upper = 0, 0
+        self.var12_lower, self.var12_upper = 0, 0
+        self.var13_lower, self.var13_upper = 0, 0
+        self.var14_lower, self.var14_upper = 0, 0
+        self.var15_lower, self.var15_upper = 0, 0
+
+        self.res1_lower, self.res1_upper = 0, 0
+        self.res2_lower, self.res2_upper = 0, 0
+        self.res3_lower, self.res3_upper = 0, 0
+        self.res4_lower, self.res4_upper = 0, 0
+        self.res5_lower, self.res5_upper = 0, 0
+        self.res6_lower, self.res6_upper = 0, 0
+        self.res7_lower, self.res7_upper = 0, 0
+        self.res8_lower, self.res8_upper = 0, 0
+        self.res9_lower, self.res9_upper = 0, 0
+        self.res10_lower, self.res10_upper = 0, 0
+
+
+
+        self.new_list = []
+        self.new_list2 = []
+        self.set_nr_of_var_index = []
+
+        self.var_prec_entry_list_values = []
+
+        self.lower_list = [self.var1_lower, self.var2_lower, self.var3_lower, self.var4_lower, self.var5_lower,
+                           self.var6_lower, self.var7_lower, self.var8_lower, self.var9_lower, self.var10_lower,
+                           self.var11_lower, self.var12_lower, self.var13_lower, self.var14_lower, self.var15_lower,
+                           self.res1_lower, self.res2_lower, self.res3_lower, self.res4_lower, self.res5_lower,
+                           self.res6_lower, self.res7_lower, self.res8_lower, self.res9_lower, self.res10_lower]
+
+        self.upper_list = [self.var1_upper, self.var2_upper, self.var3_upper, self.var4_upper, self.var5_upper,
+                           self.var6_upper, self.var7_upper, self.var8_upper, self.var9_upper, self.var10_upper,
+                           self.var11_upper, self.var12_upper, self.var13_upper, self.var14_upper, self.var15_upper,
+                           self.res1_upper, self.res2_upper, self.res3_upper, self.res4_upper, self.res5_upper,
+                           self.res6_upper, self.res7_upper, self.res8_upper, self.res9_upper, self.res10_upper]
+
+        ############# ERGEBNISSE _MAX SAMMLUNG
+        self.res_formula_entry_list = []
+        for i in range(self.number_of_results):
+            self.res_formula_entry_list.append(self.dbinhaltsliste[self.index_dict["res" + str(i+1) + "_formula"]][0])
+
+        self.new_dict = {"row['a']": 'a',
+                         "row['b']": 'b',
+                         "row['c']": 'c',
+                         "row['d']": 'd',
+                         "row['e']": 'e',
+                         "row['f']": 'f',
+                         "row['g']": 'g',
+                         "row['h']": 'h',
+                         "row['i']": 'i',
+                         "row['j']": 'j',
+                         "row['k']": 'k',
+                         "row['l']": 'l',
+                         "row['m']": 'm',
+                         "row['n']": 'n',
+                         "row['o']": 'o',
+                         "row['p']": 'p',
+                         "row['q']": 'q',
+                         "row['r']": 'r',
+                         "row['s']": 's',
+                         "row['t']": 't',
+                         "row['u']": 'u',
+                         "row['v']": 'v',
+                         "row['w']": 'w',
+                         "row['x']": 'x',
+                         "row['y']": 'y' }
+
+        self.list_index_dict = {'a': 0,
+                                'b': 1,
+                                'c': 2,
+                                'd': 3,
+                                'e': 4,
+                                'f': 5,
+                                'g': 6,
+                                'h': 7,
+                                'i': 8,
+                                'j': 9,
+                                'k': 10,
+                                'l': 11,
+                                'm': 12,
+                                'n': 13,
+                                'o': 14,
+                                'p': 15,
+                                'q': 16,
+                                'r': 17,
+                                's': 18,
+                                't': 19,
+                                'u': 20,
+                                'v': 21,
+                                'w': 22,
+                                'x': 23,
+                                'y': 24,
+                                }
+
+        values = []
+
+        # Number of values per range
+        N = 5
+
+        # ersetzt formel durch numpy expressions: z.B. 2^5 -> 2**5, $v1*2+$v3 -> row[a] *2+ row[c]
+        self.formula_1_numpy_expression = fragen_gui.calculate_value_range_replace_formula_numpy(self, formula, var_res_combined_min_entries_list, var_res_combined_max_entries_list, res_min_entries_list, res_max_entries_list)
+
+
+        if self.formula_1_numpy_expression != None and self.formula_1_numpy_expression != "NaN":
+
+            # neue formel wird nach leerzeichen gesplittet um einzelne 'row[a]' durch 'a' zu ersetzen
+            self.new_list = self.formula_1_numpy_expression.split(' ')
+
+
+
+
+            self.exp_as_func = eval('lambda row: ' + self.formula_1_numpy_expression)
+
+            # self.exp_as_func is not iterable, therefore it is assigned to function[]
+            functions = [self.exp_as_func]
+
+            value_range_lower_upper_bounds(var_res_combined_min_entries_list, var_res_combined_max_entries_list, self.lower_list, self.upper_list)
+
+
+
+            # ersetzen: 'row[a]' -> 'a' als neue Liste
+            for i in range(len(self.new_list)):
+                if "row" in self.new_list[i]:
+                    if self.new_dict[self.new_list[i]] not in self.new_list2:
+                        self.new_list2.append(self.new_dict[self.new_list[i]])
+
+            self.set_nr_of_var_index = sorted(self.new_list2)
+
+            self.max_index_nr = self.list_index_dict[self.set_nr_of_var_index[-1]] + 1
+
+
+            # Berechnung der Formel. "linspace" erstellt "N" Werte zwischen zwei Grenzen -> linspace(0,10,N) N=11 --> 0,1,2,3,4,5,6,7,8,9,10
+            for p in range(len(self.set_nr_of_var_index)):
+                values.append(np.linspace(self.lower_list[self.list_index_dict[self.set_nr_of_var_index[p]]], self.upper_list[self.list_index_dict[self.set_nr_of_var_index[p]]], N))
+
+
+            df = pd.DataFrame(cartesian_product(values), index=self.set_nr_of_var_index).T
+
+
+
+            if res_prec_entry.get() != "":
+                self.var_prec_highest_value = res_prec_entry.get()
+            else:
+                for i in range(len(var_prec_entries_list)):
+                    self.var_prec_entry_list_values.append(var_prec_entries_list[i].get())
+
+                self.var_prec_highest_value = max(self.var_prec_entry_list_values)
+
+
+
+
+
+            #pd.options.display.float_format = '{:,.3f}'.format
+
+
+            for i, f in enumerate(functions):
+                df[f'f_{i + 1}'] = df.apply(f, axis=1)
+
+
+            df1 = df.apply(pd.to_numeric, errors='coerce')
+
+            #print(df1)
+            #print()
+            print(" --- ", "min: ", df1.apply(min_max).iloc[0]['f_1'], " max: ",df1.apply(min_max).iloc[1]['f_1'])
+            #print(df1.apply(min_max).iloc[0]['f_1'])
+            #print(df1.apply(min_max).iloc[1]['f_1'])
+            #print("////////////////////////")
+
+
+            self.res_min_calc_value = df1.apply(min_max).iloc[0]['f_1']
+            self.res_max_calc_value = df1.apply(min_max).iloc[1]['f_1']
+
+
+
+
+            #"{:.2f}".format(a_float)
+            #res_min_entry.delete(0, END)
+            res_min_entry.set(str("{:.2f}".format(self.res_min_calc_value)))
+            #res_max_entry.delete(0, END)
+            res_max_entry.set(str(self.res_max_calc_value))
+
+
+
+
+
+            # Prüfen ob $r.. in Formeln enthalten
+            for i in range(len(self.res_formula_entry_list)):
+                for j in range(1,10):
+                    if "$r" + str(j) in str(self.res_formula_entry_list[i].get()):
+                        print("$r" + str(j) + " found!", self.res_formula_entry_list[i].get())
+
+                        if self.res_min_entry_list[j-1].get() != "" and self.res_max_entry_list[j-1].get() != "":
+                            print("---", self.res_min_entry_list[j-1].get(), self.res_max_entry_list[j-1].get())
+
 
 
     def text_latex_call(self):
