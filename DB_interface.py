@@ -2,8 +2,7 @@ import sqlite3
 from tkinter import *
 
 class DB_Interface():
-    def __init__(self, dbname, tempdbname, root, table_dict, table_list, *args, **kwargs):
-        self.root = root
+    def __init__(self, dbname, tempdbname, table_dict, table_list, *args, **kwargs):
         self.listeners = []
         self.all_data = []
         self.db_data = [self.all_data, None, None, False] #broadcast data 1:Datenbak auswahl 2:Einzelne Frage aus Datenbank 3: daten in Temp datenbank 4:
