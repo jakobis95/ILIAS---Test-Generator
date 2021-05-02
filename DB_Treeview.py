@@ -134,18 +134,18 @@ class UI():
         Work_on_question = formelfrage(self.table_dict, work_window, self.db_I, self.ScrText, self.table_index_list, self.table_index_dict, self.bg_color, self.label_color, self.button_color)
         #self.db_I.empty_fragenauswahl()
 
-    def neue_singlechoicefrage(self,choice_window):
+    def neue_singlechoicefrage(self, choice_window):
         choice_window.destroy()
         work_window = Toplevel()
         work_on_question = singlechoice(self.table_dict, work_window, self.db_I, self.ScrText, self.table_index_list,
                                         self.table_index_dict, self.bg_color, self.label_color, self.button_color)
-    def neue_multiplechoicefrage(self,choice_window):
+    def neue_multiplechoicefrage(self, choice_window):
         choice_window.destroy()
         work_window = Toplevel()
         work_on_question = multiplechoice(self.table_dict, work_window, self.db_I, self.ScrText, self.table_index_list,
                                         self.table_index_dict, self.bg_color, self.label_color, self.button_color)
 
-    def neue_zuordnungsfrage(self,choice_window):
+    def neue_zuordnungsfrage(self, choice_window):
         choice_window.destroy()
         work_window = Toplevel()
         work_on_question = zuordnungsfrage(self.table_dict, work_window, self.db_I, self.ScrText, self.table_index_list,
@@ -242,4 +242,6 @@ class UI():
             self.ent.configure(fg="black")
             self.active = True
 
+    def Testeinstellungen_UI(self):
+        testeinstellungen = Testeinstellungen(DBI)
 
