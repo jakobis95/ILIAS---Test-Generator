@@ -238,8 +238,7 @@ class Testeinstellungen():
         self.check_examview.deselect()
         self.check_examview.grid(row=30, column=1, sticky=W)
 
-
-        self.check_examview_test_title = Checkbutton(self.frame1, text="", variable=self.index_list[self.index_dict['check_examview_test_title']][0],
+        self.check_examview_test_title = Checkbutton(self.frame1, text="", variable=self.index_list[self.index_dict['check_examview_title']][0],
                                                      onvalue=1, offvalue=0)
         self.check_examview_test_title.deselect()
         self.check_examview_test_title.grid(row=31, column=1, sticky=W)
@@ -503,7 +502,11 @@ class Testeinstellungen():
         self.concluding_remarks_bar = Scrollbar(self.frame2)
         self.concluding_remarks_infobox = Text(self.frame2, height=4, width=40, font=('Helvetica', 9))
 
+        self.profile_name_label = Label(self.frame2, text="Speichern unter...")
+        self.profile_name_label.grid(row=29, column=0)
 
+        self.profile_name_entry = Entry(self.frame2, width=15)
+        self.profile_name_entry.grid(row=29, column=1)
 
 
 
@@ -605,6 +608,61 @@ class Testeinstellungen():
 
         self.work_window.destroy()
 
+class Testeinstellungen_TRV():
+    def __init__(self, DBI, index_list, index_dict, table_dict, Width, Label_Font, Entry_Font, Button_Font, bg_color, entry_color, label_color, button_color, fg_color):
+        self.work_window = Toplevel(bg=bg_color)
+        self.table_dict = table_dict
+        self.Width = Width
+        self.DBI = DBI
+        self.ID =4
+        self.rel_Top_Abstand = .1
+        self.index_list = index_list
+        self.index_dict = index_dict
+        self.work_window.geometry("%dx%d+%d+%d" % (Width / 4, Width / 8, Width / 5, Width / 8))
+        self.DBI.subscribe(self.Update_TRV)
+        self.Frame = Frame(self.work_window)
+        self.Frame.place(relwidth=1, relheight=1, relx=0, rely=0)
+        self.create_trv()
+        self.testeinstellungen_menu()
+
+    def testeinstellungen_menu(self):
+        self.neue_einstellungen = Button(self.Frame, text="Neue einstellung erstellen", command=self.neue_einstellungen_fenster)
+        self.neue_einstellungen.place(relx=.5, rely=0)
+
+    def neue_einstellungen_fenster(self):
+        test_conf = Testeinstellungen(DBI, table_index_list[4], table_index_dict[4], table_dict['testeinstellungen'],
+                                      WIDTH, Label_Font, Entry_Font, Button_Font, bg_color, entry_color, label_color,
+                                      button_color, fg_color)
+
+    def Update_TRV(self, db_data):
+        self.trv.delete(*self.trv.get_children())
+        for table in db_data[self.ID]:
+            for data in table:
+                self.trv.insert('', 'end', values=data)
+
+    def create_trv(self):
+        # Create Treview Frame
+        self.DB_frame = tk.Frame(self.Frame)
+        self.DB_frame.place(relx=0, rely=self.rel_Top_Abstand)
+        # create Scrollbar
+        self.vsb = ttk.Scrollbar(self.DB_frame)
+        self.vsb.pack(side=RIGHT, fill=Y)
+        # create Treeview
+        self.trv = ttk.Treeview(self.DB_frame, columns=(1), show="headings", height=9,
+                                style="mystyle.Treeview")
+        self.trv.configure(yscrollcommand=self.vsb.set)
+        self.trv.tag_configure('odd', background='#ff5733')
+        self.trv.pack(fill=BOTH)
+        # Create Treeview Headings
+        self.trv.heading(1, text="Name")
+        #self.trv.heading(8, text="Zuletzt verändert")
+        # Format Columns
+        self.trv.column(1, width=int(self.Width / 9), anchor=CENTER,
+                        minwidth=int(self.Width / 30))
+
+        print('trv created')
+
+
 if __name__ == "__main__":
 
 
@@ -636,7 +694,8 @@ if __name__ == "__main__":
     index_info = DBI.get_index_info()
     table_index_list = index_info[0]
     table_index_dict = index_info[1]
+    Test_TRV = Testeinstellungen_TRV(DBI, table_index_list[4], table_index_dict[4], table_dict['testeinstellungen'], WIDTH, Label_Font, Entry_Font, Button_Font, bg_color, entry_color, label_color, button_color, fg_color)
 
-    test_conf = Testeinstellungen(DBI, table_index_list[4], table_index_dict[4], table_dict['testeinstellungen'], WIDTH, Label_Font, Entry_Font, Button_Font, bg_color, entry_color, label_color, button_color, fg_color)
+    #test_conf = Testeinstellungen(DBI, table_index_list[4], table_index_dict[4], table_dict['testeinstellungen'], WIDTH, Label_Font, Entry_Font, Button_Font, bg_color, entry_color, label_color, button_color, fg_color)
     root.mainloop()
 
