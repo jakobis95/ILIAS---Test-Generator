@@ -44,7 +44,7 @@ class Main(tk.Frame):
 
         WIDTH = int(root.winfo_screenwidth())
 
-        DBI = DB_Interface(mydb_name, mytempdb_name, root, table_dict, self.table_list)
+        DBI = DB_Interface(mydb_name, mytempdb_name, table_dict, self.table_list)
         index_info = DBI.get_index_info()
         table_index_list = index_info[0]
         table_index_dict = index_info[1]
