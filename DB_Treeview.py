@@ -242,6 +242,6 @@ class UI():
             self.ent.configure(fg="black")
             self.active = True
 
-    def Testeinstellungen_UI(self):
-        testeinstellungen = Testeinstellungen(DBI)
+   # def Testeinstellungen_UI(self):
+       # testeinstellungen = Testeinstellungen(DBI)
 
