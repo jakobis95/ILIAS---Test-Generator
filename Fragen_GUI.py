@@ -755,7 +755,9 @@ class formelfrage_permutation(fragen_gui):
                             "res{}_max",
                             "res{}_prec",
                             "res{}_points",
-                            "res{}_unit"]
+                            "res{}_unit",
+                               "perm_var_symbol_{}",
+                               "perm_var_value_{}"]
         rel_width = .5
         self.VarFrame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
         self.VarFrame.place(relx=.5, rely=0, relwidth=rel_width, relheight=.5)
@@ -771,8 +773,11 @@ class formelfrage_permutation(fragen_gui):
         self.ResFrame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
         self.ResFrame.place(relx=.5, rely=0.5, relwidth=rel_width, relheight=.5)
         self.width_scrl_UI = self.width * rel_width
-        self.Results_interface = variable_scrl_UI(varname_list_result, self.bg_color, self.label_color, self.Label_Font, self.ResFrame, self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10, Columns=6, Header="Ergebnisse", header_index=['Name.', 'Min.', 'Max', 'Tol.', 'Punkte', 'Formel'], column_type_list=[0, 0, 0, 0, 0, 0], columnwidth=(1, 1, 1, 1, 1, 1))
-
+        self.Results_interface = variable_scrl_UI(varname_list_result, self.bg_color, self.label_color, self.Label_Font,
+                                                  self.ResFrame, self.dbinhaltsliste, self.index_dict,
+                                                  self.width_scrl_UI, Rows=10, Columns=8, Header="Ergebnisse",
+                                                  header_index=['Name.', 'Min.', 'Max', 'Tol.', 'Punkte', 'Formel', 'permut\nsymbol', 'permut\nwerte'],
+                                                  column_type_list=[0, 0, 0, 0, 0, 0, 0, 0], columnwidth=(1, 1, 1, 1, 1, 1, 1, 1))
 
 
 if __name__ == "__main__":
