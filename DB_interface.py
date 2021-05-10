@@ -195,7 +195,7 @@ class DB_Interface():
 
         print("___________________________")
         self.test_data = []
-        self.question_types = ["formelfrage", "singlechoice", "multiplechoice", "zuordnungsfrage"]
+        self.question_types = ["formelfrage", "singlechoice", "multiplechoice", "zuordnungsfrage", "formelfrage_permutation"]
 
         # Durch alle tables suchen und Ergebnisse in einer Liste zusammenfassen
         # "extend" fügt eine Liste einer anderen zu
