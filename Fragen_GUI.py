@@ -735,6 +735,46 @@ class zuordnungsfrage(fragen_gui):
                                                   header_index=['Definition', 'Term', 'Punkte'], column_type_list=[2,2,0],
                                                   columnwidth=(4, 4, 1))
 
+class formelfrage_permutation(fragen_gui):
+    def __init__(self, table_dict, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, label_color, button_color, *args, **kwargs):
+        entry_color = 'white'
+        self.fragentyp = "formelfrage_permutation"
+        fg_color = bg_color
+        fragen_gui.__init__(self, table_dict, self.fragentyp, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, entry_color, label_color, button_color, fg_color, *args, **kwargs)
+        self.dbinhaltsliste[self.index_dict["question_type"]][0].set(self.fragentyp)
+        Frame.configure(bg=bg_color)
+        varname_list_variable = ["var{}_name",
+                               "var{}_min",
+                               "var{}_max",
+                               "var{}_prec",
+                               "var{}_divby",
+                               "var{}_unit"]
+
+        varname_list_result = ["res{}_name",
+                            "res{}_min",
+                            "res{}_max",
+                            "res{}_prec",
+                            "res{}_points",
+                            "res{}_unit"]
+        rel_width = .5
+        self.VarFrame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
+        self.VarFrame.place(relx=.5, rely=0, relwidth=rel_width, relheight=.5)
+        self.width_scrl_UI = self.width * rel_width
+        self.Variablen_interface = variable_scrl_UI(varname_list_variable, self.bg_color, self.label_color,
+                                                    self.Label_Font, self.VarFrame, self.dbinhaltsliste,
+                                                    self.index_dict, self.width_scrl_UI, Rows=10, Columns=5,
+                                                    Header="Variablen",
+                                                    header_index=['Name.', 'Min.', 'Max', 'Präz.', 'Teilbar durch'],
+                                                    column_type_list=[0, 0, 0, 0, 0], columnwidth=(1, 1, 1, 1, 1))
+
+        rel_width = .5
+        self.ResFrame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
+        self.ResFrame.place(relx=.5, rely=0.5, relwidth=rel_width, relheight=.5)
+        self.width_scrl_UI = self.width * rel_width
+        self.Results_interface = variable_scrl_UI(varname_list_result, self.bg_color, self.label_color, self.Label_Font, self.ResFrame, self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10, Columns=6, Header="Ergebnisse", header_index=['Name.', 'Min.', 'Max', 'Tol.', 'Punkte', 'Formel'], column_type_list=[0, 0, 0, 0, 0, 0], columnwidth=(1, 1, 1, 1, 1, 1))
+
+
+
 if __name__ == "__main__":
     root = tk.Tk()
     WIDTH = int(root.winfo_screenwidth() / 1.5)
