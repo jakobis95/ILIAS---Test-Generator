@@ -6,6 +6,7 @@ from DB_interface import DB_Interface
 from XML_class import XML_Interface
 from Taxonomie_interface import TAX_Interface
 from ScrolledText_Functionality import Textformatierung
+
 class Main(tk.Frame):
 
     def __init__(self, *args, **kwargs):
@@ -24,14 +25,14 @@ class Main(tk.Frame):
         Entry_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Entrys
         Button_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Buttons
         self.table_list = ['formelfrage', 'singlechoice', 'multiplechoice',
-                           'zuordnungsfrage']  # hier sind die Namen der Table drinne die verwendet werden können
+                           'zuordnungsfrage', 'formelfrage_permutation']  # hier sind die Namen der Table drinne die verwendet werden können
         bg_color = '#4cc9f0'  # general Background color
         efg_color = '#3a0ca3'  # Entry foreground color
         entry_color = 'white'  # Entry Background color
         label_color = '#3a0ca3'
         button_color = '#3f37c9'
         fg_color = '#4cc9f0'  # general foregroundcolor
-        table_dict = {'formelfrage': 0, 'singlechoice': 1, 'multiplechoice': 2, 'zuordnungsfrage': 3}
+        table_dict = {'formelfrage': 0, 'singlechoice': 1, 'multiplechoice': 2, 'zuordnungsfrage': 3, 'formelfrage_permutation': 4}
 
         mydb_name = 'generaldb.db'         #Datenbank mit allen Fragentypen
         mytempdb_name = 'generaldb2.db' #Kopie der originalen Datenbank
