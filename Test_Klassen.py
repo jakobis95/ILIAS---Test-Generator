@@ -11,15 +11,16 @@ from ScrolledText_Functionality import Textformatierung
 class Testeinstellungen():
     def __init__(self, DBI, index_list, index_dict, table_dict, Width, Label_Font, Entry_Font, Button_Font, bg_color, entry_color, label_color, button_color, fg_color):
         self.work_window = Toplevel(bg=bg_color)
+
         self.table_dict = table_dict
         self.DBI = DBI
         self.index_list = index_list
         self.index_dict = index_dict
+        for i in self.index_list:
+            i[0].set('')
         self.work_window.geometry("%dx%d+%d+%d" % (Width/1.5, Width/2.7, Width/5, Width/8))
         self.DBI.subscribe(self.Fill_Entrys_From_DB)
 
-        print(index_list)
-        print(index_dict)
 
 
         self.frame1 = LabelFrame(self.work_window, text="Test Einstellungen", padx=5, pady=5)
@@ -31,6 +32,7 @@ class Testeinstellungen():
         self.Labels()
         self.Checkboxes_Entrys()
         self.Radiobuttons()
+        self.index_list[self.index_dict['type']][0].set('testeinstellungen')
 
 
     def Labels(self):
@@ -243,106 +245,104 @@ class Testeinstellungen():
         self.check_examview_test_title.deselect()
         self.check_examview_test_title.grid(row=31, column=1, sticky=W)
 
-        self.var_examview_user_name = IntVar()
-        self.check_examview_user_name = Checkbutton(self.frame1, text="", variable=self.var_examview_user_name,
-                                                    onvalue=1, offvalue=0)
-        self.check_examview_user_name.deselect()
-        self.check_examview_user_name.grid(row=32, column=1, sticky=W)
 
-        self.var_show_ilias_nr = IntVar()
-        self.check_show_ilias_nr = Checkbutton(self.frame1, text="", variable=self.var_show_ilias_nr, onvalue=1,
+        self.check_examview_username = Checkbutton(self.frame1, text="", variable=self.index_list[self.index_dict['check_examview_username']][0],
+                                                    onvalue=1, offvalue=0)
+        self.check_examview_username.deselect()
+        self.check_examview_username.grid(row=32, column=1, sticky=W)
+
+
+        self.check_show_ilias_nr = Checkbutton(self.frame1, text="", variable=self.index_list[self.index_dict['check_show_ilias_nr']][0], onvalue=1,
                                                offvalue=0)
         self.check_show_ilias_nr.deselect()
         self.check_show_ilias_nr.grid(row=33, column=1, sticky=W)
 
-        self.var_autosave = IntVar()
-        self.check_autosave = Checkbutton(self.frame2, text="", variable=self.var_autosave, onvalue=1, offvalue=0,
-                                          command=lambda v=self.var_autosave: self.enable_autosave(
+
+        self.check_autosave = Checkbutton(self.frame2, text="", variable=self.index_list[self.index_dict['check_autosave']][0], onvalue=1, offvalue=0,
+                                          command=lambda v=self.index_list[self.index_dict['check_autosave']][0].get(): self.enable_autosave(
                                               self,
                                               v))
 
-        self.check_autosave_interval_label = Label(self.frame2, text="Speicherintervall (in Sek.):")
-        self.check_autosave_interval_entry = Entry(self.frame2, width=10)
-        self.check_autosave.deselect()
-        self.check_autosave.grid(row=4, column=3, sticky=W)
+        # self.check_autosave_interval_label = Label(self.frame2, text="Speicherintervall (in Sek.):")
+        # self.check_autosave_interval_entry = Entry(self.frame2, variable=self.index_list[self.index_dict['entry_autosave_interval']][0], width=10)
+        # self.check_autosave.deselect()
+        # self.check_autosave.grid(row=4, column=3, sticky=W)
 
-        self.var_mix_questions = IntVar()
-        self.check_mix_questions = Checkbutton(self.frame2, text="", variable=self.var_mix_questions, onvalue=1,
+        self.check_mix_questions = Checkbutton(self.frame2, text="", variable=self.index_list[self.index_dict['check_mix_questions']][0], onvalue=1,
                                                offvalue=0)
         self.check_mix_questions.deselect()
+        print("Ckeck question hat die werigkeit:",self.index_list[self.index_dict['check_mix_questions']][0].get())
         self.check_mix_questions.grid(row=5, column=3, sticky=W)
 
-        self.var_show_solution_notes = IntVar()
-        self.check_show_solution_notes = Checkbutton(self.frame2, text="", variable=self.var_show_solution_notes,
+
+        self.check_show_solution_notes = Checkbutton(self.frame2, text="", variable=self.index_list[self.index_dict['check_show_solutions_notes']][0],
                                                      onvalue=1, offvalue=0)
         self.check_show_solution_notes.deselect()
         self.check_show_solution_notes.grid(row=6, column=3, sticky=W)
 
-        self.var_direct_response = IntVar()
-        self.check_direct_response = Checkbutton(self.frame2, text="", variable=self.var_direct_response, onvalue=1,
+        self.check_direct_response = Checkbutton(self.frame2, text="", variable=self.index_list[self.index_dict['check_direct_response']][0], onvalue=1,
                                                  offvalue=0)
         self.check_direct_response.deselect()
         self.check_direct_response.grid(row=7, column=3, sticky=W)
+        self.index_list[self.index_dict['check_direct_response']][0].set(0)
 
-        self.var_mandatory_questions = IntVar()
-        self.check_mandatory_questions = Checkbutton(self.frame2, text="", variable=self.var_mandatory_questions,
+
+        self.check_mandatory_questions = Checkbutton(self.frame2, text="", variable=self.index_list[self.index_dict['check_mandatory_questions']][0],
                                                      onvalue=1, offvalue=0)
         self.check_mandatory_questions.deselect()
         self.check_mandatory_questions.grid(row=12, column=3, sticky=W)
 
-        self.var_use_previous_solution = IntVar()
-        self.check_use_previous_solution = Checkbutton(self.frame2, text="", variable=self.var_use_previous_solution,
+
+        self.check_use_previous_solution = Checkbutton(self.frame2, text="", variable=self.index_list[self.index_dict['check_use_previous_solution']][0],
                                                        onvalue=1, offvalue=0)
         self.check_use_previous_solution.deselect()
         self.check_use_previous_solution.grid(row=14, column=3, sticky=W)
 
-        self.var_show_test_cancel = IntVar()
-        self.check_show_test_cancel = Checkbutton(self.frame2, text="", variable=self.var_show_test_cancel, onvalue=1,
+
+        self.check_show_test_cancel = Checkbutton(self.frame2, text="", variable=self.index_list[self.index_dict['check_show_test_cancel']][0], onvalue=1,
                                                   offvalue=0)
         self.check_show_test_cancel.deselect()
         self.check_show_test_cancel.grid(row=15, column=3, sticky=W)
 
-        self.var_show_question_list_process_status = IntVar()
+
         self.check_show_question_list_process_status = Checkbutton(self.frame2, text="",
-                                                                   variable=self.var_show_question_list_process_status,
+                                                                   variable=self.index_list[self.index_dict['check_show_question_list_process_status']][0],
                                                                    onvalue=1, offvalue=0)
         self.check_show_question_list_process_status.deselect()
         self.check_show_question_list_process_status.grid(row=18, column=3, sticky=W)
 
-        self.var_question_mark = IntVar()
-        self.check_question_mark = Checkbutton(self.frame2, text="", variable=self.var_question_mark, onvalue=1,
+        self.check_question_mark = Checkbutton(self.frame2, text="", variable=self.index_list[self.index_dict['check_question_mark']][0], onvalue=1,
                                                offvalue=0)
         self.check_question_mark.deselect()
         self.check_question_mark.grid(row=19, column=3, sticky=W)
 
-        self.var_overview_answers = IntVar()
-        self.check_overview_answers = Checkbutton(self.frame2, text="", variable=self.var_overview_answers, onvalue=1,
+
+        self.check_overview_answers = Checkbutton(self.frame2, text="", variable=self.index_list[self.index_dict['check_overview_answers']][0], onvalue=1,
                                                   offvalue=0)
         self.check_overview_answers.grid(row=21, column=3, sticky=W)
 
-        self.var_show_end_comment = IntVar()
-        self.check_show_end_comment = Checkbutton(self.frame2, text="", variable=self.var_show_end_comment, onvalue=1,
+        self.check_show_end_comment = Checkbutton(self.frame2, text="", variable=self.index_list[self.index_dict['check_overview_answers']][0], onvalue=1,
                                                   offvalue=0,
                                                   command=lambda
-                                                      v=self.var_show_end_comment: self.show_concluding_remarks(
+                                                      v=self.index_list[self.index_dict['check_overview_answers']][0].get(): self.show_concluding_remarks(
                                                       self, v))
         self.check_show_end_comment.deselect()
         self.check_show_end_comment.grid(row=22, column=3, sticky=W)
 
-        self.var_forwarding = IntVar()
-        self.check_forwarding = Checkbutton(self.frame2, text="", variable=self.var_forwarding, onvalue=1, offvalue=0)
+
+        self.check_forwarding = Checkbutton(self.frame2, text="", variable=self.index_list[self.index_dict['check_forwarding']][0], onvalue=1, offvalue=0)
         self.check_forwarding.deselect()
         self.check_forwarding.grid(row=23, column=3, sticky=W)
 
-        self.var_notification = IntVar()
-        self.check_notification = Checkbutton(self.frame2, text="", variable=self.var_notification, onvalue=1,
+
+        self.check_notification = Checkbutton(self.frame2, text="", variable=self.index_list[self.index_dict['check_notification']][0], onvalue=1,
                                               offvalue=0)
         self.check_notification.deselect()
         self.check_notification.grid(row=24, column=3, sticky=W)
 
         # --------------------------- RADIO BUTTONS ---------------------------------------
     def Radiobuttons(self):
-        self.select_question = IntVar()
+        self.select_question = self.index_list[self.index_dict['radio_select_question']][0]
         self.select_question.set(0)
         self.select_question_radiobtn1 = Radiobutton(self.frame1, text="Fest definierte Fragenauswahl",
                                                      variable=self.select_question, value=0)
@@ -505,8 +505,13 @@ class Testeinstellungen():
         self.profile_name_label = Label(self.frame2, text="Speichern unter...")
         self.profile_name_label.grid(row=29, column=0)
 
-        self.profile_name_entry = Entry(self.frame2, width=15)
+        self.profile_name_entry = Entry(self.frame2, width=15, textvariable=self.index_list[self.index_dict['profile_name']][0])
         self.profile_name_entry.grid(row=29, column=1)
+
+        self.Save_btn = Button(self.frame2, text="Save Profile", width=15, command=self.save_testeinstellungen_in_db)
+        self.Save_btn.grid(row=29, column=3)
+
+
 
 
 
@@ -598,10 +603,16 @@ class Testeinstellungen():
 
     def Fill_Entrys_From_DB(self, db_data):
         j = 0
+        print("Fill entry mit", db_data[1][4])
+        for i in db_data[1][4]:  # todo diese exception ist so nicht ok aber funktioniert erstmal um den Textbox Ihren Textzuzuweisen.
 
-        for i in db_data[1][self.table_dict['testeinstellungen']]:  # todo diese exception ist so nicht ok aber funktioniert erstmal um den Textbox Ihren Textzuzuweisen.
             self.index_list[j][0].set(i)
             j = j + 1
+        print(self.index_list[self.index_dict['profile_name']][0].get())
+
+    def save_testeinstellungen_in_db(self):
+        print("das soll gespeichert werden:", self.index_list)
+        DBI.Add_data_to_DB(self.index_list, self.index_list[3][0].get())
 
     def on_closing(self):
         self.DBI.unsubscribe(self.Fill_Entrys_From_DB)
@@ -624,10 +635,12 @@ class Testeinstellungen_TRV():
         self.Frame.place(relwidth=1, relheight=1, relx=0, rely=0)
         self.create_trv()
         self.testeinstellungen_menu()
+        self.clear()
+        self.trv.bind('<Double-Button-1>', self.Select_from_DB)
 
     def testeinstellungen_menu(self):
         self.neue_einstellungen = Button(self.Frame, text="Neue einstellung erstellen", command=self.neue_einstellungen_fenster)
-        self.neue_einstellungen.place(relx=.5, rely=0)
+        self.neue_einstellungen.place(relx=.05, rely=.9)
 
     def neue_einstellungen_fenster(self):
         test_conf = Testeinstellungen(DBI, table_index_list[4], table_index_dict[4], table_dict['testeinstellungen'],
@@ -636,14 +649,18 @@ class Testeinstellungen_TRV():
 
     def Update_TRV(self, db_data):
         self.trv.delete(*self.trv.get_children())
-        for table in db_data[self.ID]:
-            for data in table:
-                self.trv.insert('', 'end', values=data)
+        print("fill trv from db", db_data[0][4])
+        data = db_data[0][4]
+        for input in data:
+                self.trv.insert('', 'end', values=input)
+
 
     def create_trv(self):
+        self.trv_label = Label(self.Frame, text="Testeinstellungs Profile")
+        self.trv_label.place(relx=0.05, rely=0, relwidth=.5)
         # Create Treview Frame
         self.DB_frame = tk.Frame(self.Frame)
-        self.DB_frame.place(relx=0, rely=self.rel_Top_Abstand)
+        self.DB_frame.place(relx=0.05, rely=self.rel_Top_Abstand)
         # create Scrollbar
         self.vsb = ttk.Scrollbar(self.DB_frame)
         self.vsb.pack(side=RIGHT, fill=Y)
@@ -662,6 +679,20 @@ class Testeinstellungen_TRV():
 
         print('trv created')
 
+    def clear(self):
+        #self.DBI.get_complete_DB(0)
+        self.DBI.get_complete_DB(0)
+
+    def on_closing(self):
+        self.DBI.unsubscribe(self.Update_TRV())
+        self.work_window.destroy()
+
+    def Select_from_DB(self, a):
+
+        gesucht = self.trv.item(self.trv.focus())
+        print("gesucht:", gesucht)
+        self.neue_einstellungen_fenster()
+        self.DBI.get_question(gesucht['values'][0], 1)
 
 if __name__ == "__main__":
 
@@ -677,7 +708,7 @@ if __name__ == "__main__":
     Label_Font = font.Font(family='Verdana', size=10, weight='bold')  # Font definition for Labels
     Entry_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Entrys
     Button_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Buttons
-    table_list = ['formelfrage', 'singlechoice', 'multiplechoice','zuordnungsfrage', 'testeinstellungen']  # hier sind die Namen der Table drinne die verwendet werden können
+    table_list = ['formelfrage', 'singlechoice', 'multiplechoice', 'zuordnungsfrage', 'testeinstellungen']  # hier sind die Namen der Table drinne die verwendet werden können
     bg_color = '#4cc9f0'  # general Background color
     efg_color = '#3a0ca3'  # Entry foreground color
     entry_color = 'white'  # Entry Background color

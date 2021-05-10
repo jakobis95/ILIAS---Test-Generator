@@ -9,7 +9,7 @@ class DB_Interface():
         self.table = 'formelfrage'
         self.table_dict = table_dict
         self.table_list = table_list
-        #self.q = q
+
         # Insert Data from Database
         self.mydb = sqlite3.connect(dbname)
         self.cursor = self.mydb.cursor()
@@ -33,7 +33,7 @@ class DB_Interface():
         self.notify()
 
     def does_title_exist(self, title): #todo testing required
-
+        state = False
         print("does title exist", title)
         for table in self.table_list:
             self.query = " SELECT * FROM " + table + " WHERE " + self.table_index_list[self.table_dict[table]][3][1] + " = '" + title + "' "
@@ -42,17 +42,17 @@ class DB_Interface():
             print("das wurde in der DB gesucht", title)
             print("das wurde in der DB gefunden", vergleich)
             if vergleich:
-                return True
-            else:
-                return False
+                state = True
 
-
+        return state
 
     def get_question(self, q2, id): #todo testing required
         zwischenspeicher = []
         for table in self.table_list:
-            query = " SELECT * FROM " + table + " WHERE " + self.index_list[3][1] + " LIKE '" + q2 + "' "
-       # print(self.query)
+            index = self.table_index_list[self.table_dict[table]][3][1]
+            query = " SELECT * FROM " + table + " WHERE " + index + " LIKE '" + q2 + "' "
+
+            print(self.query)
             self.cursor.execute(query)
             test = self.cursor.fetchone()
             if test == None:
@@ -139,7 +139,8 @@ class DB_Interface():
         if self.does_title_exist(title):
             print("title existiert bereits daher konnte die Frage nicht erstellt werden")
         else:
-            print("title existiert noch nicht")
+            print("title existiert noch nicht",self.table_dict[q[2][0].get()])
+            print(q)
             table_name = q[2][0].get() #table name ist gleich dem FragentypA
             index = self.table_dict[table_name]
             self.cursor.execute("INSERT INTO " + table_name + " (" + self.index_list[3][1] + ") VALUES (:Titel)",
@@ -185,9 +186,26 @@ class DB_Interface():
     def get_complete_DB(self, id):
         all_data = []
         for table in self.table_list:
-            self.query = "SELECT " + self.table_index_list[0][0][1] + ", " + self.table_index_list[0][1][1] + ", " + self.table_index_list[0][2][1] + ", " + self.table_index_list[0][3][1] + ", " + self.table_index_list[0][4][1] + ", " + self.table_index_list[0][189][1] + " FROM " + table + ""
+            if table == "testeinstellungen":
+                self.query = "SELECT " + self.table_index_list[self.table_dict[table]][3][1] + " FROM " + table + ""
+                print("Table", table)
+            else:
+                self.query = "SELECT " + self.table_index_list[self.table_dict[table]][0][1] + ", " + self.table_index_list[self.table_dict[table]][1][1] + ", " + self.table_index_list[self.table_dict[table]][2][1] + ", " + self.table_index_list[self.table_dict[table]][3][1] + ", " + self.table_index_list[self.table_dict[table]][4][1] + ", " + self.table_index_list[0][189][1] + " FROM " + table + ""
             self.cursorlist[id].execute(self.query)
             all_data.append(self.cursorlist[id].fetchall())
+
+        self.db_data[id] = all_data
+        print("all data", all_data)
+        self.notify()
+
+    def get_testeinstellungen(self, id):
+        all_data = []
+        for table in self.table_list:
+            if table == "testeinstellungen":
+                self.query = "SELECT " + self.table_index_list[self.table_dict[table]][3][1] + " FROM " + table + ""
+                self.cursorlist[id].execute(self.query)
+                all_data.append(self.cursorlist[id].fetchall())
+        print("all data", all_data)
         self.db_data[id] = all_data
         self.notify()
 
