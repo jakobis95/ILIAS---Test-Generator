@@ -166,10 +166,6 @@ class XML_Interface():
             self.qpl_file_path = ""
             self.tst_file_path = ""
 
-            print("=======")
-            print(self.test_data)
-            print("=======")
-
             ###### Prüft, ob die zu erstellenden Fragen, von EINEM Fragentyp sind
             self.all_ff_questions_flag = 0
             self.all_sc_questions_flag = 0
