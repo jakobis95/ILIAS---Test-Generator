@@ -96,6 +96,9 @@ class Main(tk.Frame):
         Test_einstellungen = Button(Right_Menu_Frame, text="Testeinstellungen", bg=button_color, fg=bg_color, command=DBT.Testeinstellungen_UI)
         Test_einstellungen['font'] = Button_Font
         Test_einstellungen.pack(side="top", fill=X)
+        #Test_einstellungen = Button(Right_Menu_Frame, text="Testeinstellungen", bg=button_color, fg=bg_color, command=self.DBT.Testeinstellungen_UI)
+        #Test_einstellungen['font'] = Button_Font
+        #Test_einstellungen.pack(side="top", fill=X)
         #Put_btn = tk.Button(bottom_Frame, text="Add to Test")
         #Put_btn.place(relx=0, rely=0)
 
