@@ -620,32 +620,79 @@ class Testeinstellungen():
         self.work_window.destroy()
 
 class Testeinstellungen_TRV():
-    def __init__(self, DBI, index_list, index_dict, table_dict, Width, Label_Font, Entry_Font, Button_Font, bg_color, entry_color, label_color, button_color, fg_color):
+    def __init__(self, DBI, XML, index_list, index_dict, table_dict, Width, Label_Font, Entry_Font, Button_Font, bg_color, entry_color, label_color, button_color, fg_color):
+        self.XML = XML
         self.work_window = Toplevel(bg=bg_color)
+        self.Label_Font = Label_Font
+        self.Button_Font = Button_Font
+        self.Entry_Font = Entry_Font
         self.table_dict = table_dict
-        self.Width = Width
+        self.Width = Width/4
         self.DBI = DBI
         self.ID =4
         self.rel_Top_Abstand = .1
+        self.bg_color = bg_color
+        self.entry_color = entry_color
+        self.label_color = label_color
+        self.button_color = button_color
+        self.fg_color = fg_color
         self.index_list = index_list
         self.index_dict = index_dict
         self.work_window.geometry("%dx%d+%d+%d" % (Width / 4, Width / 8, Width / 5, Width / 8))
         self.DBI.subscribe(self.Update_TRV)
-        self.Frame = Frame(self.work_window)
+        self.Frame = Frame(self.work_window, bg=bg_color)
         self.Frame.place(relwidth=1, relheight=1, relx=0, rely=0)
         self.create_trv()
         self.testeinstellungen_menu()
         self.clear()
         self.trv.bind('<Double-Button-1>', self.Select_from_DB)
 
+
     def testeinstellungen_menu(self):
-        self.neue_einstellungen = Button(self.Frame, text="Neue einstellung erstellen", command=self.neue_einstellungen_fenster)
-        self.neue_einstellungen.place(relx=.05, rely=.9)
+        self.neue_einstellungen = Button(self.Frame, text="Neues Profil", command=self.neue_einstellungen_fenster, bg=button_color, fg=bg_color)
+        self.neue_einstellungen.place(relx=.5, rely=.9, relwidth=.25)
+        self.neue_einstellungen['font'] = self.Button_Font
+
+        self.testeinstellung_löschen = Button(self.Frame, text="Auswahl löschen", command=self.delete_from_db, bg=button_color, fg=bg_color)
+        self.testeinstellung_löschen.place(relx=.75, rely=.9, relwidth=.25)
+        self.testeinstellung_löschen['font'] = self.Button_Font
+
+        self.Test_erstellen = Button(self.Frame, text="Testerstellen", command=self.neue_einstellungen_fenster, bg=button_color, fg=bg_color)
+        self.Test_erstellen.place(relx=0, rely=.6, relwidth=.4)
+        self.Test_erstellen['font'] = self.Button_Font
+
+        self.testeinstellung_ausgewählt = Label(self.Frame, text="Ausgewählte Testeinstellung:", bg=label_color, fg=bg_color)
+        self.testeinstellung_ausgewählt.place(relx=0, rely=.2, relwidth=.4, relheight=.1)
+        self.testeinstellung_ausgewählt['font'] = self.Label_Font
+
+        self.testeinstellung_ausgewählt_label = Label(self.Frame, text="keine testeinstellungen ausgewählt", bg=label_color, fg=bg_color)
+        self.testeinstellung_ausgewählt_label.place(relx=0, rely=.3, relwidth=.4, relheight=.1)
+        self.testeinstellung_ausgewählt_label['font'] = self.Label_Font
+
+        self.testeinstellung_auswählen = Button(self.Frame, text="Testeinstellungen auswählen", command=self.change_auswahl_label, bg=button_color, fg=bg_color)
+        self.testeinstellung_auswählen.place(relx=0, rely=.1, relwidth=.4)
+        self.testeinstellung_auswählen['font'] = self.Button_Font
 
     def neue_einstellungen_fenster(self):
         test_conf = Testeinstellungen(DBI, table_index_list[4], table_index_dict[4], table_dict['testeinstellungen'],
                                       WIDTH, Label_Font, Entry_Font, Button_Font, bg_color, entry_color, label_color,
                                       button_color, fg_color)
+    def delete_from_db(self):
+        TE = self.trv.item(self.trv.focus())
+        self.DBI.delete_DB_testeinstellung_content(TE['values'][0], 0)
+
+    def create_test(self):
+        self.DBI.get_question(self.TE_Auswahl, 1)
+
+        self.XML.create_test_or_pool(self, self.TE_Auswahl, ilias_test_or_pool="test")
+
+    def change_auswahl_label(self):
+        print("change")
+        self.TE_Auswahl = self.trv.item(self.trv.focus())
+        print(self.TE_Auswahl)
+        self.TE = self.TE_Auswahl['values'][0]
+        self.testeinstellung_ausgewählt_label.configure(text=self.TE)
+
 
     def Update_TRV(self, db_data):
         self.trv.delete(*self.trv.get_children())
@@ -656,11 +703,12 @@ class Testeinstellungen_TRV():
 
 
     def create_trv(self):
-        self.trv_label = Label(self.Frame, text="Testeinstellungs Profile")
-        self.trv_label.place(relx=0.05, rely=0, relwidth=.5)
+        self.trv_label = Label(self.Frame, text="Testeinstellungs Profile", bg=self.label_color, fg=self.fg_color)
+        self.trv_label.place(relx=0.5, rely=0, relwidth=.6, relheight=.1)
+        self.trv_label['font'] = self.Label_Font
         # Create Treview Frame
         self.DB_frame = tk.Frame(self.Frame)
-        self.DB_frame.place(relx=0.05, rely=self.rel_Top_Abstand)
+        self.DB_frame.place(relx=0.5, rely=self.rel_Top_Abstand)
         # create Scrollbar
         self.vsb = ttk.Scrollbar(self.DB_frame)
         self.vsb.pack(side=RIGHT, fill=Y)
@@ -674,8 +722,8 @@ class Testeinstellungen_TRV():
         self.trv.heading(1, text="Name")
         #self.trv.heading(8, text="Zuletzt verändert")
         # Format Columns
-        self.trv.column(1, width=int(self.Width / 9), anchor=CENTER,
-                        minwidth=int(self.Width / 30))
+        self.trv.column(1, width=int(self.Width*(4.7/10) ), anchor=CENTER,
+                        minwidth=int(self.Width / 3))
 
         print('trv created')
 
