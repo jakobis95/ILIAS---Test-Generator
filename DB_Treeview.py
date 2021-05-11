@@ -1,7 +1,7 @@
 from tkinter import *
 import tkinter as tk
 from tkinter import ttk
-from Fragen_GUI import formelfrage, singlechoice, multiplechoice, zuordnungsfrage
+from Fragen_GUI import formelfrage, singlechoice, multiplechoice, zuordnungsfrage, formelfrage_permutation
 from ScrolledText_Functionality import Textformatierung
 
 class UI():
@@ -151,6 +151,12 @@ class UI():
         work_on_question = zuordnungsfrage(self.table_dict, work_window, self.db_I, self.ScrText, self.table_index_list,
                                         self.table_index_dict, self.bg_color, self.label_color, self.button_color)
 
+    def neue_fromelfrage_permutation(self, choice_window):
+        choice_window.destroy()
+        work_window = Toplevel()
+        Work_on_question = formelfrage_permutation(self.table_dict, work_window, self.db_I, self.ScrText, self.table_index_list, self.table_index_dict, self.bg_color, self.label_color, self.button_color)
+        #self.db_I.empty_fragenauswahl()
+
     def choose_qt_typ(self):
         work_window = Toplevel(bg=self.bg_color)
         work_window.geometry("%dx%d+%d+%d" % (self.Width/4, self.Width/10, self.Width/2, self.Width/4))
@@ -169,6 +175,9 @@ class UI():
         zuordnungsfrage = Button(work_window, text="Zuodnungsfrage", bg=self.button_color, fg=self.bg_color, command=lambda: self.neue_zuordnungsfrage(work_window))
         zuordnungsfrage['font'] = self.Button_Font
         zuordnungsfrage.pack(side="top", fill=X)
+        formelfrage_permutation = Button(work_window, text="Formelfrage Permutation", bg=self.button_color, fg=self.bg_color, command=lambda: self.neue_fromelfrage_permutation(work_window))
+        formelfrage_permutation['font'] = self.Button_Font
+        formelfrage_permutation.pack(side="top", fill=X)
 
     def update(self, db_data):
         self.trv.delete(*self.trv.get_children())
@@ -227,6 +236,12 @@ class UI():
             print("Hier wir in zukunft eine zuodnungsfrage Frage geöffnet")
             work_on_question = zuordnungsfrage(self.table_dict, work_window, self.db_I, self.ScrText, self.table_index_list,
                                           self.table_index_dict, self.bg_color, self.label_color, self.button_color)
+            self.db_I.get_question(gesucht['values'][3], 1)
+
+        elif gesucht['values'][2] == "formelfrage_permutation":
+            work_window = Toplevel()
+            work_window.title(gesucht['values'][3])
+            Work_on_question = formelfrage_permutation(self.table_dict, work_window, self.db_I, self.ScrText, self.table_index_list, self.table_index_dict, self.bg_color, self.label_color, self.button_color)
             self.db_I.get_question(gesucht['values'][3], 1)
         else:
             print("der Fragentyp konnte nicht zugeornet werden ")
