@@ -613,7 +613,7 @@ class Testeinstellungen():
 
     def save_testeinstellungen_in_db(self):
         print("das soll gespeichert werden:", self.index_list)
-        DBI.Add_data_to_DB(self.index_list, self.index_list[3][0].get())
+        self.DBI.Add_data_to_DB(self.index_list, self.index_list[3][0].get())
 
     def on_closing(self):
         self.DBI.unsubscribe(self.Fill_Entrys_From_DB)
@@ -658,7 +658,7 @@ class Testeinstellungen_TRV():
         self.testeinstellung_löschen.place(relx=.75, rely=.9, relwidth=.25)
         self.testeinstellung_löschen['font'] = self.Button_Font
 
-        self.Test_erstellen = Button(self.Frame, text="Testerstellen", command=self.neue_einstellungen_fenster, bg=self.button_color, fg=self.bg_color)
+        self.Test_erstellen = Button(self.Frame, text="Testerstellen", command=self.create_test, bg=self.button_color, fg=self.bg_color)
         self.Test_erstellen.place(relx=0, rely=.6, relwidth=.4)
         self.Test_erstellen['font'] = self.Button_Font
 
@@ -675,9 +675,9 @@ class Testeinstellungen_TRV():
         self.testeinstellung_auswählen['font'] = self.Button_Font
 
     def neue_einstellungen_fenster(self):
-        test_conf = Testeinstellungen(DBI, table_index_list[4], table_index_dict[4], table_dict['testeinstellungen'],
-                                      WIDTH, Label_Font, Entry_Font, Button_Font, bg_color, entry_color, label_color,
-                                      button_color, fg_color)
+        test_conf = Testeinstellungen(self.DBI, self.index_list, self.index_dict, self.table_dict,
+                                      self.Width, self.Label_Font, self.Entry_Font, self.Button_Font, self.bg_color, self.entry_color, self.label_color,
+                                      self.button_color, self.fg_color)
     def delete_from_db(self):
         TE = self.trv.item(self.trv.focus())
         self.DBI.delete_DB_testeinstellung_content(TE['values'][0], 0)
@@ -685,7 +685,7 @@ class Testeinstellungen_TRV():
     def create_test(self):
         self.DBI.get_question(self.TE_Auswahl, 1)
 
-        self.XML.create_test_or_pool(self, self.TE_Auswahl, ilias_test_or_pool="test")
+        self.XML.create_test_or_pool(self, self.TE_Auswahl, ilias_test_or_pool="ilias_test")
 
     def change_auswahl_label(self):
         print("change")
@@ -697,8 +697,8 @@ class Testeinstellungen_TRV():
 
     def Update_TRV(self, db_data):
         self.trv.delete(*self.trv.get_children())
-        print("fill trv from db", db_data[0][4])
-        data = db_data[0][4]
+        print("fill trv from db", db_data[0][5])
+        data = db_data[0][5]
         for input in data:
                 self.trv.insert('', 'end', values=input)
 
