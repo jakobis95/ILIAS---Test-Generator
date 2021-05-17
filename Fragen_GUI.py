@@ -764,7 +764,7 @@ class formelfrage_permutation(fragen_gui):
         self.width_scrl_UI = self.width * rel_width
         self.Variablen_interface = variable_scrl_UI(varname_list_variable, self.bg_color, self.label_color,
                                                     self.Label_Font, self.VarFrame, self.dbinhaltsliste,
-                                                    self.index_dict, self.width_scrl_UI, Rows=10, Columns=5,
+                                                    self.index_dict, self.width_scrl_UI, Rows=15, Columns=5,
                                                     Header="Variablen",
                                                     header_index=['Name.', 'Min.', 'Max', 'Präz.', 'Teilbar durch'],
                                                     column_type_list=[0, 0, 0, 0, 0], columnwidth=(1, 1, 1, 1, 1))
