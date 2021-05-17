@@ -21,7 +21,6 @@ class Main(tk.Frame):
 
 
         # Farben und Schriften Definitionen
-<<<<<<< HEAD
         Label_Font = font.Font(family='Verdana', size=10, weight='bold')  # Font definition for Labels
         Entry_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Entrys
         Button_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Buttons
@@ -35,7 +34,7 @@ class Main(tk.Frame):
         button_color = '#3f37c9'
         fg_color = '#4cc9f0'  # general foregroundcolor
         table_dict = {'formelfrage': 0, 'singlechoice': 1, 'multiplechoice': 2, 'zuordnungsfrage': 3, 'formelfrage_permutation': 4}
-=======
+
         self.Label_Font = font.Font(family='Verdana', size=10, weight='bold')  # Font definition for Labels
         self.Entry_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Entrys
         self.Button_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Buttons
@@ -47,7 +46,7 @@ class Main(tk.Frame):
         self.button_color = '#3f37c9'
         self.fg_color = '#4cc9f0'  # general foregroundcolor
         self.table_dict = {'formelfrage': 0, 'singlechoice': 1, 'multiplechoice': 2, 'zuordnungsfrage': 3, 'testeinstellungen': 4}
->>>>>>> 0f7f29df598b12743f0ab646d7fa9c86c1de079f
+
 
         mydb_name = 'generaldb.db'         #Datenbank mit allen Fragentypen
         mytempdb_name = 'generaldb2.db' #Kopie der originalen Datenbank
@@ -104,12 +103,11 @@ class Main(tk.Frame):
         create_Pool = Button(Right_Menu_Frame, text="Pool erstellen", bg=self.button_color, fg=self.bg_color, command=lambda: xml_interface.create_test_or_pool("ilias_pool"))
         create_Pool['font'] = self.Button_Font
         create_Pool.pack(side="top", fill=X)
-<<<<<<< HEAD
+
         #Test_einstellungen = Button(Right_Menu_Frame, text="Testeinstellungen", bg=button_color, fg=bg_color, command=DBT.Testeinstellungen_UI)
         #Test_einstellungen['font'] = Button_Font
         #Test_einstellungen.pack(side="top", fill=X)
-=======
->>>>>>> 0f7f29df598b12743f0ab646d7fa9c86c1de079f
+
         #Test_einstellungen = Button(Right_Menu_Frame, text="Testeinstellungen", bg=button_color, fg=bg_color, command=self.DBT.Testeinstellungen_UI)
         #Test_einstellungen['font'] = Button_Font
         #Test_einstellungen.pack(side="top", fill=X)
