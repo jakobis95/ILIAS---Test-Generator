@@ -4,6 +4,7 @@ import tkinter.font as font
 #from Main import Main
 from DB_interface import DB_Interface
 from tkinter import ttk
+from XML_class import XML_Interface
 from Fragen_GUI import formelfrage, singlechoice, multiplechoice, zuordnungsfrage
 from ScrolledText_Functionality import Textformatierung
 
@@ -649,27 +650,27 @@ class Testeinstellungen_TRV():
 
 
     def testeinstellungen_menu(self):
-        self.neue_einstellungen = Button(self.Frame, text="Neues Profil", command=self.neue_einstellungen_fenster, bg=button_color, fg=bg_color)
+        self.neue_einstellungen = Button(self.Frame, text="Neues Profil", command=self.neue_einstellungen_fenster, bg=self.button_color, fg=self.bg_color)
         self.neue_einstellungen.place(relx=.5, rely=.9, relwidth=.25)
         self.neue_einstellungen['font'] = self.Button_Font
 
-        self.testeinstellung_löschen = Button(self.Frame, text="Auswahl löschen", command=self.delete_from_db, bg=button_color, fg=bg_color)
+        self.testeinstellung_löschen = Button(self.Frame, text="Auswahl löschen", command=self.delete_from_db, bg=self.button_color, fg=self.bg_color)
         self.testeinstellung_löschen.place(relx=.75, rely=.9, relwidth=.25)
         self.testeinstellung_löschen['font'] = self.Button_Font
 
-        self.Test_erstellen = Button(self.Frame, text="Testerstellen", command=self.neue_einstellungen_fenster, bg=button_color, fg=bg_color)
+        self.Test_erstellen = Button(self.Frame, text="Testerstellen", command=self.neue_einstellungen_fenster, bg=self.button_color, fg=self.bg_color)
         self.Test_erstellen.place(relx=0, rely=.6, relwidth=.4)
         self.Test_erstellen['font'] = self.Button_Font
 
-        self.testeinstellung_ausgewählt = Label(self.Frame, text="Ausgewählte Testeinstellung:", bg=label_color, fg=bg_color)
+        self.testeinstellung_ausgewählt = Label(self.Frame, text="Ausgewählte Testeinstellung:", bg=self.label_color, fg=self.bg_color)
         self.testeinstellung_ausgewählt.place(relx=0, rely=.2, relwidth=.4, relheight=.1)
         self.testeinstellung_ausgewählt['font'] = self.Label_Font
 
-        self.testeinstellung_ausgewählt_label = Label(self.Frame, text="keine testeinstellungen ausgewählt", bg=label_color, fg=bg_color)
+        self.testeinstellung_ausgewählt_label = Label(self.Frame, text="keine testeinstellungen ausgewählt", bg=self.label_color, fg=self.bg_color)
         self.testeinstellung_ausgewählt_label.place(relx=0, rely=.3, relwidth=.4, relheight=.1)
         self.testeinstellung_ausgewählt_label['font'] = self.Label_Font
 
-        self.testeinstellung_auswählen = Button(self.Frame, text="Testeinstellungen auswählen", command=self.change_auswahl_label, bg=button_color, fg=bg_color)
+        self.testeinstellung_auswählen = Button(self.Frame, text="Testeinstellungen auswählen", command=self.change_auswahl_label, bg=self.button_color, fg=self.bg_color)
         self.testeinstellung_auswählen.place(relx=0, rely=.1, relwidth=.4)
         self.testeinstellung_auswählen['font'] = self.Button_Font
 
@@ -773,7 +774,8 @@ if __name__ == "__main__":
     index_info = DBI.get_index_info()
     table_index_list = index_info[0]
     table_index_dict = index_info[1]
-    Test_TRV = Testeinstellungen_TRV(DBI, table_index_list[4], table_index_dict[4], table_dict['testeinstellungen'], WIDTH, Label_Font, Entry_Font, Button_Font, bg_color, entry_color, label_color, button_color, fg_color)
+    xml_interface = XML_Interface(DBI, table_dict, table_index_list, table_index_dict)
+    Test_TRV = Testeinstellungen_TRV(DBI, xml_interface, table_index_list[4], table_index_dict[4], table_dict['testeinstellungen'], WIDTH, Label_Font, Entry_Font, Button_Font, bg_color, entry_color, label_color, button_color, fg_color)
 
     #test_conf = Testeinstellungen(DBI, table_index_list[4], table_index_dict[4], table_dict['testeinstellungen'], WIDTH, Label_Font, Entry_Font, Button_Font, bg_color, entry_color, label_color, button_color, fg_color)
     root.mainloop()

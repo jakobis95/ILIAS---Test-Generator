@@ -21,31 +21,22 @@ class Main(tk.Frame):
 
 
         # Farben und Schriften Definitionen
-        Label_Font = font.Font(family='Verdana', size=10, weight='bold')  # Font definition for Labels
-        Entry_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Entrys
-        Button_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Buttons
+
         self.table_list = ['formelfrage', 'singlechoice', 'multiplechoice',
                            'zuordnungsfrage', 'formelfrage_permutation']  # hier sind die Namen der Table drinne die verwendet werden können
-        bg_color = '#4cc9f0'  # general Background color
 
-        efg_color = '#3a0ca3'  # Entry foreground color
-        entry_color = 'white'  # Entry Background color
-        label_color = '#3a0ca3'
-        button_color = '#3f37c9'
-        fg_color = '#4cc9f0'  # general foregroundcolor
-        table_dict = {'formelfrage': 0, 'singlechoice': 1, 'multiplechoice': 2, 'zuordnungsfrage': 3, 'formelfrage_permutation': 4}
 
         self.Label_Font = font.Font(family='Verdana', size=10, weight='bold')  # Font definition for Labels
         self.Entry_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Entrys
         self.Button_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Buttons
-        self.table_list = ['formelfrage', 'singlechoice', 'multiplechoice', 'zuordnungsfrage', 'testeinstellungen']  # hier sind die Namen der Table drinne die verwendet werden können
+        self.table_list = ['formelfrage', 'singlechoice', 'multiplechoice', 'zuordnungsfrage', 'formelfrage_permutation', 'testeinstellungen']  # hier sind die Namen der Table drinne die verwendet werden können
         self.bg_color = '#4cc9f0'  # general Background color
         #self.fg_color = '#3a0ca3'  # Entry foreground color
         self.entry_color = 'white'  # Entry Background color
         self.label_color = '#3a0ca3'
         self.button_color = '#3f37c9'
         self.fg_color = '#4cc9f0'  # general foregroundcolor
-        self.table_dict = {'formelfrage': 0, 'singlechoice': 1, 'multiplechoice': 2, 'zuordnungsfrage': 3, 'testeinstellungen': 4}
+        self.table_dict = {'formelfrage': 0, 'singlechoice': 1, 'multiplechoice': 2, 'zuordnungsfrage': 3, 'formelfrage_permutation' : 4 , 'testeinstellungen': 5}
 
 
         mydb_name = 'generaldb.db'         #Datenbank mit allen Fragentypen
@@ -69,7 +60,7 @@ class Main(tk.Frame):
         mytempdb_name = '../tempdb.db'
 
         #XML_Interface erstellen, diese Klasse muss die DBI kennen. Daher wird dieses übergeben
-        xml_interface = XML_Interface(self.DBI, self.table_dict, self.table_index_list, self.table_index_dict)
+        self.xml_interface = XML_Interface(self.DBI, self.table_dict, self.table_index_list, self.table_index_dict)
 
         tax_interface = TAX_Interface(self.bg_color, self.button_color, self.label_color, self.Button_Font, self.Label_Font)
 
@@ -83,7 +74,7 @@ class Main(tk.Frame):
         add_question = Button(Right_Menu_Frame, text="Frage zu für Test auswählen", bg=self.button_color, fg=self.bg_color, command=DBT.add_data_to_testdb)
         add_question['font'] = self.Button_Font
         add_question.pack(side="top", fill=X)
-        excel_import = Button(Right_Menu_Frame, text="Fragen aus Excel importieren", bg=self.button_color, fg=self.bg_color, command=xml_interface.excel_import_to_db)
+        excel_import = Button(Right_Menu_Frame, text="Fragen aus Excel importieren", bg=self.button_color, fg=self.bg_color, command=self.xml_interface.excel_import_to_db)
         excel_import['font'] = self.Button_Font
         excel_import.pack(side="top", fill=X)
         datenbank_og = Button(Right_Menu_Frame, text="Datenbank wählen", bg=self.button_color, fg=self.bg_color)
@@ -100,7 +91,7 @@ class Main(tk.Frame):
         #create_Test.pack(side="top", fill=X)
         create_Test = Button(Right_Menu_Frame, text="Test erstellen", bg=self.button_color, fg=self.bg_color, command=self.create_Test_Menu)
         create_Test.pack(side="top", fill=X)
-        create_Pool = Button(Right_Menu_Frame, text="Pool erstellen", bg=self.button_color, fg=self.bg_color, command=lambda: xml_interface.create_test_or_pool("ilias_pool"))
+        create_Pool = Button(Right_Menu_Frame, text="Pool erstellen", bg=self.button_color, fg=self.bg_color, command=lambda: self.xml_interface.create_test_or_pool("ilias_pool"))
         create_Pool['font'] = self.Button_Font
         create_Pool.pack(side="top", fill=X)
 
@@ -118,7 +109,10 @@ class Main(tk.Frame):
         #self.table_list #liste mit den 4 tabeln
         #mytempdb_name #datenbank name nicht der von Temp
     def create_Test_Menu(self):
-        Test_TRV = Testeinstellungen_TRV(self.DBI, self.table_index_list[4], self.table_index_dict[4], self.table_dict['testeinstellungen'],self.WIDTH, self.Label_Font, self.Entry_Font, self.Button_Font, self.bg_color, self.entry_color, self.label_color,self.button_color, self.fg_color)
+        Test_TRV = Testeinstellungen_TRV(self.DBI, self.xml_interface, self.table_index_list[5], self.table_index_dict[5],
+                                         self.table_dict['testeinstellungen'], self.WIDTH, self.Label_Font, self.Entry_Font, self.Button_Font,
+                                         self.bg_color, self.entry_color, self.label_color, self.button_color, self.fg_color)
+
 
 if __name__ == "__main__":
 

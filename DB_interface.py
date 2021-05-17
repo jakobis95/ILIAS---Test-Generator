@@ -71,8 +71,8 @@ class DB_Interface():
         self.notify()
 
     def get_index_info(self):
-        self.table_index_list = [None, None, None, None, None] #hier sind die index_list elemtente für jeden table die den Fragentypenentsprechen zusammengefasst
-        self.table_index_dict = [None, None, None, None, None] #hier sind die index_dict elemente für jeden table zusammengefasst
+        self.table_index_list = [None, None, None, None, None, None] #hier sind die index_list elemtente für jeden table die den Fragentypenentsprechen zusammengefasst
+        self.table_index_dict = [None, None, None, None, None, None] #hier sind die index_dict elemente für jeden table zusammengefasst
         i = 0
         for table in self.table_list:
             self.index_list = []
