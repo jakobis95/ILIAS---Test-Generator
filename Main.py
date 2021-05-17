@@ -27,6 +27,7 @@ class Main(tk.Frame):
         self.table_list = ['formelfrage', 'singlechoice', 'multiplechoice',
                            'zuordnungsfrage', 'formelfrage_permutation']  # hier sind die Namen der Table drinne die verwendet werden können
         bg_color = '#4cc9f0'  # general Background color
+
         efg_color = '#3a0ca3'  # Entry foreground color
         entry_color = 'white'  # Entry Background color
         label_color = '#3a0ca3'
@@ -93,9 +94,9 @@ class Main(tk.Frame):
         create_Pool = Button(Right_Menu_Frame, text="Pool erstellen", bg=button_color, fg=bg_color, command=lambda: xml_interface.create_test_or_pool("ilias_pool"))
         create_Pool['font'] = Button_Font
         create_Pool.pack(side="top", fill=X)
-        Test_einstellungen = Button(Right_Menu_Frame, text="Testeinstellungen", bg=button_color, fg=bg_color, command=DBT.Testeinstellungen_UI)
-        Test_einstellungen['font'] = Button_Font
-        Test_einstellungen.pack(side="top", fill=X)
+        #Test_einstellungen = Button(Right_Menu_Frame, text="Testeinstellungen", bg=button_color, fg=bg_color, command=DBT.Testeinstellungen_UI)
+        #Test_einstellungen['font'] = Button_Font
+        #Test_einstellungen.pack(side="top", fill=X)
         #Test_einstellungen = Button(Right_Menu_Frame, text="Testeinstellungen", bg=button_color, fg=bg_color, command=self.DBT.Testeinstellungen_UI)
         #Test_einstellungen['font'] = Button_Font
         #Test_einstellungen.pack(side="top", fill=X)
