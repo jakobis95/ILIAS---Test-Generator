@@ -126,11 +126,19 @@ class DB_Interface():
 
     def delete_DB_content(self, item_list, ID):
         for item in item_list:
+            print(self.index_list[3][1])
             self.cursorlist[ID].execute(
                 "DELETE  FROM " + item['values'][
                     2] + " WHERE " + self.index_list[3][1] + " = '" + item['values'][
                     3] + "'") # item['values'][2] = Fragentyp und der entspricht dem Table in der Datenbank für diesen Fragentyp
             self.dblist[ID].commit()
+        self.get_complete_DB(ID)
+        self.notify()
+
+    def delete_DB_testeinstellung_content(self, gesucht, ID):
+
+        self.cursorlist[ID].execute("DELETE  FROM testeinstellungen WHERE " + self.index_list[3][1] + " = '" + gesucht + "'") # item['values'][2] = Fragentyp und der entspricht dem Table in der Datenbank für diesen Fragentyp
+        self.dblist[ID].commit()
         self.get_complete_DB(ID)
         self.notify()
 
