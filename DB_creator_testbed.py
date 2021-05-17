@@ -5,7 +5,7 @@ from tkinter import ttk
 
 class generate_db():
     def __init__(self, dbname):
-        old_dbname = 'generaldb2.db'
+        old_dbname = 'generaldb.db'
         mydb = sqlite3.connect(old_dbname)
         cursor = mydb.cursor()
 
