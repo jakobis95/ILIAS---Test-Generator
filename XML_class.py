@@ -29,8 +29,7 @@ class XML_Interface():
                 self.pool_qpl_file_path_output = ""
                 self.qpl_file_path = ""
 
-                # Permutation als "False" initialisieren
-                self.activate_permutation = False
+
 
                 #######
 
@@ -339,18 +338,11 @@ class XML_Interface():
             self.id_nr = 0
 
             # Fragen in die XML schreiben
-
-
-
             for i in range(len(self.test_data)):
 
 
                 if self.test_data[i][2].lower() == "formelfrage":
-                    #if self.activate_permutation is False:
-                    XML_Interface.ff_question_structure(self, self.test_data[i], self.table_index_dict, self.id_nr, self.pool_qpl_file_path_template, self.pool_qpl_file_path_output, self.img_file_path_output, self.activate_permutation)
-
-                    #else:
-                   #     for j in range(len())
+                    XML_Interface.ff_question_structure(self, self.test_data[i], self.table_index_dict, self.id_nr, self.pool_qpl_file_path_template, self.pool_qpl_file_path_output, self.img_file_path_output, False)
 
                 if self.test_data[i][2].lower() == "singlechoice":
                    XML_Interface.sc_question_structure(self, self.test_data[i], self.table_index_dict, self.id_nr, self.pool_qpl_file_path_template, self.pool_qpl_file_path_output,  self.img_file_path_output)
@@ -360,6 +352,9 @@ class XML_Interface():
                 
                 if self.test_data[i][2].lower() == "zuordnungsfrage":
                    XML_Interface.mq_question_structure(self, self.test_data[i], self.table_index_dict, self.id_nr, self.pool_qpl_file_path_template, self.pool_qpl_file_path_output,  self.img_file_path_output)
+
+                if self.test_data[i][2].lower() == "formelfrage_permutation":
+                    XML_Interface.ff_question_structure(self, self.test_data[i], self.table_index_dict, self.id_nr, self.pool_qpl_file_path_template, self.pool_qpl_file_path_output, self.img_file_path_output, True)
 
 
                 if self.create_ilias_test_or_pool == "ilias_pool":
@@ -397,172 +392,165 @@ class XML_Interface():
                 self.img_file_path_output = img_file_path
                 self.activate_permutation = activate_permutation
 
+                self.perm_values_list = []
+
                 print("PERMUTATION:", self.activate_permutation)
-
-                #self.ff_question_description_main = test_generator_modul_taxonomie_und_textformatierung.Textformatierung.format_description_text_in_xml(self, self.ff_var_use_latex_on_text_check.get(), test_data_list[table_index_dict[0]['question_description_main']])
-                # Abfrage LATEX fehlt
-                self.ff_question_description_main = XML_Interface.format_description_text_in_xml(self, test_data_list[table_index_dict[0]['question_description_main']])
-
-
+                print("===========")
+                print(self.test_data[0][self.table_index_dict[4]['perm_var_value_1']])
+                print(self.test_data[0][self.table_index_dict[4]['perm_var_symbol_1']])
+                print("===========")
 
 
-                # Aufbau für  Fragenstruktur "TEST"
-                if self.create_ilias_test_or_pool == "ilias_test":
-                    # XML Struktur aus XML Datei festlegen. Muss nur einmal angelegt werden
-                    questestinterop = ET.Element('questestinterop')
-                    assessment = ET.SubElement(questestinterop, 'assessment')
-                    section = ET.SubElement(assessment, 'section')
-                    item = ET.SubElement(section, 'item')
 
-                # Aufbau für  Fragenstruktur "POOL"
+                if self.activate_permutation is False:
+                    self.table_index = 0
+                    self.perm_values_list = ["1"]
+
+                # Wenn Permutation aktiv, dann muss Index "4" verwendet werden
                 else:
-                    # XML Struktur aus XML Datei festlegen. Muss nur einmal angelegt werden
-                    questestinterop = ET.Element('questestinterop')
-                    item = ET.SubElement(questestinterop, 'item')
+                    self.table_index = 4
+                    # String zu Liste konvertieren (komma getrennt)
+                    self.perm_values_list = list(self.test_data[0][self.table_index_dict[4]['perm_var_value_1']].split(','))
 
-                    # Zusatz für Taxonomie-Einstellungen
+                for i in range(len(self.perm_values_list)):
+                    #self.ff_question_description_main = test_generator_modul_taxonomie_und_textformatierung.Textformatierung.format_description_text_in_xml(self, self.ff_var_use_latex_on_text_check.get(), test_data_list[table_index_dict[0]['question_description_main']])
+                    # Abfrage LATEX fehlt
+                    self.ff_question_description_main = XML_Interface.format_description_text_in_xml(self, test_data_list[table_index_dict[self.table_index]['question_description_main']])
 
-                    XML_Interface.set_taxonomy_for_question(self,
-                                                           id_nr,
-                                                           self.number_of_entrys,
-                                                           item,
-                                                           self.pool_qpl_file_path_template,
-                                                           self.pool_qpl_file_path_output
-                                                           )
+                    if self.activate_permutation is True:
+                        self.ff_question_description_main = self.ff_question_description_main.replace(self.test_data[0][self.table_index_dict[4]['perm_var_symbol_1']], self.perm_values_list[i])
+                        print("////////////")
 
+                        print(self.test_data[0][self.table_index_dict[4]['perm_var_symbol_1']])
+                        print( self.perm_values_list[i])
+                        print("////////////")
 
+                    # Aufbau für  Fragenstruktur "TEST"
+                    if self.create_ilias_test_or_pool == "ilias_test":
+                        # XML Struktur aus XML Datei festlegen. Muss nur einmal angelegt werden
+                        questestinterop = ET.Element('questestinterop')
+                        assessment = ET.SubElement(questestinterop, 'assessment')
+                        section = ET.SubElement(assessment, 'section')
+                        item = ET.SubElement(section, 'item')
 
-                # Struktur für den Formelfragen - Variableen/Lösungen Teil
-                # Muss für jede Frage neu angelegt/hinzugefügt werden
-                qticomment = ET.SubElement(item, 'qticomment')
-                duration = ET.SubElement(item, 'duration')
-                itemmetadata = ET.SubElement(item, 'itemmetadata')
-                presentation = ET.SubElement(item, 'presentation')
+                    # Aufbau für  Fragenstruktur "POOL"
+                    else:
+                        # XML Struktur aus XML Datei festlegen. Muss nur einmal angelegt werden
+                        questestinterop = ET.Element('questestinterop')
+                        item = ET.SubElement(questestinterop, 'item')
 
-                flow = ET.SubElement(presentation, 'flow')
-                question_description_material = ET.SubElement(flow, 'material')
-                question_description_mattext = ET.SubElement(question_description_material, 'mattext')
-                qtimetadata = ET.SubElement(itemmetadata, 'qtimetadata')
+                        # Zusatz für Taxonomie-Einstellungen
 
-
-                ### ------------------------------------------------------- XML Einträge mit Werten füllen
-                 # Fragen-Titel -- "item title" in xml
-                item.set('title', test_data_list[table_index_dict[0]['question_title']])
-
-                # Fragen-Titel Beschreibung
-                qticomment.text = test_data_list[table_index_dict[0]['question_description_title']]
-
-                # Testdauer -- "duration" in xml
-                # wird keine Testzeit eingetragen, wird 1h vorausgewählt
-                duration.text = test_data_list[table_index_dict[0]['test_time']]
-                if duration.text == "":
-                    duration.text = "P0Y0M0DT23H0M0S"
-
-                # -----------------------------------------------------------------------ILIAS VERSION
-                qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
-                fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
-                fieldlabel.text = "ILIAS_VERSION"
-                fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
-                fieldentry.text = "5.4.10 2020-03-04"
-                # -----------------------------------------------------------------------QUESTIONTYPE
-                qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
-                fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
-                fieldlabel.text = "QUESTIONTYPE"
-                fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
-                fieldentry.text = "assFormulaQuestion"
-                # -----------------------------------------------------------------------AUTHOR
-                qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
-                fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
-                fieldlabel.text = "AUTHOR"
-                fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
-                fieldentry.text = test_data_list[table_index_dict[0]['question_author']]
-                # -----------------------------------------------------------------------POINTS
-                qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
-                fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
-                fieldlabel.text = "points"
-                fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
-                fieldentry.text = str(test_data_list[table_index_dict[0]['res1_points']])
-
-                # Fragentitel einsetzen -- "presentation label" in xml
-                presentation.set('label', test_data_list[table_index_dict[0]['question_title']])
-
-                # Fragen-Text (Format) einsetzen -- "mattext_texttype" in xml -- Gibt das Format des Textes an
-                question_description_mattext.set('texttype', "text/html")
-
-                # Fragen-Text (Text) einsetzen   -- "mattext_texttype" in xml -- Gibt die eigentliche Fragen-Beschreibung an
-                # Wenn Bild enthalten ist, dann in Fragenbeschreibung einbetten
-                question_description_mattext.text = XML_Interface.add_picture_to_description_main(
-                                                    self,
-                                                    test_data_list[table_index_dict[0]['description_img_path_1']],
-                                                    test_data_list[table_index_dict[0]['description_img_path_2']],
-                                                    test_data_list[table_index_dict[0]['description_img_path_3']],
-                                                    self.img_file_path_output,
-                                                    self.ff_question_description_main, question_description_mattext, question_description_material, id_nr)
+                        XML_Interface.set_taxonomy_for_question(self,
+                                                               id_nr,
+                                                               self.number_of_entrys,
+                                                               item,
+                                                               self.pool_qpl_file_path_template,
+                                                               self.pool_qpl_file_path_output
+                                                               )
 
 
 
+                    # Struktur für den Formelfragen - Variableen/Lösungen Teil
+                    # Muss für jede Frage neu angelegt/hinzugefügt werden
+                    qticomment = ET.SubElement(item, 'qticomment')
+                    duration = ET.SubElement(item, 'duration')
+                    itemmetadata = ET.SubElement(item, 'itemmetadata')
+                    presentation = ET.SubElement(item, 'presentation')
 
-                # ----------------------------------------------------------------------- Variable
-                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v1", test_data_list[table_index_dict[0]['var1_min']], test_data_list[table_index_dict[0]['var1_max']], test_data_list[table_index_dict[0]['var1_prec']], test_data_list[table_index_dict[0]['var1_divby']], test_data_list[table_index_dict[0]['var1_unit']])
-                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v2", test_data_list[table_index_dict[0]['var2_min']], test_data_list[table_index_dict[0]['var2_max']], test_data_list[table_index_dict[0]['var2_prec']], test_data_list[table_index_dict[0]['var2_divby']], test_data_list[table_index_dict[0]['var2_unit']])
-                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v3", test_data_list[table_index_dict[0]['var3_min']], test_data_list[table_index_dict[0]['var3_max']], test_data_list[table_index_dict[0]['var3_prec']], test_data_list[table_index_dict[0]['var3_divby']], test_data_list[table_index_dict[0]['var3_unit']])
-                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v4", test_data_list[table_index_dict[0]['var4_min']], test_data_list[table_index_dict[0]['var4_max']], test_data_list[table_index_dict[0]['var4_prec']], test_data_list[table_index_dict[0]['var4_divby']], test_data_list[table_index_dict[0]['var4_unit']])
-                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v5", test_data_list[table_index_dict[0]['var5_min']], test_data_list[table_index_dict[0]['var5_max']], test_data_list[table_index_dict[0]['var5_prec']], test_data_list[table_index_dict[0]['var5_divby']], test_data_list[table_index_dict[0]['var6_unit']])
-                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v6", test_data_list[table_index_dict[0]['var6_min']], test_data_list[table_index_dict[0]['var6_max']], test_data_list[table_index_dict[0]['var6_prec']], test_data_list[table_index_dict[0]['var6_divby']], test_data_list[table_index_dict[0]['var1_unit']])
-                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v7", test_data_list[table_index_dict[0]['var7_min']], test_data_list[table_index_dict[0]['var7_max']], test_data_list[table_index_dict[0]['var7_prec']], test_data_list[table_index_dict[0]['var7_divby']], test_data_list[table_index_dict[0]['var7_unit']])
-                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v8", test_data_list[table_index_dict[0]['var8_min']], test_data_list[table_index_dict[0]['var8_max']], test_data_list[table_index_dict[0]['var8_prec']], test_data_list[table_index_dict[0]['var8_divby']], test_data_list[table_index_dict[0]['var8_unit']])
-                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v9", test_data_list[table_index_dict[0]['var9_min']], test_data_list[table_index_dict[0]['var9_max']], test_data_list[table_index_dict[0]['var9_prec']], test_data_list[table_index_dict[0]['var9_divby']], test_data_list[table_index_dict[0]['var9_unit']])
-                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v10", test_data_list[table_index_dict[0]['var10_min']], test_data_list[table_index_dict[0]['var10_max']], test_data_list[table_index_dict[0]['var10_prec']], test_data_list[table_index_dict[0]['var10_divby']], test_data_list[table_index_dict[0]['var10_unit']])
-                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v11", test_data_list[table_index_dict[0]['var11_min']], test_data_list[table_index_dict[0]['var11_max']], test_data_list[table_index_dict[0]['var11_prec']], test_data_list[table_index_dict[0]['var11_divby']], test_data_list[table_index_dict[0]['var11_unit']])
-                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v12", test_data_list[table_index_dict[0]['var12_min']], test_data_list[table_index_dict[0]['var12_max']], test_data_list[table_index_dict[0]['var12_prec']], test_data_list[table_index_dict[0]['var12_divby']], test_data_list[table_index_dict[0]['var12_unit']])
-                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v13", test_data_list[table_index_dict[0]['var13_min']], test_data_list[table_index_dict[0]['var13_max']], test_data_list[table_index_dict[0]['var13_prec']], test_data_list[table_index_dict[0]['var13_divby']], test_data_list[table_index_dict[0]['var13_unit']])
-                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v14", test_data_list[table_index_dict[0]['var14_min']], test_data_list[table_index_dict[0]['var14_max']], test_data_list[table_index_dict[0]['var14_prec']], test_data_list[table_index_dict[0]['var14_divby']], test_data_list[table_index_dict[0]['var14_unit']])
-                XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v15", test_data_list[table_index_dict[0]['var15_min']], test_data_list[table_index_dict[0]['var15_max']], test_data_list[table_index_dict[0]['var15_prec']], test_data_list[table_index_dict[0]['var15_divby']], test_data_list[table_index_dict[0]['var15_unit']])
+                    flow = ET.SubElement(presentation, 'flow')
+                    question_description_material = ET.SubElement(flow, 'material')
+                    question_description_mattext = ET.SubElement(question_description_material, 'mattext')
+                    qtimetadata = ET.SubElement(itemmetadata, 'qtimetadata')
 
 
-                # ----------------------------------------------------------------------- Solution
-                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r1", test_data_list[table_index_dict[0]['res1_formula']], test_data_list[table_index_dict[0]['res1_min']], test_data_list[table_index_dict[0]['res1_max']], test_data_list[table_index_dict[0]['res1_prec']], test_data_list[table_index_dict[0]['res1_tol']], test_data_list[table_index_dict[0]['res1_points']], test_data_list[table_index_dict[0]['res1_unit']])
-                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r2", test_data_list[table_index_dict[0]['res2_formula']], test_data_list[table_index_dict[0]['res2_min']], test_data_list[table_index_dict[0]['res2_max']], test_data_list[table_index_dict[0]['res2_prec']], test_data_list[table_index_dict[0]['res2_tol']], test_data_list[table_index_dict[0]['res2_points']], test_data_list[table_index_dict[0]['res2_unit']])
-                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r3", test_data_list[table_index_dict[0]['res3_formula']], test_data_list[table_index_dict[0]['res3_min']], test_data_list[table_index_dict[0]['res3_max']], test_data_list[table_index_dict[0]['res3_prec']], test_data_list[table_index_dict[0]['res3_tol']], test_data_list[table_index_dict[0]['res3_points']], test_data_list[table_index_dict[0]['res3_unit']])
-                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r4", test_data_list[table_index_dict[0]['res4_formula']], test_data_list[table_index_dict[0]['res4_min']], test_data_list[table_index_dict[0]['res4_max']], test_data_list[table_index_dict[0]['res4_prec']], test_data_list[table_index_dict[0]['res4_tol']], test_data_list[table_index_dict[0]['res4_points']], test_data_list[table_index_dict[0]['res4_unit']])
-                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r5", test_data_list[table_index_dict[0]['res5_formula']], test_data_list[table_index_dict[0]['res5_min']], test_data_list[table_index_dict[0]['res5_max']], test_data_list[table_index_dict[0]['res5_prec']], test_data_list[table_index_dict[0]['res5_tol']], test_data_list[table_index_dict[0]['res5_points']], test_data_list[table_index_dict[0]['res5_unit']])
-                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r6", test_data_list[table_index_dict[0]['res6_formula']], test_data_list[table_index_dict[0]['res6_min']], test_data_list[table_index_dict[0]['res6_max']], test_data_list[table_index_dict[0]['res6_prec']], test_data_list[table_index_dict[0]['res6_tol']], test_data_list[table_index_dict[0]['res6_points']], test_data_list[table_index_dict[0]['res6_unit']])
-                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r7", test_data_list[table_index_dict[0]['res7_formula']], test_data_list[table_index_dict[0]['res7_min']], test_data_list[table_index_dict[0]['res7_max']], test_data_list[table_index_dict[0]['res7_prec']], test_data_list[table_index_dict[0]['res7_tol']], test_data_list[table_index_dict[0]['res7_points']], test_data_list[table_index_dict[0]['res7_unit']])
-                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r8", test_data_list[table_index_dict[0]['res8_formula']], test_data_list[table_index_dict[0]['res8_min']], test_data_list[table_index_dict[0]['res8_max']], test_data_list[table_index_dict[0]['res8_prec']], test_data_list[table_index_dict[0]['res8_tol']], test_data_list[table_index_dict[0]['res8_points']], test_data_list[table_index_dict[0]['res8_unit']])
-                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r9", test_data_list[table_index_dict[0]['res9_formula']], test_data_list[table_index_dict[0]['res9_min']], test_data_list[table_index_dict[0]['res9_max']], test_data_list[table_index_dict[0]['res9_prec']], test_data_list[table_index_dict[0]['res9_tol']], test_data_list[table_index_dict[0]['res9_points']], test_data_list[table_index_dict[0]['res9_unit']])
-                XML_Interface.ff_question_results_structure(self, qtimetadata, "$r10", test_data_list[table_index_dict[0]['res10_formula']], test_data_list[table_index_dict[0]['res10_min']], test_data_list[table_index_dict[0]['res10_max']], test_data_list[table_index_dict[0]['res10_prec']], test_data_list[table_index_dict[0]['res10_tol']], test_data_list[table_index_dict[0]['res10_points']], test_data_list[table_index_dict[0]['res10_unit']])
+                    ### ------------------------------------------------------- XML Einträge mit Werten füllen
+                     # Fragen-Titel -- "item title" in xml
+                    item.set('title', test_data_list[table_index_dict[self.table_index]['question_title']])
+
+                    # Fragen-Titel Beschreibung
+                    qticomment.text = test_data_list[table_index_dict[self.table_index]['question_description_title']]
+
+                    # Testdauer -- "duration" in xml
+                    # wird keine Testzeit eingetragen, wird 1h vorausgewählt
+                    duration.text = test_data_list[table_index_dict[self.table_index]['test_time']]
+                    if duration.text == "":
+                        duration.text = "P0Y0M0DT23H0M0S"
+
+                    # -----------------------------------------------------------------------ILIAS VERSION
+                    qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
+                    fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
+                    fieldlabel.text = "ILIAS_VERSION"
+                    fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
+                    fieldentry.text = "5.4.10 2020-03-04"
+                    # -----------------------------------------------------------------------QUESTIONTYPE
+                    qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
+                    fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
+                    fieldlabel.text = "QUESTIONTYPE"
+                    fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
+                    fieldentry.text = "assFormulaQuestion"
+                    # -----------------------------------------------------------------------AUTHOR
+                    qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
+                    fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
+                    fieldlabel.text = "AUTHOR"
+                    fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
+                    fieldentry.text = test_data_list[table_index_dict[self.table_index]['question_author']]
+                    # -----------------------------------------------------------------------POINTS
+                    qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
+                    fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
+                    fieldlabel.text = "points"
+                    fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
+                    fieldentry.text = str(test_data_list[table_index_dict[self.table_index]['res1_points']])
+
+                    # Fragentitel einsetzen -- "presentation label" in xml
+                    presentation.set('label', test_data_list[table_index_dict[self.table_index]['question_title']])
+
+                    # Fragen-Text (Format) einsetzen -- "mattext_texttype" in xml -- Gibt das Format des Textes an
+                    question_description_mattext.set('texttype', "text/html")
+
+                    # Fragen-Text (Text) einsetzen   -- "mattext_texttype" in xml -- Gibt die eigentliche Fragen-Beschreibung an
+                    # Wenn Bild enthalten ist, dann in Fragenbeschreibung einbetten
+                    question_description_mattext.text = XML_Interface.add_picture_to_description_main(
+                                                        self,
+                                                        test_data_list[table_index_dict[self.table_index]['description_img_path_1']],
+                                                        test_data_list[table_index_dict[self.table_index]['description_img_path_2']],
+                                                        test_data_list[table_index_dict[self.table_index]['description_img_path_3']],
+                                                        self.img_file_path_output,
+                                                        self.ff_question_description_main, question_description_mattext, question_description_material, id_nr)
 
 
 
 
+                    # ----------------------------------------------------------------------- Variable
+                    XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v1", test_data_list[table_index_dict[self.table_index]['var1_min']], test_data_list[table_index_dict[self.table_index]['var1_max']], test_data_list[table_index_dict[self.table_index]['var1_prec']], test_data_list[table_index_dict[self.table_index]['var1_divby']], test_data_list[table_index_dict[self.table_index]['var1_unit']])
+                    XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v2", test_data_list[table_index_dict[self.table_index]['var2_min']], test_data_list[table_index_dict[self.table_index]['var2_max']], test_data_list[table_index_dict[self.table_index]['var2_prec']], test_data_list[table_index_dict[self.table_index]['var2_divby']], test_data_list[table_index_dict[self.table_index]['var2_unit']])
+                    XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v3", test_data_list[table_index_dict[self.table_index]['var3_min']], test_data_list[table_index_dict[self.table_index]['var3_max']], test_data_list[table_index_dict[self.table_index]['var3_prec']], test_data_list[table_index_dict[self.table_index]['var3_divby']], test_data_list[table_index_dict[self.table_index]['var3_unit']])
+                    XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v4", test_data_list[table_index_dict[self.table_index]['var4_min']], test_data_list[table_index_dict[self.table_index]['var4_max']], test_data_list[table_index_dict[self.table_index]['var4_prec']], test_data_list[table_index_dict[self.table_index]['var4_divby']], test_data_list[table_index_dict[self.table_index]['var4_unit']])
+                    XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v5", test_data_list[table_index_dict[self.table_index]['var5_min']], test_data_list[table_index_dict[self.table_index]['var5_max']], test_data_list[table_index_dict[self.table_index]['var5_prec']], test_data_list[table_index_dict[self.table_index]['var5_divby']], test_data_list[table_index_dict[self.table_index]['var6_unit']])
+                    XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v6", test_data_list[table_index_dict[self.table_index]['var6_min']], test_data_list[table_index_dict[self.table_index]['var6_max']], test_data_list[table_index_dict[self.table_index]['var6_prec']], test_data_list[table_index_dict[self.table_index]['var6_divby']], test_data_list[table_index_dict[self.table_index]['var1_unit']])
+                    XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v7", test_data_list[table_index_dict[self.table_index]['var7_min']], test_data_list[table_index_dict[self.table_index]['var7_max']], test_data_list[table_index_dict[self.table_index]['var7_prec']], test_data_list[table_index_dict[self.table_index]['var7_divby']], test_data_list[table_index_dict[self.table_index]['var7_unit']])
+                    XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v8", test_data_list[table_index_dict[self.table_index]['var8_min']], test_data_list[table_index_dict[self.table_index]['var8_max']], test_data_list[table_index_dict[self.table_index]['var8_prec']], test_data_list[table_index_dict[self.table_index]['var8_divby']], test_data_list[table_index_dict[self.table_index]['var8_unit']])
+                    XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v9", test_data_list[table_index_dict[self.table_index]['var9_min']], test_data_list[table_index_dict[self.table_index]['var9_max']], test_data_list[table_index_dict[self.table_index]['var9_prec']], test_data_list[table_index_dict[self.table_index]['var9_divby']], test_data_list[table_index_dict[self.table_index]['var9_unit']])
+                    XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v10", test_data_list[table_index_dict[self.table_index]['var10_min']], test_data_list[table_index_dict[self.table_index]['var10_max']], test_data_list[table_index_dict[self.table_index]['var10_prec']], test_data_list[table_index_dict[self.table_index]['var10_divby']], test_data_list[table_index_dict[self.table_index]['var10_unit']])
+                    XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v11", test_data_list[table_index_dict[self.table_index]['var11_min']], test_data_list[table_index_dict[self.table_index]['var11_max']], test_data_list[table_index_dict[self.table_index]['var11_prec']], test_data_list[table_index_dict[self.table_index]['var11_divby']], test_data_list[table_index_dict[self.table_index]['var11_unit']])
+                    XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v12", test_data_list[table_index_dict[self.table_index]['var12_min']], test_data_list[table_index_dict[self.table_index]['var12_max']], test_data_list[table_index_dict[self.table_index]['var12_prec']], test_data_list[table_index_dict[self.table_index]['var12_divby']], test_data_list[table_index_dict[self.table_index]['var12_unit']])
+                    XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v13", test_data_list[table_index_dict[self.table_index]['var13_min']], test_data_list[table_index_dict[self.table_index]['var13_max']], test_data_list[table_index_dict[self.table_index]['var13_prec']], test_data_list[table_index_dict[self.table_index]['var13_divby']], test_data_list[table_index_dict[self.table_index]['var13_unit']])
+                    XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v14", test_data_list[table_index_dict[self.table_index]['var14_min']], test_data_list[table_index_dict[self.table_index]['var14_max']], test_data_list[table_index_dict[self.table_index]['var14_prec']], test_data_list[table_index_dict[self.table_index]['var14_divby']], test_data_list[table_index_dict[self.table_index]['var14_unit']])
+                    XML_Interface.ff_question_variables_structure(self, qtimetadata, "$v15", test_data_list[table_index_dict[self.table_index]['var15_min']], test_data_list[table_index_dict[self.table_index]['var15_max']], test_data_list[table_index_dict[self.table_index]['var15_prec']], test_data_list[table_index_dict[self.table_index]['var15_divby']], test_data_list[table_index_dict[self.table_index]['var15_unit']])
 
 
+                    # ----------------------------------------------------------------------- Solution
 
-
-                # -----------------------------------------------------------------------ADDITIONAL_CONT_EDIT_MODE
-                qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
-                fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
-                fieldlabel.text = "additional_cont_edit_mode"
-                fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
-                fieldentry.text = "default"
-                # -----------------------------------------------------------------------EXTERNAL_ID
-                qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
-                fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
-                fieldlabel.text = "externalId"
-                fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
-                fieldentry.text = "5ea15be69c1e96.43933468"
-
-
-
-                # Wenn es sich um einen ILIAS-Test handelt, beinhaltet die XML eine Struktur mit mehreren "Zweigen"
-                # Der letzte "Zweig" --> "len(self.ff_myroot[0]) - 1" (beschreibt das letze Fach) beinhaltet die eigentlichen Fragen
-                if self.create_ilias_test_or_pool == "ilias_test":
-                    self.ff_myroot[0][len(self.ff_myroot[0]) - 1].append(item)
-
-                # Wenn es sich um einen ILIAS-Pool handelt, beinhaltet die XML keine Struktur
-                # Die Frage kann einfach angehangen werden
-                else:
-                    self.ff_myroot.append(item)
+                    XML_Interface.ff_question_results_structure(self, qtimetadata, "$r1", test_data_list[table_index_dict[self.table_index]['res1_formula']], test_data_list[table_index_dict[self.table_index]['res1_min']], test_data_list[table_index_dict[self.table_index]['res1_max']], test_data_list[table_index_dict[self.table_index]['res1_prec']], test_data_list[table_index_dict[self.table_index]['res1_tol']], test_data_list[table_index_dict[self.table_index]['res1_points']], test_data_list[table_index_dict[self.table_index]['res1_unit']], i)
+                    XML_Interface.ff_question_results_structure(self, qtimetadata, "$r2", test_data_list[table_index_dict[self.table_index]['res2_formula']], test_data_list[table_index_dict[self.table_index]['res2_min']], test_data_list[table_index_dict[self.table_index]['res2_max']], test_data_list[table_index_dict[self.table_index]['res2_prec']], test_data_list[table_index_dict[self.table_index]['res2_tol']], test_data_list[table_index_dict[self.table_index]['res2_points']], test_data_list[table_index_dict[self.table_index]['res2_unit']], i)
+                    XML_Interface.ff_question_results_structure(self, qtimetadata, "$r3", test_data_list[table_index_dict[self.table_index]['res3_formula']], test_data_list[table_index_dict[self.table_index]['res3_min']], test_data_list[table_index_dict[self.table_index]['res3_max']], test_data_list[table_index_dict[self.table_index]['res3_prec']], test_data_list[table_index_dict[self.table_index]['res3_tol']], test_data_list[table_index_dict[self.table_index]['res3_points']], test_data_list[table_index_dict[self.table_index]['res3_unit']], i)
+                    XML_Interface.ff_question_results_structure(self, qtimetadata, "$r4", test_data_list[table_index_dict[self.table_index]['res4_formula']], test_data_list[table_index_dict[self.table_index]['res4_min']], test_data_list[table_index_dict[self.table_index]['res4_max']], test_data_list[table_index_dict[self.table_index]['res4_prec']], test_data_list[table_index_dict[self.table_index]['res4_tol']], test_data_list[table_index_dict[self.table_index]['res4_points']], test_data_list[table_index_dict[self.table_index]['res4_unit']], i)
+                    XML_Interface.ff_question_results_structure(self, qtimetadata, "$r5", test_data_list[table_index_dict[self.table_index]['res5_formula']], test_data_list[table_index_dict[self.table_index]['res5_min']], test_data_list[table_index_dict[self.table_index]['res5_max']], test_data_list[table_index_dict[self.table_index]['res5_prec']], test_data_list[table_index_dict[self.table_index]['res5_tol']], test_data_list[table_index_dict[self.table_index]['res5_points']], test_data_list[table_index_dict[self.table_index]['res5_unit']], i)
+                    XML_Interface.ff_question_results_structure(self, qtimetadata, "$r6", test_data_list[table_index_dict[self.table_index]['res6_formula']], test_data_list[table_index_dict[self.table_index]['res6_min']], test_data_list[table_index_dict[self.table_index]['res6_max']], test_data_list[table_index_dict[self.table_index]['res6_prec']], test_data_list[table_index_dict[self.table_index]['res6_tol']], test_data_list[table_index_dict[self.table_index]['res6_points']], test_data_list[table_index_dict[self.table_index]['res6_unit']], i)
+                    XML_Interface.ff_question_results_structure(self, qtimetadata, "$r7", test_data_list[table_index_dict[self.table_index]['res7_formula']], test_data_list[table_index_dict[self.table_index]['res7_min']], test_data_list[table_index_dict[self.table_index]['res7_max']], test_data_list[table_index_dict[self.table_index]['res7_prec']], test_data_list[table_index_dict[self.table_index]['res7_tol']], test_data_list[table_index_dict[self.table_index]['res7_points']], test_data_list[table_index_dict[self.table_index]['res7_unit']], i)
+                    XML_Interface.ff_question_results_structure(self, qtimetadata, "$r8", test_data_list[table_index_dict[self.table_index]['res8_formula']], test_data_list[table_index_dict[self.table_index]['res8_min']], test_data_list[table_index_dict[self.table_index]['res8_max']], test_data_list[table_index_dict[self.table_index]['res8_prec']], test_data_list[table_index_dict[self.table_index]['res8_tol']], test_data_list[table_index_dict[self.table_index]['res8_points']], test_data_list[table_index_dict[self.table_index]['res8_unit']], i)
+                    XML_Interface.ff_question_results_structure(self, qtimetadata, "$r9", test_data_list[table_index_dict[self.table_index]['res9_formula']], test_data_list[table_index_dict[self.table_index]['res9_min']], test_data_list[table_index_dict[self.table_index]['res9_max']], test_data_list[table_index_dict[self.table_index]['res9_prec']], test_data_list[table_index_dict[self.table_index]['res9_tol']], test_data_list[table_index_dict[self.table_index]['res9_points']], test_data_list[table_index_dict[self.table_index]['res9_unit']], i)
+                    XML_Interface.ff_question_results_structure(self, qtimetadata, "$r10", test_data_list[table_index_dict[self.table_index]['res10_formula']], test_data_list[table_index_dict[self.table_index]['res10_min']], test_data_list[table_index_dict[self.table_index]['res10_max']], test_data_list[table_index_dict[self.table_index]['res10_prec']], test_data_list[table_index_dict[self.table_index]['res10_tol']], test_data_list[table_index_dict[self.table_index]['res10_points']], test_data_list[table_index_dict[self.table_index]['res10_unit']], i)
 
 
 
@@ -570,7 +558,42 @@ class XML_Interface():
 
 
 
-                print(str(id_nr) + ".) Formelfrage Frage erstellt! ---> Titel: " + test_data_list[table_index_dict[0]['question_title']])
+
+                    # -----------------------------------------------------------------------ADDITIONAL_CONT_EDIT_MODE
+                    qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
+                    fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
+                    fieldlabel.text = "additional_cont_edit_mode"
+                    fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
+                    fieldentry.text = "default"
+                    # -----------------------------------------------------------------------EXTERNAL_ID
+                    qtimetadatafield = ET.SubElement(qtimetadata, 'qtimetadatafield')
+                    fieldlabel = ET.SubElement(qtimetadatafield, 'fieldlabel')
+                    fieldlabel.text = "externalId"
+                    fieldentry = ET.SubElement(qtimetadatafield, 'fieldentry')
+                    fieldentry.text = "5ea15be69c1e96.43933468"
+
+
+
+                    # Wenn es sich um einen ILIAS-Test handelt, beinhaltet die XML eine Struktur mit mehreren "Zweigen"
+                    # Der letzte "Zweig" --> "len(self.ff_myroot[0]) - 1" (beschreibt das letze Fach) beinhaltet die eigentlichen Fragen
+                    if self.create_ilias_test_or_pool == "ilias_test":
+                        self.ff_myroot[0][len(self.ff_myroot[0]) - 1].append(item)
+
+                    # Wenn es sich um einen ILIAS-Pool handelt, beinhaltet die XML keine Struktur
+                    # Die Frage kann einfach angehangen werden
+                    else:
+                        self.ff_myroot.append(item)
+
+
+
+
+
+
+
+                    print(str(id_nr) + ".) Formelfrage Frage erstellt! ---> Titel: " + test_data_list[table_index_dict[0]['question_title']])
+                    print(question_description_mattext.text)
+
+                    print("\n")
 
 
 
@@ -606,7 +629,7 @@ class XML_Interface():
                               "s:9:\"unitvalue\";s:0:\"\";" \
                               "}"
 
-        def ff_question_results_structure(self, xml_qtimetadata, ff_res_name, ff_res_formula, ff_res_min, ff_res_max, ff_res_prec, ff_res_tol, ff_res_points, ff_res_unit):
+        def ff_question_results_structure(self, xml_qtimetadata, ff_res_name, ff_res_formula, ff_res_min, ff_res_max, ff_res_prec, ff_res_tol, ff_res_points, ff_res_unit, i):
 
                 def replace_words_in_formula(formula):
 
@@ -662,10 +685,19 @@ class XML_Interface():
                 self.ff_res_unit_length = len(str(self.ff_res_unit))
 
 
+
+
                 # ILIAS kann nicht mit "$Vx" statt "$vx" oder "$Rx" statt "$rx"  umgehen (kleines statt großes "V" für Variablen)
                 # In der Ergebnisgleichung darf kein "=" verwendet werden! Es erscheint keine Fehlermeldung, jedoch werden die Ergebnisse
                 # aus der ILIAS-Berechnung immer auf "0" gesetzt
-                self.ff_res_formula = replace_words_in_formula(self.ff_res_formula)
+                if self.activate_permutation is False:
+                    self.ff_res_formula = replace_words_in_formula(self.ff_res_formula)
+
+                # Wenn Permutation aktiv, dann Formeln
+                else:
+                    self.ff_res_formula = self.ff_res_formula.replace(self.test_data[0][self.table_index_dict[4]['perm_var_symbol_1']],self.perm_values_list[i])
+
+
 
 
 
@@ -695,6 +727,8 @@ class XML_Interface():
                               "s:9:\"unitvalue\";s:0:\"\";" \
                               "s:11:\"resultunits\";a:0:{}" \
                               "}"
+
+                print("ff_result_structure", self.ff_res_formula)
 
         ###### SINGLECHOICE FUNKTIONEN ##############
 
