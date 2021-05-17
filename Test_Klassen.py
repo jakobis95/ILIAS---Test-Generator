@@ -683,9 +683,9 @@ class Testeinstellungen_TRV():
         self.DBI.delete_DB_testeinstellung_content(TE['values'][0], 0)
 
     def create_test(self):
-        self.DBI.get_question(self.TE_Auswahl, 1)
+        self.DBI.get_question(self.TE, 1)
 
-        self.XML.create_test_or_pool(self, self.TE_Auswahl, ilias_test_or_pool="ilias_test")
+        self.XML.create_test_or_pool( self.TE, ilias_test_or_pool="ilias_test")
 
     def change_auswahl_label(self):
         print("change")
