@@ -45,7 +45,7 @@ class Main(tk.Frame):
         self.label_color = '#3a0ca3'
         self.button_color = '#3f37c9'
         self.fg_color = '#4cc9f0'  # general foregroundcolor
-        self.table_dict = {'formelfrage': 0, 'singlechoice': 1, 'multiplechoice': 2, 'zuordnungsfrage': 3, 'testeinstellungen': 4}
+        self.table_dict = {'formelfrage': 0, 'singlechoice': 1, 'multiplechoice': 2, 'zuordnungsfrage': 3,  'formelfrage_permutation': 4, 'testeinstellungen': 5}
 
 
         mydb_name = 'generaldb.db'         #Datenbank mit allen Fragentypen
