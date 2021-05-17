@@ -86,6 +86,9 @@ class Main(tk.Frame):
         excel_import = Button(Right_Menu_Frame, text="Fragen aus Excel importieren", bg=self.button_color, fg=self.bg_color, command=xml_interface.excel_import_to_db)
         excel_import['font'] = self.Button_Font
         excel_import.pack(side="top", fill=X)
+        ilias_datei_import = Button(Right_Menu_Frame, text="Fragen Test/Pool übernehmen", bg=button_color, fg=bg_color, command=xml_interface.import_illias_pool_oder_test_in_db)
+        ilias_datei_import['font'] = Button_Font
+        ilias_datei_import.pack(side="top", fill=X)
         datenbank_og = Button(Right_Menu_Frame, text="Datenbank wählen", bg=self.button_color, fg=self.bg_color)
         datenbank_og['font'] = self.Button_Font
         datenbank_og.pack(side="top", fill=X)
@@ -98,10 +101,11 @@ class Main(tk.Frame):
         #create_Test = Button(Right_Menu_Frame, text="Test aus Auswahl erstellen", bg=button_color, fg=bg_color, command=self.Test_aus_auswahl_erstellem)
         #create_Test['font'] = Button_Font
         #create_Test.pack(side="top", fill=X)
-        create_Test = Button(Right_Menu_Frame, text="Test erstellen", bg=self.button_color, fg=self.bg_color, command=self.create_Test_Menu)
+        create_Test = Button(Right_Menu_Frame, text="Test erstellen", bg=button_color, fg=bg_color, command=lambda: xml_interface.create_test_or_pool("ilias_test"))
+        create_Test['font'] = Button_Font
         create_Test.pack(side="top", fill=X)
-        create_Pool = Button(Right_Menu_Frame, text="Pool erstellen", bg=self.button_color, fg=self.bg_color, command=lambda: xml_interface.create_test_or_pool("ilias_pool"))
-        create_Pool['font'] = self.Button_Font
+        create_Pool = Button(Right_Menu_Frame, text="Pool erstellen", bg=button_color, fg=bg_color, command=lambda: xml_interface.create_test_or_pool("ilias_pool"))
+        create_Pool['font'] = Button_Font
         create_Pool.pack(side="top", fill=X)
 
         #Test_einstellungen = Button(Right_Menu_Frame, text="Testeinstellungen", bg=button_color, fg=bg_color, command=DBT.Testeinstellungen_UI)
