@@ -18,7 +18,7 @@ class XML_Interface():
                 self.table_index_list = table_index_list
                 self.table_index_dict = table_index_dict
                 self.table_dict = table_dict
-
+                self.DBI.subscribe(self.update_xml)
 
 
                 # Forced Values
@@ -154,11 +154,17 @@ class XML_Interface():
 
 
                 ############### Pfad ende
+        def update_xml(self, db_data):
+            #bekommt immer den aktuellen stand der datenbank es muss so nichts übergeben werden, get question add question etc können ebenfalls benutzt werden
+            self.db_data = db_data
+            print("xml class is subcribed")
 
+        def on_closing(self):
+            #muss die subscribtion ausheben sonst führt das zu Problemen
+            self.DBI.unsubscribe(self.update_xml())
+            print("xml class is unsubcribed")
 
-
-
-        def create_test_or_pool(self, ilias_test_or_pool):
+        def create_test_or_pool(self, Profil_name,  ilias_test_or_pool):
             # Daten aus DB abgreifen
             self.test_data = self.DBI.get_dbtemp_data()
             self.create_ilias_test_or_pool = ilias_test_or_pool
