@@ -143,39 +143,41 @@ class DB_Interface():
         self.notify()
 
 
-    def Add_data_to_DB(self, q, title): #todo mus noch an multi Fragentyp angepasst werden
+    def Add_data_to_DB(self, q, title):
         if self.does_title_exist(title):
             print("title existiert bereits daher konnte die Frage nicht erstellt werden")
         else:
-            print("title existiert noch nicht",self.table_dict[q[2][0].get()])
-            print(q)
+            print("title existiert noch nicht")
+
             table_name = q[2][0].get() #table name ist gleich dem FragentypA
             index = self.table_dict[table_name]
-            self.cursor.execute("INSERT INTO " + table_name + " (" + self.index_list[3][1] + ") VALUES (:Titel)",
+            self.cursor.execute("INSERT INTO " + table_name + " (" + self.table_index_list[index][3][1] + ") VALUES (:Titel)",
                                 {'Titel': q[3][0].get()})
             # print("INSERT INTO " + self.table + " (" + self.index_list[3][1] + ") VALUES (:Titel)", {'Titel': q[3][0].get()})
             self.mydb.commit()
             for i in q:
                 self.cursor.execute(
-                    "UPDATE " + table_name + " SET '" + i[1] + "' = :Value WHERE " + self.index_list[3][1] + " = '" +
+                    "UPDATE " + table_name + " SET '" + i[1] + "' = :Value WHERE " + self.table_index_list[index][3][1] + " = '" +
                     q[3][0].get() + "' ", {'Value': i[0].get()})
             self.mydb.commit()
             self.get_question(q[3][0].get(), 1)
             self.get_complete_DB(0)
 
-    def add_Changes_to_DB(self, q): #todo mus noch an multi Fragentyp angepasst werden
+    def add_Changes_to_DB(self, q):
+        table_name = q[2][0].get() #table name ist gleich dem FragentypA
+        index = self.table_dict[table_name]
         for i in q:
-            # print("UPDATE " + self.table + " SET '" + i[1] + "' = :Value WHERE " + self.index_list[2][1] + " LIKE '%" + self.db_data[1][0][2] + "%'", {'Value': i[0].get()})
+
             self.cursor.execute(
-                "UPDATE " + self.table + " SET '" + i[1] + "' = :Value WHERE " + self.index_list[3][
+                "UPDATE " + table_name + " SET '" + i[1] + "' = :Value WHERE " + self.table_index_list[index][3][
                     1] + " LIKE '%" + self.db_data[1][0][3] + "%'",
                 {'Value': i[0].get()})
             self.mydb.commit()
         self.get_question(q[3][0].get(), 1)
         self.get_complete_DB(0)
 
-    def Save_Change_to_DB(self, q): #todo mus noch an multi Fragentyp angepasst werden
-        #print("titel?", self.db_data[1][0][3])
+    def Save_Change_to_DB(self, q):
+
         title = q[3][0].get()
         if self.og_title == title:
                self.add_Changes_to_DB(q)
