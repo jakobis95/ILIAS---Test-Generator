@@ -669,8 +669,23 @@ class singlechoice(fragen_gui):
         rel_width = .5
         self.response_frame.place(relx=.5, rely=0, relwidth=rel_width, relheight=1)
         self.width_scrl_UI = self.width * rel_width
-        self.respose_input = variable_scrl_UI(varname_list, self.bg_color, self.label_color, self.Label_Font, self.response_frame, self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10, Columns=3, Header="Choices", header_index=['Antworttext', 'Antwort-Grafik.', 'Punkte'], column_type_list=[0, 1, 0], columnwidth=(2, 3, 1))
+        self.response_input = variable_scrl_UI(varname_list, self.bg_color, self.label_color, self.Label_Font, self.response_frame, self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10, Columns=3, Header="Choices", header_index=['Antworttext', 'Antwort-Grafik.', 'Punkte'], column_type_list=[0, 1, 0], columnwidth=(2, 3, 1))
 
+    def Fill_Entrys_From_DB(self, db_data):
+        j = 0
+
+        for i in db_data[1][self.table_dict[self.fragentyp]]:#todo diese exception ist so nicht ok aber funktioniert erstmal um den Textbox Ihren Textzuzuweisen.
+            if j == self.index_dict['question_description_main']:
+                self.Fragentext_Entry.delete('1.0', 'end-1c')
+                self.Fragentext_Entry.insert('1.0', i)
+            else:
+                self.dbinhaltsliste[j][0].set(i)
+            j = j + 1
+        self.image_interface_1.add_picture()
+        self.image_interface_2.add_picture()
+        self.image_interface_3.add_picture()
+        self.response_input.update_pictures()
+        self.dbinhaltsliste[self.index_dict["question_type"]][0].set(self.fragentyp)
 
 class multiplechoice(fragen_gui):
     def __init__(self, table_dict, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, label_color,
@@ -685,11 +700,26 @@ class multiplechoice(fragen_gui):
         rel_width = .5
         self.response_frame.place(relx=.5, rely=0, relwidth=.5, relheight=1)
         self.width_scrl_UI = self.width * rel_width
-        self.respose_input = variable_scrl_UI(varname_list, self.bg_color, self.label_color, self.Label_Font, self.response_frame,
+        self.response_input = variable_scrl_UI(varname_list, self.bg_color, self.label_color, self.Label_Font, self.response_frame,
                                               self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10,
                                               Columns=4, Header="Choices",
                                               header_index=['Antworttext', 'Antwort-Grafik.', 'Punkte','Punkteabzug'], column_type_list=[0,1,0,0], columnwidth=(2, 3, 1, 1))
 
+    def Fill_Entrys_From_DB(self, db_data):
+        j = 0
+
+        for i in db_data[1][self.table_dict[self.fragentyp]]:#todo diese exception ist so nicht ok aber funktioniert erstmal um den Textbox Ihren Textzuzuweisen.
+            if j == self.index_dict['question_description_main']:
+                self.Fragentext_Entry.delete('1.0', 'end-1c')
+                self.Fragentext_Entry.insert('1.0', i)
+            else:
+                self.dbinhaltsliste[j][0].set(i)
+            j = j + 1
+        self.image_interface_1.add_picture()
+        self.image_interface_2.add_picture()
+        self.image_interface_3.add_picture()
+        self.response_input.update_pictures()
+        self.dbinhaltsliste[self.index_dict["question_type"]][0].set(self.fragentyp)
 
 class zuordnungsfrage(fragen_gui):
     def __init__(self, table_dict, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, label_color, button_color, *args, **kwargs):
@@ -706,7 +736,7 @@ class zuordnungsfrage(fragen_gui):
         rel_width = .5
         self.response_frame.place(relx=.5, rely=0, relwidth=rel_width, relheight=.3)
         self.width_scrl_UI = self.width * rel_width
-        self.respose_input = variable_scrl_UI(varname_1, self.bg_color, self.label_color, self.Label_Font,
+        self.response_input = variable_scrl_UI(varname_1, self.bg_color, self.label_color, self.Label_Font,
                                               self.response_frame,
                                               self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10,
                                               Columns=2, Header="Definition",
@@ -716,7 +746,7 @@ class zuordnungsfrage(fragen_gui):
         self.response_frame_2 = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
         self.width_scrl_UI = self.width * rel_width
         self.response_frame_2.place(relx=.5, rely=0.3, relwidth=rel_width, relheight=.3)
-        self.respose_input_2 = variable_scrl_UI(varname_2, self.bg_color, self.label_color, self.Label_Font,
+        self.response_input_2 = variable_scrl_UI(varname_2, self.bg_color, self.label_color, self.Label_Font,
                                                 self.response_frame_2,
                                                 self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10,
                                                 Columns=2, Header="Term",
@@ -734,6 +764,25 @@ class zuordnungsfrage(fragen_gui):
                                                   Columns=3, Header="Zuordnungspaare",
                                                   header_index=['Definition', 'Term', 'Punkte'], column_type_list=[2,2,0],
                                                   columnwidth=(4, 4, 1))
+
+    def Fill_Entrys_From_DB(self, db_data):
+        j = 0
+
+        for i in db_data[1][self.table_dict[
+            self.fragentyp]]:  # todo diese exception ist so nicht ok aber funktioniert erstmal um den Textbox Ihren Textzuzuweisen.
+            if j == self.index_dict['question_description_main']:
+                self.Fragentext_Entry.delete('1.0', 'end-1c')
+                self.Fragentext_Entry.insert('1.0', i)
+            else:
+                self.dbinhaltsliste[j][0].set(i)
+            j = j + 1
+        self.image_interface_1.add_picture()
+        self.image_interface_2.add_picture()
+        self.image_interface_3.add_picture()
+        self.response_input.update_pictures()
+        self.response_input_2.update_pictures()
+        self.zuordnungspaare_1.update_pictures()
+        self.dbinhaltsliste[self.index_dict["question_type"]][0].set(self.fragentyp)
 
 class formelfrage_permutation(fragen_gui):
     def __init__(self, table_dict, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, label_color, button_color, *args, **kwargs):
@@ -781,14 +830,49 @@ class formelfrage_permutation(fragen_gui):
 
 
 if __name__ == "__main__":
+    from ScrolledText_Functionality import Textformatierung
+    from DB_interface import DB_Interface
+
+    from XML_class import XML_Interface
     root = tk.Tk()
-    WIDTH = int(root.winfo_screenwidth() / 1.5)
-    HEIGHT = int(root.winfo_screenheight() / 2)
-    root.title("DB_List")
-    root.resizable(False, False)
-    root.geometry("%dx%d" % (WIDTH, HEIGHT))
-    gesucht = 'Spannungsteiler 2'
-    dbname = '../testdb.db'
-    #lbl = tk.Label(text="Das ist das Main Window")
-    #Fragen_Frame = Fragen_GUI(root, gesucht, dbname)
-    #root.mainloop()
+    # WIDTH = int(root.winfo_screenwidth())
+    # HEIGHT = int(root.winfo_screenheight())
+    # root.title("Fragengenerator")
+    # root.resizable(True, True)
+    # root.geometry("%dx%d" % (WIDTH, HEIGHT))
+
+    # Farben und Schriften Definitionen
+    Label_Font = font.Font(family='Verdana', size=10, weight='bold')  # Font definition for Labels
+    Entry_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Entrys
+    Button_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Buttons
+    table_list = ['formelfrage', 'singlechoice', 'multiplechoice', 'zuordnungsfrage', 'testeinstellungen', 'testeinstellungen']  # hier sind die Namen der Table drinne die verwendet werden können
+    bg_color = '#4cc9f0'  # general Background color
+    efg_color = '#3a0ca3'  # Entry foreground color
+    entry_color = 'white'  # Entry Background color
+    label_color = '#3a0ca3'
+    button_color = '#3f37c9'
+    fg_color = '#4cc9f0'  # general foregroundcolor
+    table_dict = {'formelfrage': 0, 'singlechoice': 1, 'multiplechoice': 2, 'zuordnungsfrage': 3, 'testeinstellungen': 4, 'testeinstellungen': 5}
+
+    mydb_name = 'generaldb.db'  # Datenbank mit allen Fragentypen
+    mytempdb_name = 'generaldb2.db'  # Kopie der originalen Datenbank
+    WIDTH = int(root.winfo_screenwidth())
+
+    DBI = DB_Interface(mydb_name, mytempdb_name, table_dict, table_list)
+    index_info = DBI.get_index_info()
+    table_index_list = index_info[0]
+    table_index_dict = index_info[1]
+    xml_interface = XML_Interface(DBI, table_dict, table_index_list, table_index_dict)
+
+
+    # zu Testzwecken die singlechoice Frage aus der DB holen und ein singlechoice Fragen Fenster öffnen
+    work_window = Toplevel()
+    work_window.title("Testfrage1")
+    ScrText = Textformatierung()
+    print("Hier wir in zukunft eine single Choice Frage geöffnet")
+    work_on_question = singlechoice(table_dict, work_window, DBI, ScrText, table_index_list,
+                                    table_index_dict, bg_color, label_color, button_color)
+
+    DBI.get_question("Testfrage1", 1)
+    #test_conf = Testeinstellungen(DBI, table_index_list[4], table_index_dict[4], table_dict['testeinstellungen'], WIDTH, Label_Font, Entry_Font, Button_Font, bg_color, entry_color, label_color, button_color, fg_color)
+    root.mainloop()

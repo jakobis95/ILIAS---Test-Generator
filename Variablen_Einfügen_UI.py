@@ -11,6 +11,7 @@ class variable_scrl_UI():
         self.label_color = label_color
         self.Label_Font = Label_Font
         self.Rows = Rows
+        self.picture_list = []
         self.Columns = Columns
         #liste der relativen spaltenbreite in anzahl sections
         self.columnwidth = columnwidth
@@ -57,7 +58,7 @@ class variable_scrl_UI():
         # erstellt eine Reihe die widerum die einnzelnen Spalten erstellt
         # alle reihen werden in einer liste gespeicher für einfachen zugriff bei erweiterung des Funktionsumfangs
         for row in range(self.Rows):
-            rowlist.append(choice_row(index_dict, column_type_list, self.StringVarList, second_frame, row, relwidth , varname_list, self.Columns, self.columnwidth))
+            rowlist.append(choice_row(index_dict, column_type_list, self.StringVarList, second_frame, row, relwidth , varname_list, self.Columns, self.columnwidth, self.picture_list))
 
         # erstellt Frame für gesamtüberschrift und Spaltenüberschriften
         HeadingFrame = Frame(frame)
@@ -83,11 +84,13 @@ class variable_scrl_UI():
             self.var_name_label[column]['font'] = self.Label_Font
             self.var_name_label[column].place(relx=relx, rely=0.5, relwidth=relw, relheight=.5)
             relx = relw + relx
-
+    def update_pictures(self):
+        for picture_interface in self.picture_list:
+            picture_interface.add_picture()
 
 class choice_column():
-    def __init__(self, column_type, VarFrame, row, column, width,  TextVar):
-
+    def __init__(self, column_type, VarFrame, row, column, width,  TextVar, picture_list):
+        self.picture_list = picture_list
         internal_F = Frame(VarFrame, width=width, height=30)
         internal_F.grid(row=row, column=column, pady=0, padx=0)
 
@@ -96,6 +99,7 @@ class choice_column():
             self.entry.place(x=0, y=0, relwidth=1, relheight=1)
         elif column_type == 1:
             self.entry = picture_choice(TextVar, internal_F)
+            self.picture_list.append(self.entry)
         elif column_type == 2:
             self.box = ttk.Combobox(internal_F, value=list(range(10)), textvariable=TextVar)
             self.box.place(x=0, y=0, relwidth=1, relheight=1)
@@ -104,13 +108,14 @@ class choice_column():
 
 
 class choice_row():
-    def __init__(self, index_dict, column_type, Var_list, second_frame, row, relwidth, varname_list, columns, columnwidth):
+    def __init__(self, index_dict, column_type, Var_list, second_frame, row, relwidth, varname_list, columns, columnwidth, picture_list):
+        self.picture_list = picture_list
         self.columns = columns
         self.rowlist = []
         self.Var_list = Var_list
 
         for column in range(self.columns):
             index = index_dict[varname_list[column] .format(row + 1)]
-            self.rowlist.append(choice_column(column_type[column], second_frame, row, column, int(relwidth * columnwidth[column]), Var_list[index][0]))
+            self.rowlist.append(choice_column(column_type[column], second_frame, row, column, int(relwidth * columnwidth[column]), Var_list[index][0], self.picture_list))
 
 
