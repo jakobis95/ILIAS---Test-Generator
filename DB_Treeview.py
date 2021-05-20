@@ -180,11 +180,14 @@ class UI():
         formelfrage_permutation.pack(side="top", fill=X)
 
     def update(self, db_data):
+        index = 0
         self.trv.delete(*self.trv.get_children())
         for table in db_data[self.ID]:
-            for data in table:
-                self.trv.insert('', 'end', values=data)
-                #print("update", data)
+            if index < 4:
+                for data in table:
+                    self.trv.insert('', 'end', values=data)
+                    #print("update", data)
+            index = index + 1#
 
     def add_data_to_testdb(self):
         i = 0
@@ -203,7 +206,7 @@ class UI():
         Auswahl = self.trv.focus()
         gesucht = self.trv.item(self.trv.focus())
         result = str(self.trv.item(Auswahl))
-        #print("Titel gesucht:", gesucht['values'][2])
+        print("Titel gesucht:", gesucht)
         #print("Typ gesucht:", gesucht['values'][1])
         #print("das ist in Treeview", self.e[1][1])
         if gesucht['values'][2] == "formelfrage":
