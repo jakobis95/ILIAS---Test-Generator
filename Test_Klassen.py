@@ -631,6 +631,7 @@ class Testeinstellungen_TRV():
         self.Width = Width/4
         self.DBI = DBI
         self.ID =4
+        self.create_style()
         self.rel_Top_Abstand = .1
         self.bg_color = bg_color
         self.entry_color = entry_color
@@ -651,27 +652,27 @@ class Testeinstellungen_TRV():
 
     def testeinstellungen_menu(self):
         self.neue_einstellungen = Button(self.Frame, text="Neues Profil", command=self.neue_einstellungen_fenster, bg=self.button_color, fg=self.bg_color)
-        self.neue_einstellungen.place(relx=.5, rely=.9, relwidth=.25)
+        self.neue_einstellungen.place(relx=.5, rely=.8, relwidth=.5)
         self.neue_einstellungen['font'] = self.Button_Font
 
-        self.testeinstellung_löschen = Button(self.Frame, text="Auswahl löschen", command=self.delete_from_db, bg=self.button_color, fg=self.bg_color)
-        self.testeinstellung_löschen.place(relx=.75, rely=.9, relwidth=.25)
+        self.testeinstellung_löschen = Button(self.Frame, text="Profil aus Datenbank löschen", command=self.delete_from_db, bg=self.button_color, fg=self.bg_color)
+        self.testeinstellung_löschen.place(relx=.5, rely=.9, relwidth=.5)
         self.testeinstellung_löschen['font'] = self.Button_Font
 
         self.Test_erstellen = Button(self.Frame, text="Testerstellen", command=self.create_test, bg=self.button_color, fg=self.bg_color)
-        self.Test_erstellen.place(relx=0, rely=.6, relwidth=.4)
+        self.Test_erstellen.place(relx=0.05, rely=.6, relwidth=.4)
         self.Test_erstellen['font'] = self.Button_Font
 
         self.testeinstellung_ausgewählt = Label(self.Frame, text="Ausgewählte Testeinstellung:", bg=self.label_color, fg=self.bg_color)
-        self.testeinstellung_ausgewählt.place(relx=0, rely=.2, relwidth=.4, relheight=.1)
+        self.testeinstellung_ausgewählt.place(relx=0.05, rely=.2, relwidth=.4, relheight=.1)
         self.testeinstellung_ausgewählt['font'] = self.Label_Font
 
         self.testeinstellung_ausgewählt_label = Label(self.Frame, text="keine testeinstellungen ausgewählt", bg=self.label_color, fg=self.bg_color)
-        self.testeinstellung_ausgewählt_label.place(relx=0, rely=.3, relwidth=.4, relheight=.1)
+        self.testeinstellung_ausgewählt_label.place(relx=0.05, rely=.3, relwidth=.4, relheight=.1)
         self.testeinstellung_ausgewählt_label['font'] = self.Label_Font
 
         self.testeinstellung_auswählen = Button(self.Frame, text="Testeinstellungen auswählen", command=self.change_auswahl_label, bg=self.button_color, fg=self.bg_color)
-        self.testeinstellung_auswählen.place(relx=0, rely=.1, relwidth=.4)
+        self.testeinstellung_auswählen.place(relx=0.05, rely=.1, relwidth=.4)
         self.testeinstellung_auswählen['font'] = self.Button_Font
 
     def neue_einstellungen_fenster(self):
@@ -704,9 +705,9 @@ class Testeinstellungen_TRV():
 
 
     def create_trv(self):
-        self.trv_label = Label(self.Frame, text="Testeinstellungs Profile", bg=self.label_color, fg=self.fg_color)
-        self.trv_label.place(relx=0.5, rely=0, relwidth=.6, relheight=.1)
-        self.trv_label['font'] = self.Label_Font
+        #self.trv_label = Label(self.Frame, text="Testeinstellungs Profile", bg=self.label_color, fg=self.fg_color)
+        #self.trv_label.place(relx=0.5, rely=0, relwidth=.6, relheight=.1)
+        #self.trv_label['font'] = self.Label_Font
         # Create Treview Frame
         self.DB_frame = tk.Frame(self.Frame)
         self.DB_frame.place(relx=0.5, rely=self.rel_Top_Abstand)
@@ -720,7 +721,7 @@ class Testeinstellungen_TRV():
         self.trv.tag_configure('odd', background='#ff5733')
         self.trv.pack(fill=BOTH)
         # Create Treeview Headings
-        self.trv.heading(1, text="Name")
+        self.trv.heading(1, text="Testeinstellungs Profile:")
         #self.trv.heading(8, text="Zuletzt verändert")
         # Format Columns
         self.trv.column(1, width=int(self.Width*(4.7/10) ), anchor=CENTER,
@@ -743,6 +744,15 @@ class Testeinstellungen_TRV():
         self.neue_einstellungen_fenster()
         self.DBI.get_question(gesucht['values'][0], 1)
 
+    def create_style(self):
+        # Create Stryle for treeview
+        style = ttk.Style()
+        style.configure("mystyle.Treeview", highlightthickness=0, bd=0,
+                        font=('Verdana', 8))  # Modify the font of the body
+        style.configure("mystyle.Treeview.Heading", font=('Verdana', 10, 'bold'))  # Modify the font of the headings
+        style.layout("mystyle.Treeview", [('mystyle.Treeview.treearea', {'sticky': 'nswe'})])  # Remove the borders
+        print('style created')
+
 if __name__ == "__main__":
 
 
@@ -757,14 +767,14 @@ if __name__ == "__main__":
     Label_Font = font.Font(family='Verdana', size=10, weight='bold')  # Font definition for Labels
     Entry_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Entrys
     Button_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Buttons
-    table_list = ['formelfrage', 'singlechoice', 'multiplechoice', 'zuordnungsfrage', 'testeinstellungen']  # hier sind die Namen der Table drinne die verwendet werden können
+    table_list = ['formelfrage', 'singlechoice', 'multiplechoice', 'zuordnungsfrage', 'testeinstellungen', 'testeinstellungen']  # hier sind die Namen der Table drinne die verwendet werden können
     bg_color = '#4cc9f0'  # general Background color
     efg_color = '#3a0ca3'  # Entry foreground color
     entry_color = 'white'  # Entry Background color
     label_color = '#3a0ca3'
     button_color = '#3f37c9'
     fg_color = '#4cc9f0'  # general foregroundcolor
-    table_dict = {'formelfrage': 0, 'singlechoice': 1, 'multiplechoice': 2, 'zuordnungsfrage': 3, 'testeinstellungen': 4}
+    table_dict = {'formelfrage': 0, 'singlechoice': 1, 'multiplechoice': 2, 'zuordnungsfrage': 3, 'testeinstellungen': 4, 'testeinstellungen': 5}
 
     mydb_name = 'generaldb.db'  # Datenbank mit allen Fragentypen
     mytempdb_name = 'generaldb2.db'  # Kopie der originalen Datenbank
