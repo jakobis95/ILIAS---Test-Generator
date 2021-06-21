@@ -56,12 +56,12 @@ class UI():
         self.trv.tag_configure('odd', background='#ff5733')
         self.trv.pack(fill=BOTH)
         # Create Treeview Headings
-        self.trv.heading(1, text=self.table_index_list[0][0][1])
-        self.trv.heading(2, text=self.table_index_list[0][1][1])
-        self.trv.heading(3, text=self.table_index_list[0][2][1])
-        self.trv.heading(4, text=self.table_index_list[0][3][1])
-        self.trv.heading(5, text=self.table_index_list[0][4][1])
-        self.trv.heading(6, text=self.table_index_list[0][189][1])
+        self.trv.heading(1, text="Schwierigkeit")
+        self.trv.heading(2, text="Fragenkategory")
+        self.trv.heading(3, text="Fragentyp")
+        self.trv.heading(4, text="Titel")
+        self.trv.heading(5, text="Fragentitle Beschreibung")
+        self.trv.heading(6, text="Author")
         self.trv.heading(7, text="Datum")
         #self.trv.heading(8, text="Zuletzt verändert")
         # Format Columns

@@ -19,7 +19,7 @@ class Testeinstellungen():
         self.index_dict = index_dict
         for i in self.index_list:
             i[0].set('')
-        self.work_window.geometry("%dx%d+%d+%d" % (Width/1.5, Width/2.7, Width/5, Width/8))
+        self.work_window.geometry("%dx%d+%d+%d" % (Width*3, Width*1.5, Width/5, Width/8))
         self.DBI.subscribe(self.Fill_Entrys_From_DB)
 
 

@@ -91,6 +91,7 @@ class Main(tk.Frame):
         #create_Test.pack(side="top", fill=X)
         create_Test = Button(Right_Menu_Frame, text="Test erstellen", bg=self.button_color, fg=self.bg_color, command=self.create_Test_Menu)
         create_Test.pack(side="top", fill=X)
+        create_Test['font'] = self.Button_Font
         create_Pool = Button(Right_Menu_Frame, text="Pool erstellen", bg=self.button_color, fg=self.bg_color, command=lambda: self.xml_interface.create_test_or_pool("ilias_pool"))
         create_Pool['font'] = self.Button_Font
         create_Pool.pack(side="top", fill=X)

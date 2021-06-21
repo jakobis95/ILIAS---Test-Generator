@@ -52,7 +52,7 @@ class DB_Interface():
             index = self.table_index_list[self.table_dict[table]][3][1]
             query = " SELECT * FROM " + table + " WHERE " + index + " LIKE '" + q2 + "' "
 
-            print(self.query)
+            #print(self.query)
             self.cursor.execute(query)
             test = self.cursor.fetchone()
             if test == None:
