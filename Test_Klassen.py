@@ -320,13 +320,11 @@ class Testeinstellungen():
 
         self.check_overview_answers = Checkbutton(self.frame2, text="", variable=self.index_list[self.index_dict['check_overview_answers']][0], onvalue=1,
                                                   offvalue=0)
+        self.check_overview_answers.deselect()
         self.check_overview_answers.grid(row=21, column=3, sticky=W)
 
-        self.check_show_end_comment = Checkbutton(self.frame2, text="", variable=self.index_list[self.index_dict['check_overview_answers']][0], onvalue=1,
-                                                  offvalue=0,
-                                                  command=lambda
-                                                      v=self.index_list[self.index_dict['check_overview_answers']][0].get(): self.show_concluding_remarks(
-                                                      self, v))
+        self.check_show_end_comment = Checkbutton(self.frame2, text="", variable=self.index_list[self.index_dict['check_show_end_comment']][0], onvalue=1,
+                                                  offvalue=0, command=self.show_concluding_remarks)
         self.check_show_end_comment.deselect()
         self.check_show_end_comment.grid(row=22, column=3, sticky=W)
 
@@ -591,11 +589,11 @@ class Testeinstellungen():
             self.check_autosave_interval_entry.grid(row=4, column=3, padx=10)
             self.check_autosave_interval_label.grid(row=4, column=3, padx=50, sticky=W)
 
-    def show_concluding_remarks(self, e, var):
-        if var.get() == 0:
+    def show_concluding_remarks(self):
+        varstate = int(self.index_list[self.index_dict['check_show_end_comment']][0].get())
+        if 0 == varstate:
             self.concluding_remarks_bar.grid_forget()
             self.concluding_remarks_infobox.grid_forget()
-
         else:
             self.concluding_remarks_bar.grid(row=22, column=3, sticky=E)
             self.concluding_remarks_infobox.grid(row=22, column=3, padx=30)
@@ -604,8 +602,8 @@ class Testeinstellungen():
 
     def Fill_Entrys_From_DB(self, db_data):
         j = 0
-        print("Fill entry mit", db_data[1][4])
-        for i in db_data[1][4]:  # todo diese exception ist so nicht ok aber funktioniert erstmal um den Textbox Ihren Textzuzuweisen.
+        print("Fill entry mit", db_data[1][5])
+        for i in db_data[1][5]:  # todo diese exception ist so nicht ok aber funktioniert erstmal um den Textbox Ihren Textzuzuweisen.
 
             self.index_list[j][0].set(i)
             j = j + 1
@@ -647,6 +645,7 @@ class Testeinstellungen_TRV():
         self.create_trv()
         self.testeinstellungen_menu()
         self.clear()
+        self.work_window.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.trv.bind('<Double-Button-1>', self.Select_from_DB)
 
 
@@ -730,12 +729,12 @@ class Testeinstellungen_TRV():
         print('trv created')
 
     def clear(self):
-        #self.DBI.get_complete_DB(0)
         self.DBI.get_complete_DB(0)
 
     def on_closing(self):
-        self.DBI.unsubscribe(self.Update_TRV())
+        self.DBI.unsubscribe(self.Update_TRV)
         self.work_window.destroy()
+        print('trv destroyed')
 
     def Select_from_DB(self, a):
 
