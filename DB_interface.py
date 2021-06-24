@@ -1,11 +1,14 @@
 import sqlite3
 from tkinter import *
 
+#Die DB_Interface Klasse regelt sämliche Datenflüsse zwischen der SQL Datenbank und allen anderen Klasse wie z.B. die UI-Klassen
+#Um auf die Datenbankfunktionalitäten zuzugreifen muss eine Klasse subscribed sein zu einer der Instanz der Db_Interface
+#Die Db_interface broardcastet die angeforderten Daten dann an alle subscriber und jeder sucht sich die für Ihn relevanten daten herraus
 class DB_Interface():
     def __init__(self, dbname, tempdbname, table_dict, table_list, *args, **kwargs):
         self.listeners = []
         self.all_data = []
-        self.db_data = [self.all_data, None, None, False] #broadcast data 1:Datenbak auswahl 2:Einzelne Frage aus Datenbank 3: daten in Temp datenbank 4:
+        self.db_data = [self.all_data, None, None, False] #broadcast data 1:  Datenbak auswahl 2:  Einzelne Frage aus Datenbank 3: daten in Temp datenbank 4:
         self.table = 'formelfrage'
         self.table_dict = table_dict
         self.table_list = table_list
@@ -15,18 +18,20 @@ class DB_Interface():
         self.cursor = self.mydb.cursor()
         self.mytempdb = sqlite3.connect(tempdbname)
         self.tempcursor = self.mytempdb.cursor()
-        for table in self.table_list:# Temporäre Datenbank wird gelöscht
+        for table in self.table_list:# Temporäre Datenbank wird geleert, da hier noch daten vom letzen benutzen drinn sein können
             self.tempcursor.execute("DELETE  FROM " + table + "")
         self.mytempdb.commit()
         self.cursorlist = [self.cursor, self.cursor, self.tempcursor]
         self.dblist = [self.mydb, None, self.mytempdb]
 
-    def search_DB(self, q2, id): #todo hier wird zwar jeder Table durchsucht aber noch nicht jedes Erbgenis zurückgegeben
+    def search_DB(self, q2, id): #Suche sollte so jetzt Funktionieren
+        searchterm = str(q2)
         zwischenspeicher = []
         for table in self.table_list:
-            self.query = " SELECT " + self.index_list[0][1] + ", " + self.index_list[1][1] + ", " + self.index_list[2][1] + ", " + self.index_list[3][1] + ", " + self.index_list[4][1] + " FROM " + table + " Where " + self.index_list[0][1] + " LIKE '" + q2 + "' OR " + self.index_list[1][1] + " LIKE '" + q2 + "' OR " + self.index_list[2][1] + " LIKE '" + q2 + "' OR " + self.index_list[3][1] + " LIKE '" + q2 + "' "
+            self.query = " SELECT " + self.table_index_list[self.table_dict[table]][0][1] + ", " + self.table_index_list[self.table_dict[table]][1][1] + ", " + self.table_index_list[self.table_dict[table]][2][1] + ", " + self.table_index_list[self.table_dict[table]][3][1] + ", " + self.table_index_list[self.table_dict[table]][4][1] + " FROM " + table + " Where " + self.table_index_list[self.table_dict[table]][0][1] + " LIKE '" + searchterm + "' OR " + self.table_index_list[self.table_dict[table]][1][1] + " LIKE '" + searchterm + "' OR " + self.table_index_list[self.table_dict[table]][2][1] + " LIKE '" + searchterm + "' OR " + self.table_index_list[self.table_dict[table]][3][1] + " LIKE '" + searchterm + "' "
+            print("query", self.query)
             self.cursor.execute(self.query)
-            #print(self.cursor.fetchall())
+
             zwischenspeicher.append(self.cursor.fetchall())
         print(zwischenspeicher)
         self.db_data[id] = zwischenspeicher
@@ -103,7 +108,7 @@ class DB_Interface():
         for item in item_list:
             table = item['values'][2]
             #print("Der Eintrag mit dem Titel: ", item['values'][2], ", soll kopiert werden")
-            self.cursor.execute("SELECT * FROM " + table + " WHERE " + self.index_list[3][1] + " = '" + item['values'][3] + "' ")
+            self.cursor.execute("SELECT * FROM " + table + " WHERE " + self.table_index_list[self.table_dict[table]][3][1] + " = '" + item['values'][3] + "' ")
             data = self.cursor.fetchone()
             #print("INSERT INTO " + table + " (" + self.table_index_list[self.table_dict[table]][3][1] + ") VALUES (:Titel)", {'Titel': data[3]})
             self.tempcursor.execute("INSERT INTO " + table + " (" + self.table_index_list[self.table_dict[table]][3][1] + ") VALUES (:Titel)", {'Titel': data[3]})
@@ -126,10 +131,12 @@ class DB_Interface():
 
     def delete_DB_content(self, item_list, ID):
         for item in item_list:
+            fragentyp = item['values'][2]
+            table = fragentyp
+            fragenname = item['values'][3]
             print(self.index_list[3][1])
             self.cursorlist[ID].execute(
-                "DELETE  FROM " + item['values'][
-                    2] + " WHERE " + self.index_list[3][1] + " = '" + item['values'][
+                "DELETE  FROM " + fragentyp + " WHERE " + self.table_index_list[self.table_dict[table]][3][1] + " = '" + item['values'][
                     3] + "'") # item['values'][2] = Fragentyp und der entspricht dem Table in der Datenbank für diesen Fragentyp
             self.dblist[ID].commit()
         self.get_complete_DB(ID)
