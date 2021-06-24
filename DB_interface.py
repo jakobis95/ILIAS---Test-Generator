@@ -235,10 +235,11 @@ class DB_Interface():
         # Durch alle tables suchen und Ergebnisse in einer Liste zusammenfassen
         # "extend" fügt eine Liste einer anderen zu
         for i in range(len(self.question_types)):
-            self.query = "SELECT * FROM " + str(self.question_types[i])
-            self.cursorlist[1].execute(self.query)  # cursorlist[2] Fehler bei Fragen auslesen?
-            self.test_data.extend((self.cursorlist[1].fetchall()))
-            print("query ############ ", self.cursorlist[1].fetchall())
+            self.query = "SELECT * FROM " + str(self.question_types[i]) + ""
+
+            self.tempcursor.execute(self.query)
+            self.test_data.extend((self.tempcursor.fetchall()))
+
         return self.test_data
 
 
