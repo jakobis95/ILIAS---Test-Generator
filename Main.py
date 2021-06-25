@@ -11,6 +11,7 @@ class Main(tk.Frame):
 
     def __init__(self, *args, **kwargs):
         tk.Frame.__init__(self, *args, **kwargs)
+        self.pname = StringVar() #Strinvariable für die Poolname-eingabe
 
         # Farben und Schriften Definitionen
         self.Label_Font = font.Font(family='Verdana', size=10, weight='bold')  # Font definition for Labels
@@ -89,7 +90,7 @@ class Main(tk.Frame):
         create_Test = Button(Right_Menu_Frame, text="Test erstellen", bg=self.button_color, fg=self.bg_color, command=self.create_Test_Menu)
         create_Test.pack(side="top", fill=X)
         create_Test['font'] = self.Button_Font
-        create_Pool = Button(Right_Menu_Frame, text="Pool erstellen", bg=self.button_color, fg=self.bg_color, command=lambda: self.xml_interface.create_test_or_pool("Poolname", "ilias_pool"))
+        create_Pool = Button(Right_Menu_Frame, text="Pool erstellen", bg=self.button_color, fg=self.bg_color, command=self.Poolname_eingabe_menu)
         create_Pool['font'] = self.Button_Font
         create_Pool.pack(side="top", fill=X)
 
@@ -99,7 +100,48 @@ class Main(tk.Frame):
         Test_TRV = Testeinstellungen_TRV(self.DBI, self.xml_interface, self.table_index_list[5], self.table_index_dict[5],
                                          self.table_dict['testeinstellungen'], self.WIDTH, self.Label_Font, self.Entry_Font, self.Button_Font,
                                          self.bg_color, self.entry_color, self.label_color, self.button_color, self.fg_color)
+    def Poolname_eingabe_menu(self):
+        Poolmenu = Pool_Name(self.xml_interface, self.WIDTH, self.Label_Font, self.Entry_Font, self.Button_Font,
+                                         self.bg_color, self.entry_color, self.label_color, self.button_color, self.fg_color)
 
+class Pool_Name():
+    def __init__(self, xml_interface, width, label_font, entry_font, Button_Font, bg_color, entry_color, label_color, button_color, fg_color):
+        self.xml_interface = xml_interface
+        self.Label_pfont = font.Font(family='Verdana', size=15, weight='bold')
+        self.Entry_pfont = font.Font(family='Verdana', size=15, weight='normal')
+        self.active = False  # Aktivitätsflag für Such Eingabefeld
+        self.pname = StringVar()
+        work_window_basis = Toplevel()
+        work_window_basis.geometry("%dx%d+%d+%d" % (width / 6, width / 12, width / 2, width / 4))
+        work_window_basis.title("Fragenpool erstellen")
+        work_window = Frame(work_window_basis, bd=10 ,bg=bg_color)
+        work_window.place(relx=0, rely=0, relwidth=1, relheight=1)
+        self.Poolname = Entry(work_window, textvariable=self.pname, fg="grey")
+        self.Poolname.place(relx=0, rely=0, relwidth=1, relheight=.5)
+        self.Poolname['font'] = self.Entry_pfont
+        self.pname.set("Poolname eingeben")
+        create_Pool2 = Button(work_window, text="Pool erstellen", bg=button_color, fg=bg_color,
+                              command=lambda: self.create_Fragenpool(work_window_basis))
+        create_Pool2['font'] = Button_Font
+        create_Pool2.place(relx=0, rely=0.5, relwidth=1, relheight=.5)
+        create_Pool2['font'] = self.Label_pfont
+        self.Poolname.bind('<FocusIn>', self.delete_placeholder)
+        self.Poolname.bind('<FocusOut>', self.delete_placeholder)
+
+    def delete_placeholder(self, e):
+        if len(self.pname.get()) < 1 & self.active == True:
+            self.pname.set("Poolname eingeben")
+            self.Poolname.configure(fg="grey")
+            self.active = False
+        elif self.active == False:
+            self.pname.set("")
+            self.Poolname.configure(fg="black")
+            self.active = True
+
+    def create_Fragenpool(self, work_window_basis):
+        work_window_basis.destroy()
+        self.xml_interface.create_test_or_pool(self.pname, "ilias_pool")
+        self.pname.set("Poolname eingeben")
 
 if __name__ == "__main__":
 
