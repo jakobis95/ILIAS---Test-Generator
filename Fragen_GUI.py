@@ -74,9 +74,6 @@ class fragen_gui():
         self.Save_btn['font'] = self.Button_Font
         self.Save_btn.pack(side=tk.RIGHT, padx=6, anchor="e", fill=Y)
 
-        self.calc_val_range_btn = Button(self.Speichern_Frame, text=" Wertebereich\nberechnen", command=self.calculate_value_range_function, bg=self.button_color, fg=self.fg_color)
-        self.calc_val_range_btn['font'] = self.Button_Font
-        self.calc_val_range_btn.pack(side=tk.RIGHT, padx=6, anchor="e", fill=Y)
 
         self.text_latex = Button(self.QD_frame, text="text latex", command=self.text_latex_call, bg=self.button_color, fg=self.fg_color) #todo change Farme
         self.text_latex.place(relx=0, rely=.9, relwidth=.25, relheight=.1)
@@ -130,28 +127,28 @@ class fragen_gui():
         self.Fragen_Window.destroy()
 
     def UI_Elemente(self):
-        self.Title_label = Label(self.param_Frame, text=self.dbinhaltsliste[self.index_dict['question_title']][1],bg=self.label_color, fg=self.fg_color)
+        self.Title_label = Label(self.param_Frame, text="Titel",bg=self.label_color, fg=self.fg_color)
         self.Title_label.pack(anchor=N, fill=X, pady=(3, 0))
         self.Title_label['font'] = self.Label_Font
         self.Title_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_title']][0], bg=self.entry_color, fg=self.efg_color)
         self.Title_Entry['font'] = self.Entry_Font
         self.Title_Entry.pack(anchor=N, fill=X)
 
-        self.Describtion_label = Label(self.param_Frame,text=self.dbinhaltsliste[self.index_dict['question_description_title']][1],bg=self.label_color, fg=self.fg_color)
+        self.Describtion_label = Label(self.param_Frame,text="Titel Beschreibung",bg=self.label_color, fg=self.fg_color)
         self.Describtion_label['font'] = self.Label_Font
         self.Describtion_label.pack(anchor=N, fill=X, pady=(3, 0))
         self.Describtion_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_description_title']][0], bg=self.entry_color, fg=self.efg_color)
         self.Describtion_Entry['font'] = self.Entry_Font
         self.Describtion_Entry.pack(anchor=N, fill=X)
 
-        self.Author_label = Label(self.param_Frame, text=self.dbinhaltsliste[self.index_dict['question_author']][1], bg=self.label_color, fg=self.fg_color)
+        self.Author_label = Label(self.param_Frame, text="Author", bg=self.label_color, fg=self.fg_color)
         self.Author_label['font'] = self.Label_Font
         self.Author_label.pack(anchor=N, fill=X, pady=(3, 0))
         self.Author_Entry = Entry(self.param_Frame,textvariable=self.dbinhaltsliste[self.index_dict['question_author']][0], bg=self.entry_color, fg=self.efg_color)
         self.Author_Entry['font'] = self.Entry_Font
         self.Author_Entry.pack(anchor=N, fill=X)
 
-        self.Schwierigkeit_label = Label(self.param_Frame, text=self.dbinhaltsliste[self.index_dict['question_difficulty']][1], bg=self.label_color, fg=self.fg_color)
+        self.Schwierigkeit_label = Label(self.param_Frame, text="Schwierigkeit", bg=self.label_color, fg=self.fg_color)
         self.Schwierigkeit_label['font'] = self.Label_Font
         self.Schwierigkeit_label.pack(anchor=N, fill=X, pady=(3, 0))
         self.Schwierigkeit_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_difficulty']][0], bg=self.entry_color, fg=self.efg_color, bd=1)
@@ -160,14 +157,14 @@ class fragen_gui():
 
 
 
-        self.Category_label = Label(self.param_Frame, text=self.dbinhaltsliste[self.index_dict['question_category']][1], bg=self.label_color, fg=self.fg_color)
+        self.Category_label = Label(self.param_Frame, text="Kategorie", bg=self.label_color, fg=self.fg_color)
         self.Category_label['font'] = self.Label_Font
         self.Category_label.pack(anchor=N, fill=X, pady=(3, 0))
         self.Category_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_category']][0], bg=self.entry_color, fg=self.efg_color)
         self.Category_Entry['font'] = self.Entry_Font
         self.Category_Entry.pack(anchor=N, fill=X)
 
-        self.Typ_label = Label(self.param_Frame, text=self.dbinhaltsliste[self.index_dict['question_type']][1], bg=self.label_color, fg=self.fg_color)
+        self.Typ_label = Label(self.param_Frame, text="Typ", bg=self.label_color, fg=self.fg_color)
         self.Typ_label['font'] = self.Label_Font
         self.Typ_label.pack(anchor=N, fill=X, pady=(3, 0))
         self.Typ_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_type']][0], bg=self.entry_color, fg=self.efg_color)
@@ -176,14 +173,14 @@ class fragen_gui():
         self.Typ_Entry.configure(state=DISABLED)
 
 
-        self.PoolTag_label = Label(self.param_Frame, text=self.dbinhaltsliste[self.index_dict['question_pool_tag']][1], bg=self.label_color, fg=self.fg_color)
+        self.PoolTag_label = Label(self.param_Frame, text="Fragenpooltag", bg=self.label_color, fg=self.fg_color)
         self.PoolTag_label['font'] = self.Label_Font
         self.PoolTag_label.pack(anchor=N, fill=X, pady=(3, 0))
         self.PoolTag_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_pool_tag']][0], bg=self.entry_color, fg=self.efg_color)
         self.PoolTag_Entry['font'] = self.Entry_Font
         self.PoolTag_Entry.pack(anchor=N, fill=X)
 
-        self.Fragentext_label = Label(self.QD_frame, text=self.dbinhaltsliste[self.index_dict['question_description_main']][1], bg=self.label_color, fg=self.fg_color)
+        self.Fragentext_label = Label(self.QD_frame, text="Beschreibung", bg=self.label_color, fg=self.fg_color)
         self.Fragentext_label['font'] = self.Label_Font
         self.Fragentext_label.place(rely=0, relx=0, relwidth=1, relheight=.1)
         self.Fragentext_Entry = ScrolledText(self.QD_frame, height=6, width=65, bg=self.entry_color, fg=self.efg_color)
@@ -659,6 +656,11 @@ class formelfrage(fragen_gui):
         self.width_scrl_UI = self.width * rel_width
         self.Results_interface = variable_scrl_UI(varname_list_result, self.bg_color, self.label_color, self.Label_Font, self.ResFrame, self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10, Columns=7, Header="Ergebnisse", header_index=['Name.', 'Min.', 'Max', 'Präz.', 'Tol.', 'Punkte', 'Formel'], column_type_list=[0, 0, 0, 0, 0, 0, 0], columnwidth=(1, 1, 1, 1, 1, 1, 1))
 
+        self.calc_val_range_btn = Button(self.param_Frame, text=" Wertebereich berechnen",
+                                         command=self.calculate_value_range_function, bg=self.button_color,
+                                         fg=self.fg_color)
+        self.calc_val_range_btn['font'] = self.Button_Font
+        self.calc_val_range_btn.place(relx=0, rely=.9, relwidth=1, relheight=.1)
 
 class singlechoice(fragen_gui):
     def __init__(self, table_dict, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, label_color, button_color, *args, **kwargs):

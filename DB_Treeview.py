@@ -62,23 +62,22 @@ class UI():
         self.trv.heading(4, text="Titel")
         self.trv.heading(5, text="Fragentitle Beschreibung")
         self.trv.heading(6, text="Author")
-        self.trv.heading(7, text="Datum")
+
         #self.trv.heading(8, text="Zuletzt verändert")
         # Format Columns
-        self.trv.column(1, width=int(self.Width / 9), anchor=CENTER,
+        self.trv.column(1, width=int(self.Width / 7.7), anchor=CENTER,
                         minwidth=int(self.Width / 30))
-        self.trv.column(2, width=int(self.Width / 9), anchor=CENTER,
+        self.trv.column(2, width=int(self.Width / 7.7), anchor=CENTER,
                         minwidth=int(self.Width / 30))
-        self.trv.column(3, width=int(self.Width / 9), anchor=W,
+        self.trv.column(3, width=int(self.Width / 7.7), anchor=W,
                         minwidth=int(self.Width / 30))
-        self.trv.column(4, width=int(self.Width / 9), anchor=W,
+        self.trv.column(4, width=int(self.Width / 7.7), anchor=W,
                         minwidth=int(self.Width / 30))
-        self.trv.column(5, width=int(self.Width / 9), anchor=CENTER,
+        self.trv.column(5, width=int(self.Width / 7.7), anchor=CENTER,
                         minwidth=int(self.Width / 30))
-        self.trv.column(6, width=int(self.Width / 9), anchor=W,
+        self.trv.column(6, width=int(self.Width / 7.7), anchor=W,
                         minwidth=int(self.Width / 30))
-        self.trv.column(7, width=int(self.Width / 10), anchor=CENTER,
-                        minwidth=int(self.Width / 30))
+
         print('trv created')
 
     def create_style(self):
