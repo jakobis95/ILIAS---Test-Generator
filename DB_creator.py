@@ -477,11 +477,13 @@ class generate_db():
                             description_img_name_3 text,
                             description_img_data_3 blop,
                             description_img_path_3 text,
-        
+                            
+                            
                             test_time text,
                             var_number int,
                             question_pool_tag text,
-                            question_author text
+                            question_author text,
+                            shuffle_answers
                             )""")
         mydb.commit()
         cursor.execute("""CREATE TABLE IF NOT EXISTS multiplechoice (
@@ -573,7 +575,9 @@ class generate_db():
         
                                 var_number int,
                                 question_pool_tag text,
-                                question_author text
+                                question_author text,
+                                shuffle_answers,
+                                multiple_row_answ
                                 )""")
         mydb.commit()
         cursor.execute("""CREATE TABLE IF NOT EXISTS zuordnungsfrage (

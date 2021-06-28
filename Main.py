@@ -72,7 +72,7 @@ class Main(tk.Frame):
         new_question = Button(Right_Menu_Frame, text="neue Frage", bg=self.button_color, fg=self.bg_color, command=DBT.choose_qt_typ)
         new_question['font'] = self.Button_Font
         new_question.pack(side="top", fill=X)
-        add_question = Button(Right_Menu_Frame, text="Frage zu für Test auswählen", bg=self.button_color, fg=self.bg_color, command=DBT.add_data_to_testdb)
+        add_question = Button(Right_Menu_Frame, text="Frage zu für Test hinzufügen", bg=self.button_color, fg=self.bg_color, command=DBT.add_data_to_testdb)
         add_question['font'] = self.Button_Font
         add_question.pack(side="top", fill=X)
         excel_import = Button(Right_Menu_Frame, text="Fragen aus Excel importieren", bg=self.button_color, fg=self.bg_color, command=self.xml_interface.excel_import_to_db)

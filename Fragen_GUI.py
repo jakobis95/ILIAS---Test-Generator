@@ -66,11 +66,11 @@ class fragen_gui():
         #Subscribe to Fragentext Funktionalotäten
         self.ScrText.subscribe(self.Fragentext_Entry.insert)
 
-        self.Add_Entry_btn = Button(self.Speichern_Frame, text="Frage in DB erstellen", command=self.Add_data_to_DB, bg=self.button_color, fg=self.fg_color)
+        self.Add_Entry_btn = Button(self.Speichern_Frame, text="Neue Frage erstellen", command=self.Add_data_to_DB, bg=self.button_color, fg=self.fg_color)
         self.Add_Entry_btn['font'] = self.Button_Font
         self.Add_Entry_btn.pack(side=tk.RIGHT, padx=6, anchor="e", fill=Y)
 
-        self.Save_btn = Button(self.Speichern_Frame, text="Save Changes", command=self.Save_Change_to_DB, bg=self.button_color, fg=self.fg_color)
+        self.Save_btn = Button(self.Speichern_Frame, text="Änderungen Speichern", command=self.Save_Change_to_DB, bg=self.button_color, fg=self.fg_color)
         self.Save_btn['font'] = self.Button_Font
         self.Save_btn.pack(side=tk.RIGHT, padx=6, anchor="e", fill=Y)
 
@@ -192,7 +192,8 @@ class fragen_gui():
 
         self.Test_Time = Test_Time_UI(self.param_Frame, self.bg_color, self.label_color, self.Label_Font)
 
-
+        self.Extra_Einstellungen_Frame = Frame(self.param_Frame, bg=self.bg_color)
+        self.Extra_Einstellungen_Frame.pack(anchor=N, fill=X, pady=(3, 0))
 
     def Add_data_to_DB(self):
         self.dbinhaltsliste[self.index_dict['question_description_main']][0].set(self.Fragentext_Entry.get("1.0", 'end-1c'))
@@ -638,6 +639,7 @@ class formelfrage(fragen_gui):
                             "res{}_min",
                             "res{}_max",
                             "res{}_prec",
+                            "res{}_tol",
                             "res{}_points",
                             "res{}_unit"]
         rel_width = .5
@@ -646,16 +648,16 @@ class formelfrage(fragen_gui):
         self.width_scrl_UI = self.width * rel_width
         self.Variablen_interface = variable_scrl_UI(varname_list_variable, self.bg_color, self.label_color,
                                                     self.Label_Font, self.VarFrame, self.dbinhaltsliste,
-                                                    self.index_dict, self.width_scrl_UI, Rows=15, Columns=6,
+                                                    self.index_dict, self.width_scrl_UI, Rows=15, Columns=5,
                                                     Header="Variablen",
-                                                    header_index=['Name.', 'Min.', 'Max', 'Präz.', 'Teilbar durch', 'Einheit'],
-                                                    column_type_list=[0, 0, 0, 0, 0, 0], columnwidth=(1, 1, 1, 1, 1, 1))
+                                                    header_index=['Name.', 'Min.', 'Max', 'Präz.', 'Teilbar durch'],
+                                                    column_type_list=[0, 0, 0, 0, 0], columnwidth=(1, 1, 1, 1, 1))
 
         rel_width = .5
         self.ResFrame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
         self.ResFrame.place(relx=.5, rely=0.5, relwidth=rel_width, relheight=.5)
         self.width_scrl_UI = self.width * rel_width
-        self.Results_interface = variable_scrl_UI(varname_list_result, self.bg_color, self.label_color, self.Label_Font, self.ResFrame, self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10, Columns=6, Header="Ergebnisse", header_index=['Name.', 'Min.', 'Max', 'Tol.', 'Punkte', 'Formel'], column_type_list=[0, 0, 0, 0, 0, 0], columnwidth=(1, 1, 1, 1, 1, 1))
+        self.Results_interface = variable_scrl_UI(varname_list_result, self.bg_color, self.label_color, self.Label_Font, self.ResFrame, self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10, Columns=7, Header="Ergebnisse", header_index=['Name.', 'Min.', 'Max', 'Präz.', 'Tol.', 'Punkte', 'Formel'], column_type_list=[0, 0, 0, 0, 0, 0, 0], columnwidth=(1, 1, 1, 1, 1, 1, 1))
 
 
 class singlechoice(fragen_gui):
@@ -668,8 +670,29 @@ class singlechoice(fragen_gui):
         self.response_frame = tk.Frame(self.Fragen_Window, bg=fg_color, bd=5)
         rel_width = .5
         self.response_frame.place(relx=.5, rely=0, relwidth=rel_width, relheight=1)
+
         self.width_scrl_UI = self.width * rel_width
         self.response_input = variable_scrl_UI(varname_list, self.bg_color, self.label_color, self.Label_Font, self.response_frame, self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10, Columns=3, Header="Choices", header_index=['Antworttext', 'Antwort-Grafik.', 'Punkte'], column_type_list=[0, 1, 0], columnwidth=(2, 3, 1))
+
+        self.checkbox_frame = tk.Frame(self.response_frame, bg=fg_color, bd=5)
+        self.checkbox_frame.place(relx=0, rely=.9, relwidth=.9, relheight=.1)
+
+        self.shuffle_answers_check = Checkbutton(self.checkbox_frame, text="Fragen mischen",
+                                                 variable=self.dbinhaltsliste[self.index_dict["shuffle_answers"]][0],
+                                                 onvalue=1, offvalue=0, bg=self.label_color, fg=self.bg_color)
+        self.shuffle_answers_check['font'] = self.Label_Font
+        self.shuffle_answers_check.place(relx=0, rely=0, relwidth=.3, relheight=1)
+
+        self.picture_preview_pixel_label = Label(self.checkbox_frame, text="Bildpreviewbreite in Pixel: ", anchor='w',
+                                                 bg=self.label_color, fg=self.bg_color)
+        self.picture_preview_pixel_label['font'] = self.Label_Font
+        self.picture_preview_pixel_label.place(relx=0.6, rely=0, relwidth=.4, relheight=.5)
+
+        self.picture_preview_pixel = Entry(self.checkbox_frame, text="Bild-Previewbreite in Pxl",
+                                           textvariable=self.dbinhaltsliste[self.index_dict["picture_preview_pixel"]][
+                                               0], fg=self.bg_color)
+        self.picture_preview_pixel['font'] = self.Entry_Font
+        self.picture_preview_pixel.place(relx=0.6, rely=0.5, relwidth=.4, relheight=.5)
 
     def Fill_Entrys_From_DB(self, db_data):
         j = 0
@@ -702,8 +725,32 @@ class multiplechoice(fragen_gui):
         self.width_scrl_UI = self.width * rel_width
         self.response_input = variable_scrl_UI(varname_list, self.bg_color, self.label_color, self.Label_Font, self.response_frame,
                                               self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10,
-                                              Columns=4, Header="Choices",
+                                              Columns=4, Header="Antwortmöglichkeiten",
                                               header_index=['Antworttext', 'Antwort-Grafik.', 'Punkte','Punkteabzug'], column_type_list=[0,1,0,0], columnwidth=(2, 3, 1, 1))
+
+        self.checkbox_frame = tk.Frame(self.response_frame, bg=fg_color, bd=5)
+        self.checkbox_frame.place(relx=0, rely=.9, relwidth=.9, relheight=.1)
+
+        self.shuffle_answers_check = Checkbutton(self.checkbox_frame, text="Fragen mischen",
+                                                 variable=self.dbinhaltsliste[self.index_dict["shuffle_answers"]][0],
+                                                 onvalue=1, offvalue=0,bg=self.label_color, fg=self.bg_color)
+        self.shuffle_answers_check['font'] = self.Label_Font
+        self.shuffle_answers_check.place(relx=0, rely=0, relwidth=.3, relheight=1)
+
+        self.multiple_row_answ_check = Checkbutton(self.checkbox_frame, text="Mehrzeilige Antworten",
+                                                 variable=self.dbinhaltsliste[self.index_dict["multiple_row_answ"]][0],
+                                                 onvalue=1, offvalue=0,bg=self.label_color, fg=self.bg_color)
+        self.multiple_row_answ_check['font'] = self.Label_Font
+        self.multiple_row_answ_check.place(relx=0.3, rely=0, relwidth=.3, relheight=1)
+
+        self.picture_preview_pixel_label = Label(self.checkbox_frame, text="Bildpreviewbreite in Pixel: ",anchor='w',  bg=self.label_color, fg=self.bg_color)
+        self.picture_preview_pixel_label['font'] = self.Label_Font
+        self.picture_preview_pixel_label.place(relx=0.6, rely=0, relwidth=.4, relheight=.5)
+
+        self.picture_preview_pixel = Entry(self.checkbox_frame, text="Bild-Previewbreite in Pxl",
+                                                   textvariable=self.dbinhaltsliste[self.index_dict["picture_preview_pixel"]][0], fg=self.bg_color)
+        self.picture_preview_pixel['font'] = self.Entry_Font
+        self.picture_preview_pixel.place(relx=0.6, rely=0.5, relwidth=.4, relheight=.5)
 
     def Fill_Entrys_From_DB(self, db_data):
         j = 0
@@ -764,6 +811,23 @@ class zuordnungsfrage(fragen_gui):
                                                   Columns=3, Header="Zuordnungspaare",
                                                   header_index=['Definition', 'Term', 'Punkte'], column_type_list=[2,2,0],
                                                   columnwidth=(4, 4, 1))
+
+        self.shuffle_answers_check = Checkbutton(self.param_Frame, text="Antworten mehreren Fragen zuordnen",
+                                                 variable=self.dbinhaltsliste[self.index_dict["asignment_mode"]][0],
+                                                 onvalue=1, offvalue=0, bg=self.label_color, fg=self.bg_color)
+        self.shuffle_answers_check['font'] = self.Label_Font
+        self.shuffle_answers_check.place(relx=0, rely=.75, relwidth=1, relheight=.09)
+
+        self.picture_preview_pixel_label = Label(self.param_Frame, text="Bildpreviewbreite in Pixel: ", anchor='w',
+                                                 bg=self.label_color, fg=self.bg_color)
+        self.picture_preview_pixel_label['font'] = self.Label_Font
+        self.picture_preview_pixel_label.place(relx=0, rely=.85, relwidth=1, relheight=.05)
+
+        self.picture_preview_pixel = Entry(self.param_Frame, text="Bild-Previewbreite in Pxl",
+                                           textvariable=self.dbinhaltsliste[self.index_dict["picture_preview_pixel"]][
+                                               0], fg=self.bg_color)
+        self.picture_preview_pixel['font'] = self.Entry_Font
+        self.picture_preview_pixel.place(relx=0, rely=0.9, relwidth=1, relheight=.05)
 
     def Fill_Entrys_From_DB(self, db_data):
         j = 0
