@@ -207,7 +207,8 @@ class DB_Interface():
                 self.query = "SELECT " + self.table_index_list[self.table_dict[table]][3][1] + " FROM " + table + ""
                 print("Table", table)
             else:
-                self.query = "SELECT " + self.table_index_list[self.table_dict[table]][0][1] + ", " + self.table_index_list[self.table_dict[table]][1][1] + ", " + self.table_index_list[self.table_dict[table]][2][1] + ", " + self.table_index_list[self.table_dict[table]][3][1] + ", " + self.table_index_list[self.table_dict[table]][4][1] + ", " + self.table_index_list[0][189][1] + " FROM " + table + ""
+                self.query = "SELECT " + self.table_index_list[self.table_dict[table]][self.table_index_dict[self.table_dict[table]]["question_title"]][1] + ", " + self.table_index_list[self.table_dict[table]][self.table_index_dict[self.table_dict[table]]["question_pool_tag"]][1] + ", " + self.table_index_list[self.table_dict[table]][self.table_index_dict[self.table_dict[table]]["question_type"]][1] + ", " + self.table_index_list[self.table_dict[table]][self.table_index_dict[self.table_dict[table]]["question_description_main"]][1] + ", " + self.table_index_list[self.table_dict[table]][self.table_index_dict[self.table_dict[table]]["date"]][1] + ", " + self.table_index_list[self.table_dict[table]][self.table_index_dict[self.table_dict[table]]["question_author"]][1] + " FROM " + table + ""
+            print("Was steht im query:", self.query)
             self.cursorlist[id].execute(self.query)
             all_data.append(self.cursorlist[id].fetchall())
 

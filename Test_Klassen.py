@@ -354,7 +354,7 @@ class Testeinstellungen():
                                                      variable=self.select_question, value=2)
         self.select_question_radiobtn3.grid(row=6, column=1, pady=0, sticky=W)  # DYNAMIC_QUEST_SET
 
-        self.select_anonym = IntVar()
+        self.select_anonym = self.index_list[self.index_dict['radio_select_anonymous']][0]
         self.select_anonym.set(0)
         self.select_anonym_radiobtn1 = Radiobutton(self.frame1, text="Testergebnisse ohne Namen",
                                                    variable=self.select_anonym, value=0, borderwidth=0,
@@ -365,7 +365,7 @@ class Testeinstellungen():
                                                    command=self.select_anonym.get())
         self.select_anonym_radiobtn2.grid(row=8, column=1, pady=0, sticky=W)
 
-        self.select_show_question_title = IntVar()
+        self.select_show_question_title = self.index_list[self.index_dict['radio_select_show_question_title']][0]
         self.select_show_question_title.set(0)
         self.select_show_question_title_radiobtn1 = Radiobutton(self.frame2, text="Fragentitel und erreichbare Punkte",
                                                                 variable=self.select_show_question_title, value=0,
@@ -384,7 +384,7 @@ class Testeinstellungen():
                                                                 command=self.select_show_question_title.get())
         self.select_show_question_title_radiobtn3.grid(row=3, column=3, pady=0, sticky=W)
 
-        self.select_user_response = IntVar()
+        self.select_user_response = self.index_list[self.index_dict['radio_select_user_response']][0]
         self.select_user_response.set(0)
         self.select_user_response_radiobtn1 = Radiobutton(self.frame2,
                                                           text="Antworten während des Testdurchlaufs nicht festschreiben",
@@ -407,7 +407,7 @@ class Testeinstellungen():
                                                           command=self.select_user_response.get())
         self.select_user_response_radiobtn4.grid(row=11, column=3, pady=0, sticky=W)
 
-        self.select_not_answered_questions = IntVar()
+        self.select_not_answered_questions = self.index_list[self.index_dict['radio_select_not_answered_questions']][0]
         self.select_not_answered_questions.set(0)
         self.select_not_answered_questions_radiobtn1 = Radiobutton(self.frame2,
                                                                    text="Nicht beantwortete Fragen bleiben an ihrem Platz",

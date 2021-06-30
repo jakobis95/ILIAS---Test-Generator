@@ -56,26 +56,28 @@ class UI():
         self.trv.tag_configure('odd', background='#ff5733')
         self.trv.pack(fill=BOTH)
         # Create Treeview Headings
-        self.trv.heading(1, text="Schwierigkeit")
-        self.trv.heading(2, text="Fragenkategory")
-        self.trv.heading(3, text="Fragentyp")
-        self.trv.heading(4, text="Titel")
-        self.trv.heading(5, text="Fragentitle Beschreibung")
+        self.trv.heading(1, text="Titel")
+        self.trv.heading(2, text="Taxonomie")
+        self.trv.heading(3, text="Typ")
+        self.trv.heading(4, text="Fragentext")
+        self.trv.heading(5, text="Datum")
         self.trv.heading(6, text="Author")
 
         #self.trv.heading(8, text="Zuletzt verändert")
         # Format Columns
-        self.trv.column(1, width=int(self.Width / 7.7), anchor=CENTER,
+        self.width_gesamt = (self.Width / 7.7)*6
+        self.width_column = self.width_gesamt/24
+        self.trv.column(1, width=int(self.width_column*3), anchor=CENTER,
                         minwidth=int(self.Width / 30))
-        self.trv.column(2, width=int(self.Width / 7.7), anchor=CENTER,
+        self.trv.column(2, width=int(self.width_column*3), anchor=CENTER,
                         minwidth=int(self.Width / 30))
-        self.trv.column(3, width=int(self.Width / 7.7), anchor=W,
+        self.trv.column(3, width=int(self.width_column*2), anchor=W,
                         minwidth=int(self.Width / 30))
-        self.trv.column(4, width=int(self.Width / 7.7), anchor=W,
+        self.trv.column(4, width=int(self.width_column*10), anchor=W,
                         minwidth=int(self.Width / 30))
-        self.trv.column(5, width=int(self.Width / 7.7), anchor=CENTER,
+        self.trv.column(5, width=int(self.width_column*2), anchor=CENTER,
                         minwidth=int(self.Width / 30))
-        self.trv.column(6, width=int(self.Width / 7.7), anchor=W,
+        self.trv.column(6, width=int(self.width_column*4), anchor=W,
                         minwidth=int(self.Width / 30))
 
         print('trv created')

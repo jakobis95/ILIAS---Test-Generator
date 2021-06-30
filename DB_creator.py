@@ -208,7 +208,8 @@ class generate_db():
                             var_number int,
                             res_number int,
                             question_pool_tag text,
-                            question_author text
+                            question_author text,
+                            date text
                             )""")
 
 
@@ -402,7 +403,8 @@ class generate_db():
                             var_number int,
                             res_number int,
                             question_pool_tag text,
-                            question_author text
+                            question_author text,
+                            date text
                             )""")
         mydb.commit()
 
@@ -483,7 +485,8 @@ class generate_db():
                             var_number int,
                             question_pool_tag text,
                             question_author text,
-                            shuffle_answers
+                            shuffle_answers,
+                            date text
                             )""")
         mydb.commit()
         cursor.execute("""CREATE TABLE IF NOT EXISTS multiplechoice (
@@ -577,7 +580,8 @@ class generate_db():
                                 question_pool_tag text,
                                 question_author text,
                                 shuffle_answers,
-                                multiple_row_answ
+                                multiple_row_answ,
+                                date text
                                 )""")
         mydb.commit()
         cursor.execute("""CREATE TABLE IF NOT EXISTS zuordnungsfrage (
@@ -753,7 +757,8 @@ class generate_db():
                             var_number int,
                             res_number int,
                             question_pool_tag text,
-                            question_author text
+                            question_author text,
+                            date text
                             )""")
 
 
@@ -944,7 +949,8 @@ class generate_db():
                             var_number int,
                             res_number int,
                             question_pool_tag text,
-                            question_author text
+                            question_author text,
+                            date text
                             )""")
 
 

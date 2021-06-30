@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter as tk
 import tkinter.font as font
+from datetime import date
 from tkinter import filedialog
 #import tkFileDialog
 from tkinter.scrolledtext import ScrolledText
@@ -193,13 +194,14 @@ class fragen_gui():
         self.Extra_Einstellungen_Frame.pack(anchor=N, fill=X, pady=(3, 0))
 
     def Add_data_to_DB(self):
+        self.dbinhaltsliste[self.index_dict["date"]][0].set(date.today())
         self.dbinhaltsliste[self.index_dict['question_description_main']][0].set(self.Fragentext_Entry.get("1.0", 'end-1c'))
         self.db_I.Add_data_to_DB(self.dbinhaltsliste, self.dbinhaltsliste[3][0].get())
 
 
 
     def Save_Change_to_DB(self):
-
+        self.dbinhaltsliste[self.index_dict["date"]][0].set(date.today())
         self.dbinhaltsliste[self.index_dict['question_description_main']][0].set(self.Fragentext_Entry.get("1.0", 'end-1c'))
         self.db_I.Save_Change_to_DB(self.dbinhaltsliste)
 
