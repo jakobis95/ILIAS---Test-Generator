@@ -80,6 +80,9 @@ class Main(tk.Frame):
         excel_import = Button(Right_Menu_Frame, text="Fragen aus Excel importieren", bg=self.button_color, fg=self.bg_color, command=self.xml_interface.excel_import_to_db)
         excel_import['font'] = self.Button_Font
         excel_import.pack(side="top", fill=X)
+        excel_export_to_xlsx = Button(Right_Menu_Frame, text="Datenbank exportieren", bg=self.button_color, fg=self.bg_color, command= lambda: self.xml_interface.excel_export_to_xlsx(self, self.table_index_dict, self.table_list))
+        excel_export_to_xlsx['font'] = self.Button_Font
+        excel_export_to_xlsx.pack(side="top", fill=X)
         datenbank_og = Button(Right_Menu_Frame, text="Datenbank wählen", bg=self.button_color, fg=self.bg_color, command=self.DB_Manager_UI)
         datenbank_og['font'] = self.Button_Font
         datenbank_og.pack(side="top", fill=X)

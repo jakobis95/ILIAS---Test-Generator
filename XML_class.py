@@ -7,6 +7,10 @@ import base64
 from tkinter import filedialog
 import pandas as pd
 import shutil
+from tkinter import messagebox
+import sqlite3
+import xlsxwriter
+import collections.abc as byteobj
 
 
 class XML_Interface():
@@ -1692,6 +1696,180 @@ class XML_Interface():
 
             print("     Datei geladen!")
 
+
+
+        ###### EXCEL EXPORT FUNKTION ###############
+        def excel_export_to_xlsx(self, project_root_path, db_entry_to_index_dict, table_list):
+
+            # exportiert die ersten 4 Fragentypen aus der Table_list
+            # Formelfrage, Singelchoice, Multiplechoice, Zuordnungsfrage
+
+            # Abfrage in welchem Format die Datenbank exportiert wrden soll
+            # Messagebox liefert ein "Standard" Abfragefenster mit der Möglichkeit "Ja" / "Nein" auszuwählen
+            # Die Rückgabewerte dieser Box sind entsprechend "Yes" / "No"
+            self.export_filetype_choice = messagebox.askquestion("Datenbank exportieren",
+                                                                 "Datenbank als XLSX-Dateiformat exportieren?\n(\"Nein\" exportiert die Datei im ODS-Dateiformat)")
+
+            for i in range(4):
+                print("DAS SIT EIN TEST: ", table_list[i])
+
+                self.xlsx_workbook_name = str(table_list[i]) + "_DB_export_file"
+                self.xlsx_worksheet_name = str(table_list[i]) + " - Database"
+                self.database_path = "generaldb.db"
+                self.database_table_name = str(table_list[i])
+
+                self.project_root_path = pathlib.Path().absolute()
+                self.db_entry_to_index_dict = db_entry_to_index_dict[i]
+
+
+                # Datenbank-Name lautet z.B.: ilias_singlechoice_db.db
+                # durch den Zusatz [:-3] werden die letzten 3 Zeichen gelöscht
+                self.database_dir_name = str(self.database_path[:-3])
+                self.database_dir_name += "_images"
+
+                # if self.export_filetype_choice == "yes":
+                self.orig_workbook_name = self.xlsx_workbook_name
+                self.xlsx_workbook_name += ".xlsx"
+
+                self.ods_workbook_name = self.orig_workbook_name
+                self.ods_workbook_name += ".ods"
+
+                #        else:
+                #            self.xlsx_workbook_name += ".ods"
+                print("________________________________________________")
+                print("Datenbank wird exportiert...", end="", flush=True)
+
+                conn = sqlite3.connect(self.database_path)
+                cursor = conn.cursor()
+                query = 'SELECT * FROM {} LIMIT -1 OFFSET 1'.format(self.database_table_name)
+                cursor.execute(query)
+
+                header = [row[0] for row in cursor.description]
+                rows = cursor.fetchall()
+
+                # Create an new Excel file and add a worksheet.
+                # os.path.normpath(os.path.join(self.project_root_path, 'ILIAS-Fragenpool_qpl_Daten'))
+                excel = xlsxwriter.Workbook(
+                    os.path.normpath(os.path.join(self.project_root_path, "Datenbank_Export", self.xlsx_workbook_name)))
+                excel_sheet = excel.add_worksheet(self.xlsx_worksheet_name)
+
+                # Create style for cells
+                header_cell_format = excel.add_format({'bold': True, 'border': True, 'bg_color': 'yellow'})
+                body_cell_format = excel.add_format({'border': True})
+
+                row_index = 0
+                column_index = 0
+
+                for column_name in header:
+                    excel_sheet.write(row_index, column_index, column_name, header_cell_format)
+                    column_index += 1
+
+                row_index += 1
+                for row in rows:
+
+                    column_index = 0
+                    self.picture_index = 1
+                    self.picture_definitions_answer_index = 1
+                    self.picture_terms_answer_index = 1
+                    self.sc_picture_answer_index = 1
+
+                    for column_data in row:
+                        # # Prüfen ob der Inhalt vom Typ String / Integer / Float ist
+                        # # Wenn die Prüfung "falsch" ergibt, handelt es sich um einen Bild-Eintrag
+
+                        # prüfen ob Zeilen-Inhalt vom Typ "BLOB" ist (Bild Format in SQL)
+                        if isinstance(column_data, byteobj.ByteString) == False:
+                            excel_sheet.write(row_index, column_index, column_data, body_cell_format)
+                            # column_index += 1
+
+                        # Wenn kein Typ "BLOB", aber Länge des Strings sehr groß ist (64encoded image string)
+                        if isinstance(column_data, byteobj.ByteString) == False and len(str(column_data)) > 40 and str(
+                                column_data).count(' ') < 3:
+
+                            # Wenn Fragen-Typ ---> "ZUORDNUNGSFRAGE"
+                            if row[self.db_entry_to_index_dict['question_type']].lower() == "zuordnungsfrage":
+
+                                if self.picture_definitions_answer_index <= 10:
+                                    self.dict_entry_string = 'definitions_response_%s_img_label' % (
+                                        str(self.picture_definitions_answer_index))
+                                    column_data = str(row[self.db_entry_to_index_dict[
+                                        self.dict_entry_string]]) + " - img_data_string_placeholder"
+                                    self.picture_definitions_answer_index += 1
+
+
+
+                                elif self.picture_terms_answer_index <= 10:
+                                    self.dict_entry_string = 'terms_response_%s_img_label' % (
+                                        str(self.picture_terms_answer_index))
+                                    column_data = str(row[self.db_entry_to_index_dict[
+                                        self.dict_entry_string]]) + " - img_data_string_placeholder"
+                                    self.picture_terms_answer_index += 1
+
+
+                            # Wenn Fragen-Typ ---> "SINGLECHOICE"
+                            elif row[self.db_entry_to_index_dict['question_type']].lower() == "singlechoice":
+                                if self.picture_definitions_answer_index <= 10:
+                                    self.dict_entry_string = 'response_%s_img_label' % (
+                                        str(self.sc_picture_answer_index))
+
+                                    if str(row[self.db_entry_to_index_dict[self.dict_entry_string]]) != "":
+                                        column_data = str(row[self.db_entry_to_index_dict[
+                                            self.dict_entry_string]]) + " - img_data_string_placeholder"
+                                        self.sc_picture_answer_index += 1
+
+                            excel_sheet.write(row_index, column_index, column_data, body_cell_format)
+
+                        # Bilder für Fragen-Text
+                        if isinstance(column_data, byteobj.ByteString) == True:
+                            column_data = str(row[self.db_entry_to_index_dict[
+                                'description_img_name_' + str(self.picture_index)]]) + " - img_data_string_placeholder"
+                            image_data = row[
+                                self.db_entry_to_index_dict['description_img_data_' + str(self.picture_index)]]
+
+                            excel_sheet.write(row_index, column_index, column_data, body_cell_format)
+                            # column_index += 1
+
+                            # Hier werden die Bilder (physisch) in die Ordner abgelegt
+                            # Die zusätzliche Abfrage ist leider notwendig, da u.U. einfache Strings als 'TRUE' bei der "isinstance(column_data,byteobj.ByteString)" Abfrage eingestuft werden
+                            # Diese einfachen Strings können aber natürlich nicht als Bild geschrieben werden
+                            if row[
+                                self.db_entry_to_index_dict['description_img_data_' + str(self.picture_index)]] != "":
+                                with open(os.path.normpath(
+                                        os.path.join(self.project_root_path, "Datenbank_Export", "image_files",
+                                                     self.database_dir_name, str(row[self.db_entry_to_index_dict[
+                                                    'description_img_name_' + str(self.picture_index)]]) + '.png')),
+                                          'wb') as image_file:
+                                    image_file.write(image_data)
+
+                                self.picture_index += 1
+                        column_index += 1
+                    row_index += 1
+
+                    # Variablen zurücksetzen, für nächste Frage/Zeile
+                    self.picture_index = 1
+                    self.picture_definitions_answer_index = 1
+                    self.picture_terms_answer_index = 1
+                    self.sc_picture_answer_index = 1
+                # Closing workbook
+                excel.close()
+
+                print("     abgeschlossen!")
+
+                print(str(row_index) + ' Zeilen exportiert --->  ' + excel.filename)
+                print("________________________________________________")
+
+                print(self.export_filetype_choice)
+
+                # Exportiert die Datenbank als ".xlsx" und konvertiert die Datei nach ".ods"
+                if self.export_filetype_choice == "no":
+                    dataframe = pd.read_excel(os.path.normpath(
+                        os.path.join(self.project_root_path, "Datenbank_Export", self.xlsx_workbook_name)))
+                    with ExcelWriter(os.path.normpath(
+                            os.path.join(self.project_root_path, "Datenbank_Export", self.ods_workbook_name)).format(
+                            'ods')) as writer:
+                        dataframe.to_excel(writer, engine='ods')
+
+            messagebox.showinfo("Datenbank exportieren", "Datenbank wurde exportiert!")
 
         ###### ILIAS BESTEHENDER POOL IMPORT IN DB
         def import_illias_pool_oder_test_in_db(self):
