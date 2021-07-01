@@ -6,6 +6,7 @@ from DB_interface import DB_Interface
 from XML_class import XML_Interface
 from Taxonomie_interface import TAX_Interface
 from Test_Klassen import Testeinstellungen_TRV
+from tkinter import filedialog
 from ScrolledText_Functionality import Textformatierung
 class Main(tk.Frame):
 
@@ -23,6 +24,7 @@ class Main(tk.Frame):
         self.label_color = '#3a0ca3'
         self.button_color = '#3f37c9'
         self.fg_color = '#4cc9f0'  # general foregroundcolor
+        self.WIDTH = int(root.winfo_screenwidth())  # Monitorauflösung in Pixel in der Breite
 
 
         # Datenbank mit allen Fragentypen/ wenn nicht vorhanden muss mit DB_creator_Testbed erstellt werden
@@ -59,7 +61,7 @@ class Main(tk.Frame):
         Right_Menu_Frame = tk.Frame(bg=self.bg_color, bd=20)
         Right_Menu_Frame.place(relx=.8, rely=0.0, relwidth=.2, relheight=1)
 
-        self.WIDTH = int(root.winfo_screenwidth())#Monitorauflösung in Pixel in der Breite
+
         #Fragen-Datenbank UI in Left_Top_Frame öffnen
         DBT = UI(self.table_dict, self.DBI, Left_Top_Frame, self.WIDTH, 0, self.table_index_list, self.table_index_dict, "Fragendatenbank", self.bg_color, self.button_color, self.label_color, self.Button_Font, self.Label_Font)
         #Temporäre-Datenbank UI in Left_Bottom_Frame öffnen
@@ -78,7 +80,7 @@ class Main(tk.Frame):
         excel_import = Button(Right_Menu_Frame, text="Fragen aus Excel importieren", bg=self.button_color, fg=self.bg_color, command=self.xml_interface.excel_import_to_db)
         excel_import['font'] = self.Button_Font
         excel_import.pack(side="top", fill=X)
-        datenbank_og = Button(Right_Menu_Frame, text="Datenbank wählen", bg=self.button_color, fg=self.bg_color)
+        datenbank_og = Button(Right_Menu_Frame, text="Datenbank wählen", bg=self.button_color, fg=self.bg_color, command=self.DB_Manager_UI)
         datenbank_og['font'] = self.Button_Font
         datenbank_og.pack(side="top", fill=X)
         taxonomy_settings = Button(Right_Menu_Frame, text="Taxonomie bearbeiten", bg=self.button_color, fg=self.bg_color, command=tax_interface.edit_tax_of_existing_ilias_pool_file)
@@ -95,6 +97,7 @@ class Main(tk.Frame):
         create_Pool.pack(side="top", fill=X)
 
 
+
     #Testmenü wird als neue Instanz aufgerufen wenn der Test_erstellen_Button gedrückt wird, diese Klasse befindet sich in Test_Klassen.py
     def create_Test_Menu(self):
         Test_TRV = Testeinstellungen_TRV(self.DBI, self.xml_interface, self.table_index_list[5], self.table_index_dict[5],
@@ -103,6 +106,33 @@ class Main(tk.Frame):
     def Poolname_eingabe_menu(self):
         Poolmenu = Pool_Name(self.xml_interface, self.WIDTH, self.Label_Font, self.Entry_Font, self.Button_Font,
                                          self.bg_color, self.entry_color, self.label_color, self.button_color, self.fg_color)
+    def DB_Manager_UI(self):
+        self.textvar = StringVar()
+        self.work_window = Toplevel()
+        width = self.WIDTH
+        self.work_window.title("Datenbankauswahl")
+        self.work_window.resizable(True, True)
+        self.work_window.geometry("%dx%d+%d+%d" % (width / 6, width / 12, width / 2, width / 4))
+        Choose_DB = Button(self.work_window, text="Datenbank auswählen", bg=self.button_color, fg=self.bg_color,
+                             command=self.Choose_DB)
+        Choose_DB['font'] = self.Button_Font
+        Choose_DB.pack(side="top", fill=X)
+        DB_name = Label(self.work_window, textvariable= self.textvar)
+        DB_name['font'] = self.Entry_Font
+        DB_name.pack(side="top", fill=X)
+        self.Open_DB = Button(self.work_window, text="Datenbank Öffnen", bg=self.button_color, fg=self.bg_color,
+                           command=lambda: self.DBI.change_DB(self.file.name))
+        self.Open_DB['font'] = self.Button_Font
+        self.Open_DB.pack(side="top", fill=X)
+        # self.Open_DB.bind('<ButtonRelease-1>', self.destroy_DB_Manager_UI)
+
+    def destroy_DB_Manager_UI(self, e):
+        self.work_window.destroy()
+
+    def Choose_DB(self):
+        self.file = filedialog.askopenfile(parent=self.work_window, mode='rb', title='Choose a file')
+        print("dieser Pfad wurde zurückgegeben:", self.file.name)
+        self.textvar.set(self.file.name)
 
 class Pool_Name():
     def __init__(self, xml_interface, width, label_font, entry_font, Button_Font, bg_color, entry_color, label_color, button_color, fg_color):

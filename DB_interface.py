@@ -1,5 +1,6 @@
 import sqlite3
 from tkinter import *
+from pathlib import Path
 
 #Die DB_Interface Klasse regelt sämliche Datenflüsse zwischen der SQL Datenbank und allen anderen Klasse wie z.B. die UI-Klassen
 #Um auf die Datenbankfunktionalitäten zuzugreifen muss eine Klasse subscribed sein zu einer der Instanz der Db_Interface
@@ -13,6 +14,18 @@ class DB_Interface():
         self.table_dict = table_dict
         self.table_list = table_list
 
+        datei = open('Standard_DB_Name.txt', 'r')
+        start_path = datei.read()
+        my_file = Path(start_path)
+        if my_file.is_file():
+            dbname = start_path
+        else:
+            datei = open('Standard_DB_Name.txt', 'w')
+            datei.write("generaldb.db")
+            dbname = 'generaldb.db'
+            print("Die gespeicherte Datenbank konnte nicht gefunden werden\n es wurde eine Leere Datenbank erstellt")
+
+
         # Insert Data from Database
         self.mydb = sqlite3.connect(dbname)
         self.cursor = self.mydb.cursor()
@@ -23,6 +36,18 @@ class DB_Interface():
         self.mytempdb.commit()
         self.cursorlist = [self.cursor, self.cursor, self.tempcursor]
         self.dblist = [self.mydb, None, self.mytempdb]
+
+    def change_DB(self, db_path):
+        self.mydb.close()
+        self.mydb = sqlite3.connect(db_path)
+        self.cursor = self.mydb.cursor()
+        self.cursorlist[0] = self.cursor
+        self.cursorlist[1] = self.cursor
+        self.dblist[0] = self.mydb
+        print("new db selected:", db_path)
+        self.get_complete_DB(0)
+        datei = open('Standard_DB_Name.txt', 'w')
+        datei.write(db_path)
 
     def search_DB(self, q2, id): #Suche sollte so jetzt Funktionieren
         searchterm = str(q2)
