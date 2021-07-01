@@ -632,7 +632,7 @@ class formelfrage(fragen_gui):
                                "var{}_max",
                                "var{}_prec",
                                "var{}_divby",
-                               "var{}_unit"]
+                               "var{}_formula"]
 
         varname_list_result = ["res{}_name",
                             "res{}_min",
@@ -640,7 +640,7 @@ class formelfrage(fragen_gui):
                             "res{}_prec",
                             "res{}_tol",
                             "res{}_points",
-                            "res{}_unit"]
+                            "res{}_formula"]
         rel_width = .5
         self.VarFrame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
         self.VarFrame.place(relx=.5, rely=0, relwidth=rel_width, relheight=.5)
