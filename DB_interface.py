@@ -6,7 +6,7 @@ from pathlib import Path
 #Um auf die Datenbankfunktionalitäten zuzugreifen muss eine Klasse subscribed sein zu einer der Instanz der Db_Interface
 #Die Db_interface broardcastet die angeforderten Daten dann an alle subscriber und jeder sucht sich die für Ihn relevanten daten herraus
 class DB_Interface():
-    def __init__(self, dbname, tempdbname, table_dict, table_list, *args, **kwargs):
+    def __init__(self, nichtbenutzter_DB_name, tempdbname, table_dict, table_list, *args, **kwargs):
         self.listeners = []
         self.all_data = []
         self.db_data = [self.all_data, None, None, False] #broadcast data 1:  Datenbak auswahl 2:  Einzelne Frage aus Datenbank 3: daten in Temp datenbank 4:
@@ -128,14 +128,14 @@ class DB_Interface():
     def add_question_to_temp(self, item_list):
         zwischenspeicher = []
         table = "singlechoice"
-        #print(table)
+        print("item:", )
 
         for item in item_list:
             table = item['values'][2]
             #print("Der Eintrag mit dem Titel: ", item['values'][2], ", soll kopiert werden")
-            self.cursor.execute("SELECT * FROM " + table + " WHERE " + self.table_index_list[self.table_dict[table]][3][1] + " = '" + item['values'][3] + "' ")
+            self.cursor.execute("SELECT * FROM " + table + " WHERE " + self.table_index_list[self.table_dict[table]][3][1] + " = '" + item['values'][0] + "' ")
             data = self.cursor.fetchone()
-            #print("INSERT INTO " + table + " (" + self.table_index_list[self.table_dict[table]][3][1] + ") VALUES (:Titel)", {'Titel': data[3]})
+            print("data", data)
             self.tempcursor.execute("INSERT INTO " + table + " (" + self.table_index_list[self.table_dict[table]][3][1] + ") VALUES (:Titel)", {'Titel': data[3]})
             i = 0
             for item in data:
