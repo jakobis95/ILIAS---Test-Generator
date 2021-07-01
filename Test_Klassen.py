@@ -19,7 +19,7 @@ class Testeinstellungen():
         self.index_dict = index_dict
         for i in self.index_list:
             i[0].set('')
-        self.work_window.geometry("%dx%d+%d+%d" % (Width/1.5, Width/2.7, Width/5, Width/8))
+        self.work_window.geometry("%dx%d+%d+%d" % (Width*3, Width*1.5, Width/5, Width/8))
         self.DBI.subscribe(self.Fill_Entrys_From_DB)
 
 
@@ -320,13 +320,11 @@ class Testeinstellungen():
 
         self.check_overview_answers = Checkbutton(self.frame2, text="", variable=self.index_list[self.index_dict['check_overview_answers']][0], onvalue=1,
                                                   offvalue=0)
+        self.check_overview_answers.deselect()
         self.check_overview_answers.grid(row=21, column=3, sticky=W)
 
-        self.check_show_end_comment = Checkbutton(self.frame2, text="", variable=self.index_list[self.index_dict['check_overview_answers']][0], onvalue=1,
-                                                  offvalue=0,
-                                                  command=lambda
-                                                      v=self.index_list[self.index_dict['check_overview_answers']][0].get(): self.show_concluding_remarks(
-                                                      self, v))
+        self.check_show_end_comment = Checkbutton(self.frame2, text="", variable=self.index_list[self.index_dict['check_show_end_comment']][0], onvalue=1,
+                                                  offvalue=0, command=self.show_concluding_remarks)
         self.check_show_end_comment.deselect()
         self.check_show_end_comment.grid(row=22, column=3, sticky=W)
 
@@ -356,7 +354,7 @@ class Testeinstellungen():
                                                      variable=self.select_question, value=2)
         self.select_question_radiobtn3.grid(row=6, column=1, pady=0, sticky=W)  # DYNAMIC_QUEST_SET
 
-        self.select_anonym = IntVar()
+        self.select_anonym = self.index_list[self.index_dict['radio_select_anonymous']][0]
         self.select_anonym.set(0)
         self.select_anonym_radiobtn1 = Radiobutton(self.frame1, text="Testergebnisse ohne Namen",
                                                    variable=self.select_anonym, value=0, borderwidth=0,
@@ -367,7 +365,7 @@ class Testeinstellungen():
                                                    command=self.select_anonym.get())
         self.select_anonym_radiobtn2.grid(row=8, column=1, pady=0, sticky=W)
 
-        self.select_show_question_title = IntVar()
+        self.select_show_question_title = self.index_list[self.index_dict['radio_select_show_question_title']][0]
         self.select_show_question_title.set(0)
         self.select_show_question_title_radiobtn1 = Radiobutton(self.frame2, text="Fragentitel und erreichbare Punkte",
                                                                 variable=self.select_show_question_title, value=0,
@@ -386,7 +384,7 @@ class Testeinstellungen():
                                                                 command=self.select_show_question_title.get())
         self.select_show_question_title_radiobtn3.grid(row=3, column=3, pady=0, sticky=W)
 
-        self.select_user_response = IntVar()
+        self.select_user_response = self.index_list[self.index_dict['radio_select_user_response']][0]
         self.select_user_response.set(0)
         self.select_user_response_radiobtn1 = Radiobutton(self.frame2,
                                                           text="Antworten während des Testdurchlaufs nicht festschreiben",
@@ -409,7 +407,7 @@ class Testeinstellungen():
                                                           command=self.select_user_response.get())
         self.select_user_response_radiobtn4.grid(row=11, column=3, pady=0, sticky=W)
 
-        self.select_not_answered_questions = IntVar()
+        self.select_not_answered_questions = self.index_list[self.index_dict['radio_select_not_answered_questions']][0]
         self.select_not_answered_questions.set(0)
         self.select_not_answered_questions_radiobtn1 = Radiobutton(self.frame2,
                                                                    text="Nicht beantwortete Fragen bleiben an ihrem Platz",
@@ -591,11 +589,11 @@ class Testeinstellungen():
             self.check_autosave_interval_entry.grid(row=4, column=3, padx=10)
             self.check_autosave_interval_label.grid(row=4, column=3, padx=50, sticky=W)
 
-    def show_concluding_remarks(self, e, var):
-        if var.get() == 0:
+    def show_concluding_remarks(self):
+        varstate = int(self.index_list[self.index_dict['check_show_end_comment']][0].get())
+        if 0 == varstate:
             self.concluding_remarks_bar.grid_forget()
             self.concluding_remarks_infobox.grid_forget()
-
         else:
             self.concluding_remarks_bar.grid(row=22, column=3, sticky=E)
             self.concluding_remarks_infobox.grid(row=22, column=3, padx=30)
@@ -604,8 +602,8 @@ class Testeinstellungen():
 
     def Fill_Entrys_From_DB(self, db_data):
         j = 0
-        print("Fill entry mit", db_data[1][4])
-        for i in db_data[1][4]:  # todo diese exception ist so nicht ok aber funktioniert erstmal um den Textbox Ihren Textzuzuweisen.
+        print("Fill entry mit", db_data[1][5])
+        for i in db_data[1][5]:  # todo diese exception ist so nicht ok aber funktioniert erstmal um den Textbox Ihren Textzuzuweisen.
 
             self.index_list[j][0].set(i)
             j = j + 1
@@ -631,6 +629,7 @@ class Testeinstellungen_TRV():
         self.Width = Width/4
         self.DBI = DBI
         self.ID =4
+        self.create_style()
         self.rel_Top_Abstand = .1
         self.bg_color = bg_color
         self.entry_color = entry_color
@@ -646,32 +645,33 @@ class Testeinstellungen_TRV():
         self.create_trv()
         self.testeinstellungen_menu()
         self.clear()
+        self.work_window.protocol("WM_DELETE_WINDOW", self.on_closing)
         self.trv.bind('<Double-Button-1>', self.Select_from_DB)
 
 
     def testeinstellungen_menu(self):
         self.neue_einstellungen = Button(self.Frame, text="Neues Profil", command=self.neue_einstellungen_fenster, bg=self.button_color, fg=self.bg_color)
-        self.neue_einstellungen.place(relx=.5, rely=.9, relwidth=.25)
+        self.neue_einstellungen.place(relx=.5, rely=.8, relwidth=.5)
         self.neue_einstellungen['font'] = self.Button_Font
 
-        self.testeinstellung_löschen = Button(self.Frame, text="Auswahl löschen", command=self.delete_from_db, bg=self.button_color, fg=self.bg_color)
-        self.testeinstellung_löschen.place(relx=.75, rely=.9, relwidth=.25)
+        self.testeinstellung_löschen = Button(self.Frame, text="Profil aus Datenbank löschen", command=self.delete_from_db, bg=self.button_color, fg=self.bg_color)
+        self.testeinstellung_löschen.place(relx=.5, rely=.9, relwidth=.5)
         self.testeinstellung_löschen['font'] = self.Button_Font
 
         self.Test_erstellen = Button(self.Frame, text="Testerstellen", command=self.create_test, bg=self.button_color, fg=self.bg_color)
-        self.Test_erstellen.place(relx=0, rely=.6, relwidth=.4)
+        self.Test_erstellen.place(relx=0.05, rely=.6, relwidth=.4)
         self.Test_erstellen['font'] = self.Button_Font
 
         self.testeinstellung_ausgewählt = Label(self.Frame, text="Ausgewählte Testeinstellung:", bg=self.label_color, fg=self.bg_color)
-        self.testeinstellung_ausgewählt.place(relx=0, rely=.2, relwidth=.4, relheight=.1)
+        self.testeinstellung_ausgewählt.place(relx=0.05, rely=.2, relwidth=.4, relheight=.1)
         self.testeinstellung_ausgewählt['font'] = self.Label_Font
 
         self.testeinstellung_ausgewählt_label = Label(self.Frame, text="keine testeinstellungen ausgewählt", bg=self.label_color, fg=self.bg_color)
-        self.testeinstellung_ausgewählt_label.place(relx=0, rely=.3, relwidth=.4, relheight=.1)
+        self.testeinstellung_ausgewählt_label.place(relx=0.05, rely=.3, relwidth=.4, relheight=.1)
         self.testeinstellung_ausgewählt_label['font'] = self.Label_Font
 
         self.testeinstellung_auswählen = Button(self.Frame, text="Testeinstellungen auswählen", command=self.change_auswahl_label, bg=self.button_color, fg=self.bg_color)
-        self.testeinstellung_auswählen.place(relx=0, rely=.1, relwidth=.4)
+        self.testeinstellung_auswählen.place(relx=0.05, rely=.1, relwidth=.4)
         self.testeinstellung_auswählen['font'] = self.Button_Font
 
     def neue_einstellungen_fenster(self):
@@ -704,9 +704,9 @@ class Testeinstellungen_TRV():
 
 
     def create_trv(self):
-        self.trv_label = Label(self.Frame, text="Testeinstellungs Profile", bg=self.label_color, fg=self.fg_color)
-        self.trv_label.place(relx=0.5, rely=0, relwidth=.6, relheight=.1)
-        self.trv_label['font'] = self.Label_Font
+        #self.trv_label = Label(self.Frame, text="Testeinstellungs Profile", bg=self.label_color, fg=self.fg_color)
+        #self.trv_label.place(relx=0.5, rely=0, relwidth=.6, relheight=.1)
+        #self.trv_label['font'] = self.Label_Font
         # Create Treview Frame
         self.DB_frame = tk.Frame(self.Frame)
         self.DB_frame.place(relx=0.5, rely=self.rel_Top_Abstand)
@@ -720,7 +720,7 @@ class Testeinstellungen_TRV():
         self.trv.tag_configure('odd', background='#ff5733')
         self.trv.pack(fill=BOTH)
         # Create Treeview Headings
-        self.trv.heading(1, text="Name")
+        self.trv.heading(1, text="Testeinstellungs Profile:")
         #self.trv.heading(8, text="Zuletzt verändert")
         # Format Columns
         self.trv.column(1, width=int(self.Width*(4.7/10) ), anchor=CENTER,
@@ -729,12 +729,12 @@ class Testeinstellungen_TRV():
         print('trv created')
 
     def clear(self):
-        #self.DBI.get_complete_DB(0)
         self.DBI.get_complete_DB(0)
 
     def on_closing(self):
-        self.DBI.unsubscribe(self.Update_TRV())
+        self.DBI.unsubscribe(self.Update_TRV)
         self.work_window.destroy()
+        print('trv destroyed')
 
     def Select_from_DB(self, a):
 
@@ -742,6 +742,15 @@ class Testeinstellungen_TRV():
         print("gesucht:", gesucht)
         self.neue_einstellungen_fenster()
         self.DBI.get_question(gesucht['values'][0], 1)
+
+    def create_style(self):
+        # Create Stryle for treeview
+        style = ttk.Style()
+        style.configure("mystyle.Treeview", highlightthickness=0, bd=0,
+                        font=('Verdana', 8))  # Modify the font of the body
+        style.configure("mystyle.Treeview.Heading", font=('Verdana', 10, 'bold'))  # Modify the font of the headings
+        style.layout("mystyle.Treeview", [('mystyle.Treeview.treearea', {'sticky': 'nswe'})])  # Remove the borders
+        print('style created')
 
 if __name__ == "__main__":
 
@@ -757,14 +766,14 @@ if __name__ == "__main__":
     Label_Font = font.Font(family='Verdana', size=10, weight='bold')  # Font definition for Labels
     Entry_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Entrys
     Button_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Buttons
-    table_list = ['formelfrage', 'singlechoice', 'multiplechoice', 'zuordnungsfrage', 'testeinstellungen']  # hier sind die Namen der Table drinne die verwendet werden können
+    table_list = ['formelfrage', 'singlechoice', 'multiplechoice', 'zuordnungsfrage', 'testeinstellungen', 'testeinstellungen']  # hier sind die Namen der Table drinne die verwendet werden können
     bg_color = '#4cc9f0'  # general Background color
     efg_color = '#3a0ca3'  # Entry foreground color
     entry_color = 'white'  # Entry Background color
     label_color = '#3a0ca3'
     button_color = '#3f37c9'
     fg_color = '#4cc9f0'  # general foregroundcolor
-    table_dict = {'formelfrage': 0, 'singlechoice': 1, 'multiplechoice': 2, 'zuordnungsfrage': 3, 'testeinstellungen': 4}
+    table_dict = {'formelfrage': 0, 'singlechoice': 1, 'multiplechoice': 2, 'zuordnungsfrage': 3, 'testeinstellungen': 4, 'testeinstellungen': 5}
 
     mydb_name = 'generaldb.db'  # Datenbank mit allen Fragentypen
     mytempdb_name = 'generaldb2.db'  # Kopie der originalen Datenbank

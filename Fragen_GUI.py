@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter as tk
 import tkinter.font as font
+from datetime import date
 from tkinter import filedialog
 #import tkFileDialog
 from tkinter.scrolledtext import ScrolledText
@@ -66,17 +67,14 @@ class fragen_gui():
         #Subscribe to Fragentext Funktionalotäten
         self.ScrText.subscribe(self.Fragentext_Entry.insert)
 
-        self.Add_Entry_btn = Button(self.Speichern_Frame, text="Frage in DB erstellen", command=self.Add_data_to_DB, bg=self.button_color, fg=self.fg_color)
+        self.Add_Entry_btn = Button(self.Speichern_Frame, text="Neue Frage erstellen", command=self.Add_data_to_DB, bg=self.button_color, fg=self.fg_color)
         self.Add_Entry_btn['font'] = self.Button_Font
         self.Add_Entry_btn.pack(side=tk.RIGHT, padx=6, anchor="e", fill=Y)
 
-        self.Save_btn = Button(self.Speichern_Frame, text="Save Changes", command=self.Save_Change_to_DB, bg=self.button_color, fg=self.fg_color)
+        self.Save_btn = Button(self.Speichern_Frame, text="Änderungen Speichern", command=self.Save_Change_to_DB, bg=self.button_color, fg=self.fg_color)
         self.Save_btn['font'] = self.Button_Font
         self.Save_btn.pack(side=tk.RIGHT, padx=6, anchor="e", fill=Y)
 
-        self.calc_val_range_btn = Button(self.Speichern_Frame, text=" Wertebereich\nberechnen", command=self.calculate_value_range_function, bg=self.button_color, fg=self.fg_color)
-        self.calc_val_range_btn['font'] = self.Button_Font
-        self.calc_val_range_btn.pack(side=tk.RIGHT, padx=6, anchor="e", fill=Y)
 
         self.text_latex = Button(self.QD_frame, text="text latex", command=self.text_latex_call, bg=self.button_color, fg=self.fg_color) #todo change Farme
         self.text_latex.place(relx=0, rely=.9, relwidth=.25, relheight=.1)
@@ -130,28 +128,28 @@ class fragen_gui():
         self.Fragen_Window.destroy()
 
     def UI_Elemente(self):
-        self.Title_label = Label(self.param_Frame, text=self.dbinhaltsliste[self.index_dict['question_title']][1],bg=self.label_color, fg=self.fg_color)
+        self.Title_label = Label(self.param_Frame, text="Titel",bg=self.label_color, fg=self.fg_color)
         self.Title_label.pack(anchor=N, fill=X, pady=(3, 0))
         self.Title_label['font'] = self.Label_Font
         self.Title_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_title']][0], bg=self.entry_color, fg=self.efg_color)
         self.Title_Entry['font'] = self.Entry_Font
         self.Title_Entry.pack(anchor=N, fill=X)
 
-        self.Describtion_label = Label(self.param_Frame,text=self.dbinhaltsliste[self.index_dict['question_description_title']][1],bg=self.label_color, fg=self.fg_color)
+        self.Describtion_label = Label(self.param_Frame,text="Titel Beschreibung",bg=self.label_color, fg=self.fg_color)
         self.Describtion_label['font'] = self.Label_Font
         self.Describtion_label.pack(anchor=N, fill=X, pady=(3, 0))
         self.Describtion_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_description_title']][0], bg=self.entry_color, fg=self.efg_color)
         self.Describtion_Entry['font'] = self.Entry_Font
         self.Describtion_Entry.pack(anchor=N, fill=X)
 
-        self.Author_label = Label(self.param_Frame, text=self.dbinhaltsliste[self.index_dict['question_author']][1], bg=self.label_color, fg=self.fg_color)
+        self.Author_label = Label(self.param_Frame, text="Author", bg=self.label_color, fg=self.fg_color)
         self.Author_label['font'] = self.Label_Font
         self.Author_label.pack(anchor=N, fill=X, pady=(3, 0))
         self.Author_Entry = Entry(self.param_Frame,textvariable=self.dbinhaltsliste[self.index_dict['question_author']][0], bg=self.entry_color, fg=self.efg_color)
         self.Author_Entry['font'] = self.Entry_Font
         self.Author_Entry.pack(anchor=N, fill=X)
 
-        self.Schwierigkeit_label = Label(self.param_Frame, text=self.dbinhaltsliste[self.index_dict['question_difficulty']][1], bg=self.label_color, fg=self.fg_color)
+        self.Schwierigkeit_label = Label(self.param_Frame, text="Schwierigkeit", bg=self.label_color, fg=self.fg_color)
         self.Schwierigkeit_label['font'] = self.Label_Font
         self.Schwierigkeit_label.pack(anchor=N, fill=X, pady=(3, 0))
         self.Schwierigkeit_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_difficulty']][0], bg=self.entry_color, fg=self.efg_color, bd=1)
@@ -160,14 +158,14 @@ class fragen_gui():
 
 
 
-        self.Category_label = Label(self.param_Frame, text=self.dbinhaltsliste[self.index_dict['question_category']][1], bg=self.label_color, fg=self.fg_color)
+        self.Category_label = Label(self.param_Frame, text="Kategorie", bg=self.label_color, fg=self.fg_color)
         self.Category_label['font'] = self.Label_Font
         self.Category_label.pack(anchor=N, fill=X, pady=(3, 0))
         self.Category_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_category']][0], bg=self.entry_color, fg=self.efg_color)
         self.Category_Entry['font'] = self.Entry_Font
         self.Category_Entry.pack(anchor=N, fill=X)
 
-        self.Typ_label = Label(self.param_Frame, text=self.dbinhaltsliste[self.index_dict['question_type']][1], bg=self.label_color, fg=self.fg_color)
+        self.Typ_label = Label(self.param_Frame, text="Typ", bg=self.label_color, fg=self.fg_color)
         self.Typ_label['font'] = self.Label_Font
         self.Typ_label.pack(anchor=N, fill=X, pady=(3, 0))
         self.Typ_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_type']][0], bg=self.entry_color, fg=self.efg_color)
@@ -176,14 +174,14 @@ class fragen_gui():
         self.Typ_Entry.configure(state=DISABLED)
 
 
-        self.PoolTag_label = Label(self.param_Frame, text=self.dbinhaltsliste[self.index_dict['question_pool_tag']][1], bg=self.label_color, fg=self.fg_color)
+        self.PoolTag_label = Label(self.param_Frame, text="Fragenpooltag", bg=self.label_color, fg=self.fg_color)
         self.PoolTag_label['font'] = self.Label_Font
         self.PoolTag_label.pack(anchor=N, fill=X, pady=(3, 0))
         self.PoolTag_Entry = Entry(self.param_Frame, textvariable=self.dbinhaltsliste[self.index_dict['question_pool_tag']][0], bg=self.entry_color, fg=self.efg_color)
         self.PoolTag_Entry['font'] = self.Entry_Font
         self.PoolTag_Entry.pack(anchor=N, fill=X)
 
-        self.Fragentext_label = Label(self.QD_frame, text=self.dbinhaltsliste[self.index_dict['question_description_main']][1], bg=self.label_color, fg=self.fg_color)
+        self.Fragentext_label = Label(self.QD_frame, text="Beschreibung", bg=self.label_color, fg=self.fg_color)
         self.Fragentext_label['font'] = self.Label_Font
         self.Fragentext_label.place(rely=0, relx=0, relwidth=1, relheight=.1)
         self.Fragentext_Entry = ScrolledText(self.QD_frame, height=6, width=65, bg=self.entry_color, fg=self.efg_color)
@@ -192,16 +190,18 @@ class fragen_gui():
 
         self.Test_Time = Test_Time_UI(self.param_Frame, self.bg_color, self.label_color, self.Label_Font)
 
-
+        self.Extra_Einstellungen_Frame = Frame(self.param_Frame, bg=self.bg_color)
+        self.Extra_Einstellungen_Frame.pack(anchor=N, fill=X, pady=(3, 0))
 
     def Add_data_to_DB(self):
+        self.dbinhaltsliste[self.index_dict["date"]][0].set(date.today())
         self.dbinhaltsliste[self.index_dict['question_description_main']][0].set(self.Fragentext_Entry.get("1.0", 'end-1c'))
         self.db_I.Add_data_to_DB(self.dbinhaltsliste, self.dbinhaltsliste[3][0].get())
 
 
 
     def Save_Change_to_DB(self):
-
+        self.dbinhaltsliste[self.index_dict["date"]][0].set(date.today())
         self.dbinhaltsliste[self.index_dict['question_description_main']][0].set(self.Fragentext_Entry.get("1.0", 'end-1c'))
         self.db_I.Save_Change_to_DB(self.dbinhaltsliste)
 
@@ -638,6 +638,7 @@ class formelfrage(fragen_gui):
                             "res{}_min",
                             "res{}_max",
                             "res{}_prec",
+                            "res{}_tol",
                             "res{}_points",
                             "res{}_unit"]
         rel_width = .5
@@ -655,8 +656,13 @@ class formelfrage(fragen_gui):
         self.ResFrame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
         self.ResFrame.place(relx=.5, rely=0.5, relwidth=rel_width, relheight=.5)
         self.width_scrl_UI = self.width * rel_width
-        self.Results_interface = variable_scrl_UI(varname_list_result, self.bg_color, self.label_color, self.Label_Font, self.ResFrame, self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10, Columns=6, Header="Ergebnisse", header_index=['Name.', 'Min.', 'Max', 'Tol.', 'Punkte', 'Formel'], column_type_list=[0, 0, 0, 0, 0, 0], columnwidth=(1, 1, 1, 1, 1, 1))
+        self.Results_interface = variable_scrl_UI(varname_list_result, self.bg_color, self.label_color, self.Label_Font, self.ResFrame, self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10, Columns=7, Header="Ergebnisse", header_index=['Name.', 'Min.', 'Max', 'Präz.', 'Tol.', 'Punkte', 'Formel'], column_type_list=[0, 0, 0, 0, 0, 0, 0], columnwidth=(1, 1, 1, 1, 1, 1, 1))
 
+        self.calc_val_range_btn = Button(self.param_Frame, text=" Wertebereich berechnen",
+                                         command=self.calculate_value_range_function, bg=self.button_color,
+                                         fg=self.fg_color)
+        self.calc_val_range_btn['font'] = self.Button_Font
+        self.calc_val_range_btn.place(relx=0, rely=.9, relwidth=1, relheight=.1)
 
 class singlechoice(fragen_gui):
     def __init__(self, table_dict, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, label_color, button_color, *args, **kwargs):
@@ -668,9 +674,45 @@ class singlechoice(fragen_gui):
         self.response_frame = tk.Frame(self.Fragen_Window, bg=fg_color, bd=5)
         rel_width = .5
         self.response_frame.place(relx=.5, rely=0, relwidth=rel_width, relheight=1)
-        self.width_scrl_UI = self.width * rel_width
-        self.respose_input = variable_scrl_UI(varname_list, self.bg_color, self.label_color, self.Label_Font, self.response_frame, self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10, Columns=3, Header="Choices", header_index=['Antworttext', 'Antwort-Grafik.', 'Punkte'], column_type_list=[0, 1, 0], columnwidth=(2, 3, 1))
 
+        self.width_scrl_UI = self.width * rel_width
+        self.response_input = variable_scrl_UI(varname_list, self.bg_color, self.label_color, self.Label_Font, self.response_frame, self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10, Columns=3, Header="Choices", header_index=['Antworttext', 'Antwort-Grafik.', 'Punkte'], column_type_list=[0, 1, 0], columnwidth=(2, 3, 1))
+
+        self.checkbox_frame = tk.Frame(self.response_frame, bg=fg_color, bd=5)
+        self.checkbox_frame.place(relx=0, rely=.9, relwidth=.9, relheight=.1)
+
+        self.shuffle_answers_check = Checkbutton(self.checkbox_frame, text="Fragen mischen",
+                                                 variable=self.dbinhaltsliste[self.index_dict["shuffle_answers"]][0],
+                                                 onvalue=1, offvalue=0, bg=self.label_color, fg=self.bg_color)
+        self.shuffle_answers_check['font'] = self.Label_Font
+        self.shuffle_answers_check.place(relx=0, rely=0, relwidth=.3, relheight=1)
+
+        self.picture_preview_pixel_label = Label(self.checkbox_frame, text="Bildpreviewbreite in Pixel: ", anchor='w',
+                                                 bg=self.label_color, fg=self.bg_color)
+        self.picture_preview_pixel_label['font'] = self.Label_Font
+        self.picture_preview_pixel_label.place(relx=0.6, rely=0, relwidth=.4, relheight=.5)
+
+        self.picture_preview_pixel = Entry(self.checkbox_frame, text="Bild-Previewbreite in Pxl",
+                                           textvariable=self.dbinhaltsliste[self.index_dict["picture_preview_pixel"]][
+                                               0], fg=self.bg_color)
+        self.picture_preview_pixel['font'] = self.Entry_Font
+        self.picture_preview_pixel.place(relx=0.6, rely=0.5, relwidth=.4, relheight=.5)
+
+    def Fill_Entrys_From_DB(self, db_data):
+        j = 0
+
+        for i in db_data[1][self.table_dict[self.fragentyp]]:#todo diese exception ist so nicht ok aber funktioniert erstmal um den Textbox Ihren Textzuzuweisen.
+            if j == self.index_dict['question_description_main']:
+                self.Fragentext_Entry.delete('1.0', 'end-1c')
+                self.Fragentext_Entry.insert('1.0', i)
+            else:
+                self.dbinhaltsliste[j][0].set(i)
+            j = j + 1
+        self.image_interface_1.add_picture()
+        self.image_interface_2.add_picture()
+        self.image_interface_3.add_picture()
+        self.response_input.update_pictures()
+        self.dbinhaltsliste[self.index_dict["question_type"]][0].set(self.fragentyp)
 
 class multiplechoice(fragen_gui):
     def __init__(self, table_dict, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, label_color,
@@ -685,11 +727,50 @@ class multiplechoice(fragen_gui):
         rel_width = .5
         self.response_frame.place(relx=.5, rely=0, relwidth=.5, relheight=1)
         self.width_scrl_UI = self.width * rel_width
-        self.respose_input = variable_scrl_UI(varname_list, self.bg_color, self.label_color, self.Label_Font, self.response_frame,
+        self.response_input = variable_scrl_UI(varname_list, self.bg_color, self.label_color, self.Label_Font, self.response_frame,
                                               self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10,
-                                              Columns=4, Header="Choices",
+                                              Columns=4, Header="Antwortmöglichkeiten",
                                               header_index=['Antworttext', 'Antwort-Grafik.', 'Punkte','Punkteabzug'], column_type_list=[0,1,0,0], columnwidth=(2, 3, 1, 1))
 
+        self.checkbox_frame = tk.Frame(self.response_frame, bg=fg_color, bd=5)
+        self.checkbox_frame.place(relx=0, rely=.9, relwidth=.9, relheight=.1)
+
+        self.shuffle_answers_check = Checkbutton(self.checkbox_frame, text="Fragen mischen",
+                                                 variable=self.dbinhaltsliste[self.index_dict["shuffle_answers"]][0],
+                                                 onvalue=1, offvalue=0,bg=self.label_color, fg=self.bg_color)
+        self.shuffle_answers_check['font'] = self.Label_Font
+        self.shuffle_answers_check.place(relx=0, rely=0, relwidth=.3, relheight=1)
+
+        self.multiple_row_answ_check = Checkbutton(self.checkbox_frame, text="Mehrzeilige Antworten",
+                                                 variable=self.dbinhaltsliste[self.index_dict["multiple_row_answ"]][0],
+                                                 onvalue=1, offvalue=0,bg=self.label_color, fg=self.bg_color)
+        self.multiple_row_answ_check['font'] = self.Label_Font
+        self.multiple_row_answ_check.place(relx=0.3, rely=0, relwidth=.3, relheight=1)
+
+        self.picture_preview_pixel_label = Label(self.checkbox_frame, text="Bildpreviewbreite in Pixel: ",anchor='w',  bg=self.label_color, fg=self.bg_color)
+        self.picture_preview_pixel_label['font'] = self.Label_Font
+        self.picture_preview_pixel_label.place(relx=0.6, rely=0, relwidth=.4, relheight=.5)
+
+        self.picture_preview_pixel = Entry(self.checkbox_frame, text="Bild-Previewbreite in Pxl",
+                                                   textvariable=self.dbinhaltsliste[self.index_dict["picture_preview_pixel"]][0], fg=self.bg_color)
+        self.picture_preview_pixel['font'] = self.Entry_Font
+        self.picture_preview_pixel.place(relx=0.6, rely=0.5, relwidth=.4, relheight=.5)
+
+    def Fill_Entrys_From_DB(self, db_data):
+        j = 0
+
+        for i in db_data[1][self.table_dict[self.fragentyp]]:#todo diese exception ist so nicht ok aber funktioniert erstmal um den Textbox Ihren Textzuzuweisen.
+            if j == self.index_dict['question_description_main']:
+                self.Fragentext_Entry.delete('1.0', 'end-1c')
+                self.Fragentext_Entry.insert('1.0', i)
+            else:
+                self.dbinhaltsliste[j][0].set(i)
+            j = j + 1
+        self.image_interface_1.add_picture()
+        self.image_interface_2.add_picture()
+        self.image_interface_3.add_picture()
+        self.response_input.update_pictures()
+        self.dbinhaltsliste[self.index_dict["question_type"]][0].set(self.fragentyp)
 
 class zuordnungsfrage(fragen_gui):
     def __init__(self, table_dict, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, label_color, button_color, *args, **kwargs):
@@ -706,7 +787,7 @@ class zuordnungsfrage(fragen_gui):
         rel_width = .5
         self.response_frame.place(relx=.5, rely=0, relwidth=rel_width, relheight=.3)
         self.width_scrl_UI = self.width * rel_width
-        self.respose_input = variable_scrl_UI(varname_1, self.bg_color, self.label_color, self.Label_Font,
+        self.response_input = variable_scrl_UI(varname_1, self.bg_color, self.label_color, self.Label_Font,
                                               self.response_frame,
                                               self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10,
                                               Columns=2, Header="Definition",
@@ -716,7 +797,7 @@ class zuordnungsfrage(fragen_gui):
         self.response_frame_2 = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
         self.width_scrl_UI = self.width * rel_width
         self.response_frame_2.place(relx=.5, rely=0.3, relwidth=rel_width, relheight=.3)
-        self.respose_input_2 = variable_scrl_UI(varname_2, self.bg_color, self.label_color, self.Label_Font,
+        self.response_input_2 = variable_scrl_UI(varname_2, self.bg_color, self.label_color, self.Label_Font,
                                                 self.response_frame_2,
                                                 self.dbinhaltsliste, self.index_dict, self.width_scrl_UI, Rows=10,
                                                 Columns=2, Header="Term",
@@ -734,6 +815,42 @@ class zuordnungsfrage(fragen_gui):
                                                   Columns=3, Header="Zuordnungspaare",
                                                   header_index=['Definition', 'Term', 'Punkte'], column_type_list=[2,2,0],
                                                   columnwidth=(4, 4, 1))
+
+        self.shuffle_answers_check = Checkbutton(self.param_Frame, text="Antworten mehreren Fragen zuordnen",
+                                                 variable=self.dbinhaltsliste[self.index_dict["asignment_mode"]][0],
+                                                 onvalue=1, offvalue=0, bg=self.label_color, fg=self.bg_color)
+        self.shuffle_answers_check['font'] = self.Label_Font
+        self.shuffle_answers_check.place(relx=0, rely=.75, relwidth=1, relheight=.09)
+
+        self.picture_preview_pixel_label = Label(self.param_Frame, text="Bildpreviewbreite in Pixel: ", anchor='w',
+                                                 bg=self.label_color, fg=self.bg_color)
+        self.picture_preview_pixel_label['font'] = self.Label_Font
+        self.picture_preview_pixel_label.place(relx=0, rely=.85, relwidth=1, relheight=.05)
+
+        self.picture_preview_pixel = Entry(self.param_Frame, text="Bild-Previewbreite in Pxl",
+                                           textvariable=self.dbinhaltsliste[self.index_dict["picture_preview_pixel"]][
+                                               0], fg=self.bg_color)
+        self.picture_preview_pixel['font'] = self.Entry_Font
+        self.picture_preview_pixel.place(relx=0, rely=0.9, relwidth=1, relheight=.05)
+
+    def Fill_Entrys_From_DB(self, db_data):
+        j = 0
+
+        for i in db_data[1][self.table_dict[
+            self.fragentyp]]:  # todo diese exception ist so nicht ok aber funktioniert erstmal um den Textbox Ihren Textzuzuweisen.
+            if j == self.index_dict['question_description_main']:
+                self.Fragentext_Entry.delete('1.0', 'end-1c')
+                self.Fragentext_Entry.insert('1.0', i)
+            else:
+                self.dbinhaltsliste[j][0].set(i)
+            j = j + 1
+        self.image_interface_1.add_picture()
+        self.image_interface_2.add_picture()
+        self.image_interface_3.add_picture()
+        self.response_input.update_pictures()
+        self.response_input_2.update_pictures()
+        self.zuordnungspaare_1.update_pictures()
+        self.dbinhaltsliste[self.index_dict["question_type"]][0].set(self.fragentyp)
 
 class formelfrage_permutation(fragen_gui):
     def __init__(self, table_dict, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, label_color, button_color, *args, **kwargs):
@@ -781,14 +898,49 @@ class formelfrage_permutation(fragen_gui):
 
 
 if __name__ == "__main__":
+    from ScrolledText_Functionality import Textformatierung
+    from DB_interface import DB_Interface
+
+    from XML_class import XML_Interface
     root = tk.Tk()
-    WIDTH = int(root.winfo_screenwidth() / 1.5)
-    HEIGHT = int(root.winfo_screenheight() / 2)
-    root.title("DB_List")
-    root.resizable(False, False)
-    root.geometry("%dx%d" % (WIDTH, HEIGHT))
-    gesucht = 'Spannungsteiler 2'
-    dbname = '../testdb.db'
-    #lbl = tk.Label(text="Das ist das Main Window")
-    #Fragen_Frame = Fragen_GUI(root, gesucht, dbname)
-    #root.mainloop()
+    # WIDTH = int(root.winfo_screenwidth())
+    # HEIGHT = int(root.winfo_screenheight())
+    # root.title("Fragengenerator")
+    # root.resizable(True, True)
+    # root.geometry("%dx%d" % (WIDTH, HEIGHT))
+
+    # Farben und Schriften Definitionen
+    Label_Font = font.Font(family='Verdana', size=10, weight='bold')  # Font definition for Labels
+    Entry_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Entrys
+    Button_Font = font.Font(family='Verdana', size=10, weight='normal')  # Font definition for Buttons
+    table_list = ['formelfrage', 'singlechoice', 'multiplechoice', 'zuordnungsfrage', 'testeinstellungen', 'testeinstellungen']  # hier sind die Namen der Table drinne die verwendet werden können
+    bg_color = '#4cc9f0'  # general Background color
+    efg_color = '#3a0ca3'  # Entry foreground color
+    entry_color = 'white'  # Entry Background color
+    label_color = '#3a0ca3'
+    button_color = '#3f37c9'
+    fg_color = '#4cc9f0'  # general foregroundcolor
+    table_dict = {'formelfrage': 0, 'singlechoice': 1, 'multiplechoice': 2, 'zuordnungsfrage': 3, 'testeinstellungen': 4, 'testeinstellungen': 5}
+
+    mydb_name = 'generaldb.db'  # Datenbank mit allen Fragentypen
+    mytempdb_name = 'generaldb2.db'  # Kopie der originalen Datenbank
+    WIDTH = int(root.winfo_screenwidth())
+
+    DBI = DB_Interface(mydb_name, mytempdb_name, table_dict, table_list)
+    index_info = DBI.get_index_info()
+    table_index_list = index_info[0]
+    table_index_dict = index_info[1]
+    xml_interface = XML_Interface(DBI, table_dict, table_index_list, table_index_dict)
+
+
+    # zu Testzwecken die singlechoice Frage aus der DB holen und ein singlechoice Fragen Fenster öffnen
+    work_window = Toplevel()
+    work_window.title("Testfrage1")
+    ScrText = Textformatierung()
+    print("Hier wir in zukunft eine single Choice Frage geöffnet")
+    work_on_question = singlechoice(table_dict, work_window, DBI, ScrText, table_index_list,
+                                    table_index_dict, bg_color, label_color, button_color)
+
+    DBI.get_question("Testfrage1", 1)
+    #test_conf = Testeinstellungen(DBI, table_index_list[4], table_index_dict[4], table_dict['testeinstellungen'], WIDTH, Label_Font, Entry_Font, Button_Font, bg_color, entry_color, label_color, button_color, fg_color)
+    root.mainloop()

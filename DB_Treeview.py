@@ -56,29 +56,30 @@ class UI():
         self.trv.tag_configure('odd', background='#ff5733')
         self.trv.pack(fill=BOTH)
         # Create Treeview Headings
-        self.trv.heading(1, text=self.table_index_list[0][0][1])
-        self.trv.heading(2, text=self.table_index_list[0][1][1])
-        self.trv.heading(3, text=self.table_index_list[0][2][1])
-        self.trv.heading(4, text=self.table_index_list[0][3][1])
-        self.trv.heading(5, text=self.table_index_list[0][4][1])
-        self.trv.heading(6, text=self.table_index_list[0][189][1])
-        self.trv.heading(7, text="Datum")
+        self.trv.heading(1, text="Titel")
+        self.trv.heading(2, text="Taxonomie")
+        self.trv.heading(3, text="Typ")
+        self.trv.heading(4, text="Fragentext")
+        self.trv.heading(5, text="Datum")
+        self.trv.heading(6, text="Author")
+
         #self.trv.heading(8, text="Zuletzt verändert")
         # Format Columns
-        self.trv.column(1, width=int(self.Width / 9), anchor=CENTER,
+        self.width_gesamt = (self.Width / 7.7)*6
+        self.width_column = self.width_gesamt/24
+        self.trv.column(1, width=int(self.width_column*3), anchor=CENTER,
                         minwidth=int(self.Width / 30))
-        self.trv.column(2, width=int(self.Width / 9), anchor=CENTER,
+        self.trv.column(2, width=int(self.width_column*3), anchor=CENTER,
                         minwidth=int(self.Width / 30))
-        self.trv.column(3, width=int(self.Width / 9), anchor=W,
+        self.trv.column(3, width=int(self.width_column*2), anchor=W,
                         minwidth=int(self.Width / 30))
-        self.trv.column(4, width=int(self.Width / 9), anchor=W,
+        self.trv.column(4, width=int(self.width_column*10), anchor=W,
                         minwidth=int(self.Width / 30))
-        self.trv.column(5, width=int(self.Width / 9), anchor=CENTER,
+        self.trv.column(5, width=int(self.width_column*2), anchor=CENTER,
                         minwidth=int(self.Width / 30))
-        self.trv.column(6, width=int(self.Width / 9), anchor=W,
+        self.trv.column(6, width=int(self.width_column*4), anchor=W,
                         minwidth=int(self.Width / 30))
-        self.trv.column(7, width=int(self.Width / 10), anchor=CENTER,
-                        minwidth=int(self.Width / 30))
+
         print('trv created')
 
     def create_style(self):
@@ -180,11 +181,14 @@ class UI():
         formelfrage_permutation.pack(side="top", fill=X)
 
     def update(self, db_data):
+        index = 0
         self.trv.delete(*self.trv.get_children())
         for table in db_data[self.ID]:
-            for data in table:
-                self.trv.insert('', 'end', values=data)
-                #print("update", data)
+            if index < 4:
+                for data in table:
+                    self.trv.insert('', 'end', values=data)
+                    #print("update", data)
+            index = index + 1#
 
     def add_data_to_testdb(self):
         i = 0
@@ -203,7 +207,7 @@ class UI():
         Auswahl = self.trv.focus()
         gesucht = self.trv.item(self.trv.focus())
         result = str(self.trv.item(Auswahl))
-        #print("Titel gesucht:", gesucht['values'][2])
+        print("Titel gesucht:", gesucht)
         #print("Typ gesucht:", gesucht['values'][1])
         #print("das ist in Treeview", self.e[1][1])
         if gesucht['values'][2] == "formelfrage":

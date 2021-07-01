@@ -1,32 +1,62 @@
 import sqlite3
 from tkinter import *
+from pathlib import Path
 
+#Die DB_Interface Klasse regelt sämliche Datenflüsse zwischen der SQL Datenbank und allen anderen Klasse wie z.B. die UI-Klassen
+#Um auf die Datenbankfunktionalitäten zuzugreifen muss eine Klasse subscribed sein zu einer der Instanz der Db_Interface
+#Die Db_interface broardcastet die angeforderten Daten dann an alle subscriber und jeder sucht sich die für Ihn relevanten daten herraus
 class DB_Interface():
     def __init__(self, dbname, tempdbname, table_dict, table_list, *args, **kwargs):
         self.listeners = []
         self.all_data = []
-        self.db_data = [self.all_data, None, None, False] #broadcast data 1:Datenbak auswahl 2:Einzelne Frage aus Datenbank 3: daten in Temp datenbank 4:
+        self.db_data = [self.all_data, None, None, False] #broadcast data 1:  Datenbak auswahl 2:  Einzelne Frage aus Datenbank 3: daten in Temp datenbank 4:
         self.table = 'formelfrage'
         self.table_dict = table_dict
         self.table_list = table_list
+
+        datei = open('Standard_DB_Name.txt', 'r')
+        start_path = datei.read()
+        my_file = Path(start_path)
+        if my_file.is_file():
+            dbname = start_path
+        else:
+            datei = open('Standard_DB_Name.txt', 'w')
+            datei.write("generaldb.db")
+            dbname = 'generaldb.db'
+            print("Die gespeicherte Datenbank konnte nicht gefunden werden\n es wurde eine Leere Datenbank erstellt")
+
 
         # Insert Data from Database
         self.mydb = sqlite3.connect(dbname)
         self.cursor = self.mydb.cursor()
         self.mytempdb = sqlite3.connect(tempdbname)
         self.tempcursor = self.mytempdb.cursor()
-        for table in self.table_list:# Temporäre Datenbank wird gelöscht
+        for table in self.table_list:# Temporäre Datenbank wird geleert, da hier noch daten vom letzen benutzen drinn sein können
             self.tempcursor.execute("DELETE  FROM " + table + "")
         self.mytempdb.commit()
         self.cursorlist = [self.cursor, self.cursor, self.tempcursor]
         self.dblist = [self.mydb, None, self.mytempdb]
 
-    def search_DB(self, q2, id): #todo hier wird zwar jeder Table durchsucht aber noch nicht jedes Erbgenis zurückgegeben
+    def change_DB(self, db_path):
+        self.mydb.close()
+        self.mydb = sqlite3.connect(db_path)
+        self.cursor = self.mydb.cursor()
+        self.cursorlist[0] = self.cursor
+        self.cursorlist[1] = self.cursor
+        self.dblist[0] = self.mydb
+        print("new db selected:", db_path)
+        self.get_complete_DB(0)
+        datei = open('Standard_DB_Name.txt', 'w')
+        datei.write(db_path)
+
+    def search_DB(self, q2, id): #Suche sollte so jetzt Funktionieren
+        searchterm = str(q2)
         zwischenspeicher = []
         for table in self.table_list:
-            self.query = " SELECT " + self.index_list[0][1] + ", " + self.index_list[1][1] + ", " + self.index_list[2][1] + ", " + self.index_list[3][1] + ", " + self.index_list[4][1] + " FROM " + table + " Where " + self.index_list[0][1] + " LIKE '" + q2 + "' OR " + self.index_list[1][1] + " LIKE '" + q2 + "' OR " + self.index_list[2][1] + " LIKE '" + q2 + "' OR " + self.index_list[3][1] + " LIKE '" + q2 + "' "
+            self.query = " SELECT " + self.table_index_list[self.table_dict[table]][0][1] + ", " + self.table_index_list[self.table_dict[table]][1][1] + ", " + self.table_index_list[self.table_dict[table]][2][1] + ", " + self.table_index_list[self.table_dict[table]][3][1] + ", " + self.table_index_list[self.table_dict[table]][4][1] + " FROM " + table + " Where " + self.table_index_list[self.table_dict[table]][0][1] + " LIKE '" + searchterm + "' OR " + self.table_index_list[self.table_dict[table]][1][1] + " LIKE '" + searchterm + "' OR " + self.table_index_list[self.table_dict[table]][2][1] + " LIKE '" + searchterm + "' OR " + self.table_index_list[self.table_dict[table]][3][1] + " LIKE '" + searchterm + "' "
+            print("query", self.query)
             self.cursor.execute(self.query)
-            #print(self.cursor.fetchall())
+
             zwischenspeicher.append(self.cursor.fetchall())
         print(zwischenspeicher)
         self.db_data[id] = zwischenspeicher
@@ -52,7 +82,7 @@ class DB_Interface():
             index = self.table_index_list[self.table_dict[table]][3][1]
             query = " SELECT * FROM " + table + " WHERE " + index + " LIKE '" + q2 + "' "
 
-            print(self.query)
+            #print(self.query)
             self.cursor.execute(query)
             test = self.cursor.fetchone()
             if test == None:
@@ -103,7 +133,7 @@ class DB_Interface():
         for item in item_list:
             table = item['values'][2]
             #print("Der Eintrag mit dem Titel: ", item['values'][2], ", soll kopiert werden")
-            self.cursor.execute("SELECT * FROM " + table + " WHERE " + self.index_list[3][1] + " = '" + item['values'][3] + "' ")
+            self.cursor.execute("SELECT * FROM " + table + " WHERE " + self.table_index_list[self.table_dict[table]][3][1] + " = '" + item['values'][3] + "' ")
             data = self.cursor.fetchone()
             #print("INSERT INTO " + table + " (" + self.table_index_list[self.table_dict[table]][3][1] + ") VALUES (:Titel)", {'Titel': data[3]})
             self.tempcursor.execute("INSERT INTO " + table + " (" + self.table_index_list[self.table_dict[table]][3][1] + ") VALUES (:Titel)", {'Titel': data[3]})
@@ -126,10 +156,12 @@ class DB_Interface():
 
     def delete_DB_content(self, item_list, ID):
         for item in item_list:
+            fragentyp = item['values'][2]
+            table = fragentyp
+            fragenname = item['values'][3]
             print(self.index_list[3][1])
             self.cursorlist[ID].execute(
-                "DELETE  FROM " + item['values'][
-                    2] + " WHERE " + self.index_list[3][1] + " = '" + item['values'][
+                "DELETE  FROM " + fragentyp + " WHERE " + self.table_index_list[self.table_dict[table]][3][1] + " = '" + item['values'][
                     3] + "'") # item['values'][2] = Fragentyp und der entspricht dem Table in der Datenbank für diesen Fragentyp
             self.dblist[ID].commit()
         self.get_complete_DB(ID)
@@ -143,39 +175,41 @@ class DB_Interface():
         self.notify()
 
 
-    def Add_data_to_DB(self, q, title): #todo mus noch an multi Fragentyp angepasst werden
+    def Add_data_to_DB(self, q, title):
         if self.does_title_exist(title):
             print("title existiert bereits daher konnte die Frage nicht erstellt werden")
         else:
-            print("title existiert noch nicht",self.table_dict[q[2][0].get()])
-            print(q)
+            print("title existiert noch nicht")
+
             table_name = q[2][0].get() #table name ist gleich dem FragentypA
             index = self.table_dict[table_name]
-            self.cursor.execute("INSERT INTO " + table_name + " (" + self.index_list[3][1] + ") VALUES (:Titel)",
+            self.cursor.execute("INSERT INTO " + table_name + " (" + self.table_index_list[index][3][1] + ") VALUES (:Titel)",
                                 {'Titel': q[3][0].get()})
             # print("INSERT INTO " + self.table + " (" + self.index_list[3][1] + ") VALUES (:Titel)", {'Titel': q[3][0].get()})
             self.mydb.commit()
             for i in q:
                 self.cursor.execute(
-                    "UPDATE " + table_name + " SET '" + i[1] + "' = :Value WHERE " + self.index_list[3][1] + " = '" +
+                    "UPDATE " + table_name + " SET '" + i[1] + "' = :Value WHERE " + self.table_index_list[index][3][1] + " = '" +
                     q[3][0].get() + "' ", {'Value': i[0].get()})
             self.mydb.commit()
             self.get_question(q[3][0].get(), 1)
             self.get_complete_DB(0)
 
-    def add_Changes_to_DB(self, q): #todo mus noch an multi Fragentyp angepasst werden
+    def add_Changes_to_DB(self, q):
+        table_name = q[2][0].get() #table name ist gleich dem FragentypA
+        index = self.table_dict[table_name]
         for i in q:
-            # print("UPDATE " + self.table + " SET '" + i[1] + "' = :Value WHERE " + self.index_list[2][1] + " LIKE '%" + self.db_data[1][0][2] + "%'", {'Value': i[0].get()})
+
             self.cursor.execute(
-                "UPDATE " + self.table + " SET '" + i[1] + "' = :Value WHERE " + self.index_list[3][
+                "UPDATE " + table_name + " SET '" + i[1] + "' = :Value WHERE " + self.table_index_list[index][3][
                     1] + " LIKE '%" + self.db_data[1][0][3] + "%'",
                 {'Value': i[0].get()})
             self.mydb.commit()
         self.get_question(q[3][0].get(), 1)
         self.get_complete_DB(0)
 
-    def Save_Change_to_DB(self, q): #todo mus noch an multi Fragentyp angepasst werden
-        #print("titel?", self.db_data[1][0][3])
+    def Save_Change_to_DB(self, q):
+
         title = q[3][0].get()
         if self.og_title == title:
                self.add_Changes_to_DB(q)
@@ -198,7 +232,8 @@ class DB_Interface():
                 self.query = "SELECT " + self.table_index_list[self.table_dict[table]][3][1] + " FROM " + table + ""
                 print("Table", table)
             else:
-                self.query = "SELECT " + self.table_index_list[self.table_dict[table]][0][1] + ", " + self.table_index_list[self.table_dict[table]][1][1] + ", " + self.table_index_list[self.table_dict[table]][2][1] + ", " + self.table_index_list[self.table_dict[table]][3][1] + ", " + self.table_index_list[self.table_dict[table]][4][1] + ", " + self.table_index_list[0][189][1] + " FROM " + table + ""
+                self.query = "SELECT " + self.table_index_list[self.table_dict[table]][self.table_index_dict[self.table_dict[table]]["question_title"]][1] + ", " + self.table_index_list[self.table_dict[table]][self.table_index_dict[self.table_dict[table]]["question_pool_tag"]][1] + ", " + self.table_index_list[self.table_dict[table]][self.table_index_dict[self.table_dict[table]]["question_type"]][1] + ", " + self.table_index_list[self.table_dict[table]][self.table_index_dict[self.table_dict[table]]["question_description_main"]][1] + ", " + self.table_index_list[self.table_dict[table]][self.table_index_dict[self.table_dict[table]]["date"]][1] + ", " + self.table_index_list[self.table_dict[table]][self.table_index_dict[self.table_dict[table]]["question_author"]][1] + " FROM " + table + ""
+            print("Was steht im query:", self.query)
             self.cursorlist[id].execute(self.query)
             all_data.append(self.cursorlist[id].fetchall())
 
@@ -226,10 +261,11 @@ class DB_Interface():
         # Durch alle tables suchen und Ergebnisse in einer Liste zusammenfassen
         # "extend" fügt eine Liste einer anderen zu
         for i in range(len(self.question_types)):
-            self.query = "SELECT * FROM " + str(self.question_types[i])
-            self.cursorlist[1].execute(self.query)  # cursorlist[2] Fehler bei Fragen auslesen?
-            self.test_data.extend((self.cursorlist[1].fetchall()))
-            print("query ############ ", self.cursorlist[1].fetchall())
+            self.query = "SELECT * FROM " + str(self.question_types[i]) + ""
+
+            self.tempcursor.execute(self.query)
+            self.test_data.extend((self.tempcursor.fetchall()))
+
         return self.test_data
 
 
