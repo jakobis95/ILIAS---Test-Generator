@@ -77,21 +77,35 @@ class fragen_gui():
 
 
         self.text_latex = Button(self.QD_frame, text="text latex", command=self.text_latex_call, bg=self.button_color, fg=self.fg_color) #todo change Farme
-        self.text_latex.place(relx=0, rely=.9, relwidth=.25, relheight=.1)
+        self.text_latex.place(relx=0, rely=.8, relwidth=.25, relheight=.1)
         self.text_latex['font'] = self.Button_Font
 
         self.text_sub = Button(self.QD_frame, text="text sub", command=self.text_sub_call, bg=self.button_color, fg=self.fg_color)#todo change Farme
         self.text_sub['font'] = self.Button_Font
-        self.text_sub.place(relx=.25, rely=.9, relwidth=.25, relheight=.1)
+        self.text_sub.place(relx=.25, rely=.8, relwidth=.25, relheight=.1)
 
         self.text_sup = Button(self.QD_frame, text="text sup", command=self.text_sup_call, bg=self.button_color, fg=self.fg_color)#todo change Farme
         self.text_sup['font'] = self.Button_Font
-        self.text_sup.place(relx=.5, rely=.9, relwidth=.25, relheight=.1)
+        self.text_sup.place(relx=.5, rely=.8, relwidth=.25, relheight=.1)
 
         self.text_italic = Button(self.QD_frame, text="text italic", command=self.text_italic_call, bg=self.button_color, fg=self.fg_color)#todo change Farme
         self.text_italic['font'] = self.Button_Font
-        self.text_italic.place(relx=.75, rely=.9, relwidth=.25, relheight=.1)
+        self.text_italic.place(relx=.75, rely=.8, relwidth=.25, relheight=.1)
 
+        self.place_picture1 = Button(self.QD_frame, text="Bild 1 -> Text", command=lambda:self.place_picture_call(1), bg=self.button_color,
+                                 fg=self.fg_color)  # todo change Farme
+        self.place_picture1.place(relx=0, rely=.9, relwidth=.33, relheight=.1)
+        self.place_picture1['font'] = self.Button_Font
+
+        self.place_picture2 = Button(self.QD_frame, text="Bild 2 -> Text", command=lambda:self.place_picture_call(2), bg=self.button_color,
+                               fg=self.fg_color)  # todo change Farme
+        self.place_picture2['font'] = self.Button_Font
+        self.place_picture2.place(relx=.33, rely=.9, relwidth=.33, relheight=.1)
+
+        self.place_picture3 = Button(self.QD_frame, text="Bild 3 -> Text", command=lambda:self.place_picture_call(3), bg=self.button_color,
+                               fg=self.fg_color)  # todo change Farme
+        self.place_picture3['font'] = self.Button_Font
+        self.place_picture3.place(relx=.66, rely=.9, relwidth=.33, relheight=.1)
 
         #todo var und res anzeige Frame nicht in der Klasse bestimmen
         #self.VarFrame = tk.Frame(self.Fragen_Window, bg=bg_color, bd=5)
@@ -618,6 +632,14 @@ class fragen_gui():
 
     def text_sub_call(self):
         self.ScrText.text_sub(self.Fragentext_Entry)
+
+    def place_picture_call(self, number):
+        if number == 1 &  self.image_interface_1.does_picture_exist() == True:
+            self.ScrText.add_picture(1, self.Fragentext_Entry)
+        elif number == 2 &  self.image_interface_1.does_picture_exist() == True:
+            self.ScrText.add_picture(1, self.Fragentext_Entry)
+        elif number == 3 &  self.image_interface_1.does_picture_exist() == True:
+            self.ScrText.add_picture(1, self.Fragentext_Entry)
 
 class formelfrage(fragen_gui):
     def __init__(self, table_dict, Frame, DB_interface, ScrText, dbinhaltsliste, index_dict, bg_color, label_color, button_color, *args, **kwargs):

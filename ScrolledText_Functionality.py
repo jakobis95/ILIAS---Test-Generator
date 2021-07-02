@@ -5,6 +5,7 @@ from tkinter import *
 class Textformatierung:
     def __init__(self):
         self.listeners = []
+        self.picture_ref = [False, False, False]
         print("init textformatierung")
 
     def subscribe(self, listener):
@@ -43,3 +44,7 @@ class Textformatierung:
         self.description_main_entry.tag_add('ITALIC', SEL_FIRST, SEL_LAST)
         self.description_main_entry.tag_config('ITALIC', font=('Helvetica', 9, 'italic'))
         #self.formula_question_entry.tag_config('ITALIC', foreground='green')
+
+    def add_picture(self, number, describtion_main_entry):
+        self.description_main_entry = describtion_main_entry
+        self.description_main_entry.insert(END, '%Bild{}% ' .format(number))

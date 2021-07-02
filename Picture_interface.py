@@ -46,6 +46,7 @@ class picture_choice():
         self.Var.set("")
         self.path = self.Var.get()
         print(" 2 Pfad {} wird gelöscht".format(self.Var.get()))
+        self.image = None
         self.update_btn()
 
     def update_btn(self):
@@ -76,7 +77,7 @@ class picture_choice():
 
             self.resized = self.original.resize((new_widht, new_height), Image.ANTIALIAS)
             self.image0 = ImageTk.PhotoImage(self.resized)
-
+        self.image = True
         self.update_btn()
 
     def choose_picture(self):
@@ -103,6 +104,12 @@ class picture_choice():
 
         self.Image_Label = Label(work_window, image=self.image0)
         self.Image_Label.place(relwidth=1, relheight=1, relx=0, rely=0)
+
+    def does_picture_exist(self):
+       if self.image != None:
+           return True
+       else:
+           return False
 
     def configure(self, state):
         state = state
