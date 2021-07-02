@@ -53,14 +53,17 @@ class DB_Interface():
         searchterm = str(q2)
         zwischenspeicher = []
         for table in self.table_list:
-            self.query = " SELECT " + self.table_index_list[self.table_dict[table]][0][1] + ", " + self.table_index_list[self.table_dict[table]][1][1] + ", " + self.table_index_list[self.table_dict[table]][2][1] + ", " + self.table_index_list[self.table_dict[table]][3][1] + ", " + self.table_index_list[self.table_dict[table]][4][1] + " FROM " + table + " Where " + self.table_index_list[self.table_dict[table]][0][1] + " LIKE '" + searchterm + "' OR " + self.table_index_list[self.table_dict[table]][1][1] + " LIKE '" + searchterm + "' OR " + self.table_index_list[self.table_dict[table]][2][1] + " LIKE '" + searchterm + "' OR " + self.table_index_list[self.table_dict[table]][3][1] + " LIKE '" + searchterm + "' "
-            print("query", self.query)
-            self.cursor.execute(self.query)
+            if table != "testeinstellungen":
+                self.query = " SELECT " + self.table_index_list[self.table_dict[table]][self.table_index_dict[self.table_dict[table]]["question_title"]][1] + ", " + self.table_index_list[self.table_dict[table]][self.table_index_dict[self.table_dict[table]]["question_pool_tag"]][1] + ", " + self.table_index_list[self.table_dict[table]][self.table_index_dict[self.table_dict[table]]["question_type"]][1] + ", " + self.table_index_list[self.table_dict[table]][self.table_index_dict[self.table_dict[table]]["question_description_main"]][1] + ", " + self.table_index_list[self.table_dict[table]][self.table_index_dict[self.table_dict[table]]["date"]][1] + "," + self.table_index_list[self.table_dict[table]][self.table_index_dict[self.table_dict[table]]["question_author"]][1] + " FROM " + table + " Where " + self.table_index_list[self.table_dict[table]][0][1] + " LIKE '%" + searchterm + "%' OR " + self.table_index_list[self.table_dict[table]][1][1] + " LIKE '%" + searchterm + "%' OR " + self.table_index_list[self.table_dict[table]][2][1] + " LIKE '%" + searchterm + "%' OR " + self.table_index_list[self.table_dict[table]][3][1] + " LIKE '%" + searchterm + "%' "
 
-            zwischenspeicher.append(self.cursor.fetchall())
-        print(zwischenspeicher)
-        self.db_data[id] = zwischenspeicher
-        self.notify()
+
+                print("query", self.query)
+                self.cursor.execute(self.query)
+
+                zwischenspeicher.append(self.cursor.fetchall())
+            print(zwischenspeicher)
+            self.db_data[id] = zwischenspeicher
+            self.notify()
 
     def does_title_exist(self, title): #todo testing required
         state = False
