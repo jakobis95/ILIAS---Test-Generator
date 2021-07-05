@@ -1011,7 +1011,8 @@ class generate_db():
                             check_show_end_comment int,
                             entry_end_comment text,
                             check_forwarding text,
-                            check_notification text
+                            check_notification text,
+                            title_entry
                             )""")
         mydb.commit()
 

@@ -41,7 +41,7 @@ class Testeinstellungen():
                                              font=('Helvetica', 10, 'bold'))
         self.res12_min_listbox_label.grid(row=0, column=0, sticky=W, padx=10, pady=(20, 0))
 
-        self.res90_min_listbox_label = Label(self.frame1, text="Test-Titel")
+        self.res90_min_listbox_label = Label(self.frame1, text="Profile-Name")
         self.res90_min_listbox_label.grid(row=1, column=0, sticky=W, padx=10)
         self.res91_max_listbox_label = Label(self.frame1, text="Beschreibung")
         self.res91_max_listbox_label.grid(row=2, column=0, sticky=W, padx=10)
@@ -424,44 +424,44 @@ class Testeinstellungen():
 
         # --------------------------- ENTRY BOXES ---------------------------------------
 
-        self.titel_entry = Entry(self.frame1, width=47)
+        self.titel_entry = Entry(self.frame1, textvariable=self.index_list[self.index_dict['profile_name']][0], width=47)
         self.titel_entry.grid(row=1, column=1)
         self.introduction_bar = Scrollbar(self.frame1)
         self.introduction_infobox = Text(self.frame1, height=4, width=40, font=('Helvetica', 9))
 
-        self.test_start_year_entry = Entry(self.frame1, width=5)
+        self.test_start_year_entry = Entry(self.frame1, textvariable=self.index_list[self.index_dict['entry_test_start_year']][0], width=5)
         self.test_start_year_entry.grid(row=18, column=1, sticky=W)
-        self.test_start_year_entry.insert(0, "YYYY")
-        self.test_start_month_entry = Entry(self.frame1, width=5)
+        self.index_list[self.index_dict['entry_test_start_year']][0].set("YYYY")
+        self.test_start_month_entry = Entry(self.frame1, textvariable=self.index_list[self.index_dict['entry_test_start_month']][0], width=5)
         self.test_start_month_entry.grid(row=18, column=1, sticky=W, padx=35)
-        self.test_start_month_entry.insert(0, "MM")
-        self.test_start_day_entry = Entry(self.frame1, width=5)
+        self.index_list[self.index_dict['entry_test_start_month']][0].set("MM")
+        self.test_start_day_entry = Entry(self.frame1, textvariable=self.index_list[self.index_dict['entry_test_start_day']][0], width=5)
         self.test_start_day_entry.grid(row=18, column=1, sticky=W, padx=70)
-        self.test_start_day_entry.insert(0, "DD")
-        self.test_start_hour_entry = Entry(self.frame1, width=5)
+        self.index_list[self.index_dict['entry_test_start_day']][0].set("DD")
+        self.test_start_hour_entry = Entry(self.frame1, textvariable=self.index_list[self.index_dict['entry_test_start_hour']][0], width=5)
         self.test_start_hour_entry.grid(row=18, column=1, sticky=W, padx=105)
-        self.test_start_hour_entry.insert(0, "HH")
-        self.test_start_minute_entry = Entry(self.frame1, width=5)
+        self.index_list[self.index_dict['entry_test_start_hour']][0].set("HH")
+        self.test_start_minute_entry = Entry(self.frame1, textvariable=self.index_list[self.index_dict['entry_test_start_minute']][0], width=5)
         self.test_start_minute_entry.grid(row=18, column=1, sticky=W, padx=140)
-        self.test_start_minute_entry.insert(0, "mm")
+        self.index_list[self.index_dict['entry_test_start_minute']][0].set("mm")
 
-        self.test_end_year_entry = Entry(self.frame1, width=5)
+        self.test_end_year_entry = Entry(self.frame1, textvariable=self.index_list[self.index_dict['entry_test_end_year']][0], width=5)
         self.test_end_year_entry.grid(row=19, column=1, sticky=W, pady=5)
-        self.test_end_year_entry.insert(0, "YYYY")
-        self.test_end_month_entry = Entry(self.frame1, width=5)
+        self.index_list[self.index_dict['entry_test_end_year']][0].set("YYYY")
+        self.test_end_month_entry = Entry(self.frame1, textvariable=self.index_list[self.index_dict['entry_test_end_month']][0], width=5)
         self.test_end_month_entry.grid(row=19, column=1, sticky=W, padx=35)
-        self.test_end_month_entry.insert(0, "MM")
-        self.test_end_day_entry = Entry(self.frame1, width=5)
+        self.index_list[self.index_dict['entry_test_end_month']][0].set("MM")
+        self.test_end_day_entry = Entry(self.frame1, textvariable=self.index_list[self.index_dict['entry_test_end_day']][0], width=5)
         self.test_end_day_entry.grid(row=19, column=1, sticky=W, padx=70)
-        self.test_end_day_entry.insert(0, "DD")
-        self.test_end_hour_entry = Entry(self.frame1, width=5)
+        self.index_list[self.index_dict['entry_test_end_day']][0].set("DD")
+        self.test_end_hour_entry = Entry(self.frame1, textvariable=self.index_list[self.index_dict['entry_test_end_hour']][0], width=5)
         self.test_end_hour_entry.grid(row=19, column=1, sticky=W, padx=105)
-        self.test_end_hour_entry.insert(0, "HH")
-        self.test_end_minute_entry = Entry(self.frame1, width=5)
+        self.index_list[self.index_dict['entry_test_end_hour']][0].set("HH")
+        self.test_end_minute_entry = Entry(self.frame1,  textvariable=self.index_list[self.index_dict['entry_test_end_minute']][0], width=5)
         self.test_end_minute_entry.grid(row=19, column=1, sticky=W, padx=140)
-        self.test_end_minute_entry.insert(0, "mm")
+        self.index_list[self.index_dict['entry_test_end_minute']][0].set("mm")
 
-        self.test_password_entry = Entry(self.frame1, width=20)
+        self.test_password_entry = Entry(self.frame1, textvariable=self.index_list[self.index_dict['entry_test_password']][0], width=20)
         self.test_password_entry.grid(row=20, column=1, sticky=W, pady=3)
 
         self.description_bar = Scrollbar(self.frame1)
@@ -471,41 +471,37 @@ class Testeinstellungen():
         self.description_bar.config(command=self.description_infobox.yview)
         self.description_infobox.config(yscrollcommand=self.description_bar.set)
 
-        self.limit_users_max_amount_entry = Entry(self.frame1, width=5)
+        self.limit_users_max_amount_entry = Entry(self.frame1,  textvariable=self.index_list[self.index_dict['entry_limit_unsers']][0], width=5)
         self.limit_users_max_amount_entry.grid(row=22, column=1, sticky=W)
-        self.inactivity_time_for_users_entry = Entry(self.frame1, width=5)
+        self.inactivity_time_for_users_entry = Entry(self.frame1,  textvariable=self.index_list[self.index_dict['entry_unser_inactivity']][0], width=5)
         self.inactivity_time_for_users_entry.grid(row=23, column=1, sticky=W)
-        self.inactivity_time_for_users_entry.insert(0, "300")
+        self.index_list[self.index_dict['entry_unser_inactivity']][0].set("300")
 
-        self.limit_test_runs_entry = Entry(self.frame1, width=10)
+        self.limit_test_runs_entry = Entry(self.frame1, textvariable=self.index_list[self.index_dict['entry_limit_test_runs']][0], width=10)
         self.limit_test_runs_entry.grid(row=25, column=1, sticky=W)
-        self.limit_test_runs_entry.insert(0, "3")
+        self.index_list[self.index_dict['entry_limit_test_runs']][0].set("3")
 
-        self.limit_time_betw_test_runs_month_entry = Entry(self.frame1, width=5)
+        self.limit_time_betw_test_runs_month_entry = Entry(self.frame1, textvariable=self.index_list[self.index_dict['entry_limit_time_betw_test_run_month']][0], width=5) #zu testzwecken ausgetauscht
         self.limit_time_betw_test_runs_month_entry.grid(row=26, column=1, sticky=W, pady=5)
-        self.limit_time_betw_test_runs_month_entry.insert(0, "MM")
-        self.limit_time_betw_test_runs_day_entry = Entry(self.frame1, width=5)
-        self.limit_time_betw_test_runs_day_entry.grid(row=26, column=1, sticky=W, padx=35)
-        self.limit_time_betw_test_runs_day_entry.insert(0, "DD")
-        self.limit_time_betw_test_runs_hour_entry = Entry(self.frame1, width=5)
-        self.limit_time_betw_test_runs_hour_entry.grid(row=26, column=1, sticky=W, padx=70)
-        self.limit_time_betw_test_runs_hour_entry.insert(0, "HH")
-        self.limit_time_betw_test_runs_minute_entry = Entry(self.frame1, width=5)
-        self.limit_time_betw_test_runs_minute_entry.grid(row=26, column=1, sticky=W, padx=105)
-        self.limit_time_betw_test_runs_minute_entry.insert(0, "mm")
+        self.index_list[self.index_dict['entry_limit_time_betw_test_run_month']][0].set("MM")
 
-        self.limit_processing_time_minutes_entry = Entry(self.frame1, width=5)
+        self.limit_time_betw_test_runs_day_entry = Entry(self.frame1, textvariable=self.index_list[self.index_dict['entry_limit_time_betw_test_run_day']][0], width=5)
+        self.limit_time_betw_test_runs_day_entry.grid(row=26, column=1, sticky=W, padx=35)
+        self.index_list[self.index_dict['entry_limit_time_betw_test_run_day']][0].set("DD")
+        self.limit_time_betw_test_runs_hour_entry = Entry(self.frame1, textvariable=self.index_list[self.index_dict['entry_limit_time_betw_test_run_hour']][0], width=5)
+        self.limit_time_betw_test_runs_hour_entry.grid(row=26, column=1, sticky=W, padx=70)
+        self.index_list[self.index_dict['entry_limit_time_betw_test_run_hour']][0].set("HH")
+        self.limit_time_betw_test_runs_minute_entry = Entry(self.frame1, textvariable=self.index_list[self.index_dict['entry_limit_time_betw_test_run_minute']][0], width=5)
+        self.limit_time_betw_test_runs_minute_entry.grid(row=26, column=1, sticky=W, padx=105)
+        self.index_list[self.index_dict['entry_limit_time_betw_test_run_minute']][0].set("mm")
+
+        self.limit_processing_time_minutes_entry = Entry(self.frame1,textvariable=self.index_list[self.index_dict['entry_processing_time_in_minutes']][0], width=5)
         self.limit_processing_time_minutes_entry.grid(row=28, column=1, sticky=W)
-        self.limit_processing_time_minutes_entry.insert(0, "90")
+        self.index_list[self.index_dict['entry_processing_time_in_minutes']][0].set("90")
 
         self.concluding_remarks_bar = Scrollbar(self.frame2)
         self.concluding_remarks_infobox = Text(self.frame2, height=4, width=40, font=('Helvetica', 9))
 
-        self.profile_name_label = Label(self.frame2, text="Speichern unter...")
-        self.profile_name_label.grid(row=29, column=0)
-
-        self.profile_name_entry = Entry(self.frame2, width=15, textvariable=self.index_list[self.index_dict['profile_name']][0])
-        self.profile_name_entry.grid(row=29, column=1)
 
         self.Save_btn = Button(self.frame2, text="Save Profile", width=15, command=self.save_testeinstellungen_in_db)
         self.Save_btn.grid(row=29, column=3)
@@ -658,15 +654,24 @@ class Testeinstellungen_TRV():
         self.testeinstellung_löschen.place(relx=.5, rely=.9, relwidth=.5)
         self.testeinstellung_löschen['font'] = self.Button_Font
 
+        self.test_name = Label(self.Frame, text="Testname:", bg=self.label_color,
+                                                fg=self.bg_color)
+        self.test_name.place(relx=0.05, rely=.6, relwidth=.4, relheight=.1)
+        self.test_name['font'] = self.Label_Font
+
+        self.test_name_entry = Entry(self.Frame)
+        self.test_name_entry.place(relx=0.05, rely=.7, relwidth=.4, relheight=.1)
+        self.test_name_entry['font'] = self.Entry_Font
+
         self.Test_erstellen = Button(self.Frame, text="Testerstellen", command=self.create_test, bg=self.button_color, fg=self.bg_color)
-        self.Test_erstellen.place(relx=0.05, rely=.6, relwidth=.4)
+        self.Test_erstellen.place(relx=0.05, rely=.8, relwidth=.4)
         self.Test_erstellen['font'] = self.Button_Font
 
         self.testeinstellung_ausgewählt = Label(self.Frame, text="Ausgewählte Testeinstellung:", bg=self.label_color, fg=self.bg_color)
         self.testeinstellung_ausgewählt.place(relx=0.05, rely=.2, relwidth=.4, relheight=.1)
         self.testeinstellung_ausgewählt['font'] = self.Label_Font
 
-        self.testeinstellung_ausgewählt_label = Label(self.Frame, text="keine testeinstellungen ausgewählt", bg=self.label_color, fg=self.bg_color)
+        self.testeinstellung_ausgewählt_label = Label(self.Frame, text="Standard Testeinstellung", bg=self.label_color, fg=self.bg_color)
         self.testeinstellung_ausgewählt_label.place(relx=0.05, rely=.3, relwidth=.4, relheight=.1)
         self.testeinstellung_ausgewählt_label['font'] = self.Label_Font
 
