@@ -180,9 +180,9 @@ class DB_Interface():
 
     def Add_data_to_DB(self, q, title):
         if self.does_title_exist(title):
-            print("title existiert bereits daher konnte die Frage nicht erstellt werden")
+            return True
         else:
-            print("title existiert noch nicht")
+
 
             table_name = q[2][0].get() #table name ist gleich dem FragentypA
             index = self.table_dict[table_name]
@@ -197,6 +197,7 @@ class DB_Interface():
             self.mydb.commit()
             self.get_question(q[3][0].get(), 1)
             self.get_complete_DB(0)
+            return False
 
     def add_Changes_to_DB(self, q):
         table_name = q[2][0].get() #table name ist gleich dem FragentypA

@@ -210,9 +210,22 @@ class fragen_gui():
     def Add_data_to_DB(self):
         self.dbinhaltsliste[self.index_dict["date"]][0].set(date.today())
         self.dbinhaltsliste[self.index_dict['question_description_main']][0].set(self.Fragentext_Entry.get("1.0", 'end-1c'))
-        self.db_I.Add_data_to_DB(self.dbinhaltsliste, self.dbinhaltsliste[3][0].get())
+        state = self.db_I.Add_data_to_DB(self.dbinhaltsliste, self.dbinhaltsliste[3][0].get())
 
+        if state == True:
+            work_window = Toplevel(bg=self.bg_color)
+            work_window.geometry("%dx%d+%d+%d" % (1900 / 4, 1999 / 10, 1999 / 2, 1999 / 4))
+            Menu_lbl = Label(work_window, text="Frage konnte nicht gespeichert werden.\n Der gewählte Name existiert bereits.", bg="red",
+                             fg="white")
+            Menu_lbl['font'] = self.Label_Font
+            Menu_lbl.place(relx=.15 ,rely=.25, relwidth=.7, relheight=.2)
+            formelfrage = Button(work_window, text="ok", bg=self.button_color, fg=self.bg_color,
+                                 command=lambda: self.close_Alert(work_window))
+            formelfrage['font'] = self.Button_Font
+            formelfrage.place(relx=.15 ,rely=.5, relwidth=.7, relheight=.2)
 
+    def close_Alert(self, work_window):
+        work_window.destroy()
 
     def Save_Change_to_DB(self):
         self.dbinhaltsliste[self.index_dict["date"]][0].set(date.today())
