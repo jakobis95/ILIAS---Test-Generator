@@ -18,7 +18,7 @@ class picture_choice():
 
         self.image = None
         self.path = self.Var.get()
-        print("das ist der pfad", self.path)
+
 
         self.Interaction_btn = Button(Frame, bg=self.button_color, fg=self.fg_color)
         self.Interaction_btn['font'] = self.Entry_Font
@@ -34,7 +34,7 @@ class picture_choice():
         self.name_lbl.bind('<Double-Button-1>', self.show_picture)
 
         if len(self.path) >= 1:
-            print("test test", self.Var.get())
+
             self.add_picture()
 
     def change_font(self, lable_font, entry_font):
@@ -42,23 +42,23 @@ class picture_choice():
         self.Entry_Font = entry_font
 
     def delete_picture(self):
-        print("Pfad {} wird gelöscht".format(self.Var.get()))
+
         self.Var.set("")
         self.path = self.Var.get()
-        print(" 2 Pfad {} wird gelöscht".format(self.Var.get()))
+
         self.image = None
         self.update_btn()
 
     def update_btn(self):
 
         if len(self.path) < 1:
-            self.Interaction_btn.configure(text="Add Picture", command=self.choose_picture)
+            self.Interaction_btn.configure(text="Bild hinzufügen", command=self.choose_picture)
             self.name_lbl.configure(text=self.Var.get())
-            print("kein Bild vorhanden")
+
         else:
-            self.Interaction_btn.configure(text="delete picture", command=self.delete_picture)
+            self.Interaction_btn.configure(text="löschen", command=self.delete_picture)
             self.name_lbl.configure(text=self.Var.get())
-            print("ein Bild vorhanden")
+
 
     def add_picture(self):
         self.path = self.Var.get()
@@ -81,22 +81,22 @@ class picture_choice():
         self.update_btn()
 
     def choose_picture(self):
-        self.file = filedialog.askopenfile(parent=self.frame, mode='rb', title='Choose a file')
+        self.file = filedialog.askopenfile(parent=self.frame, mode='rb', title='Bild auswählen')
         if self.file != None:
             self.Var.set(self.file.name)  # Pfad wird in DB zwischenspeicher gelegt
             self.path = self.file.name
-            print(self.file.name)
+
             data = self.file.read()
             self.file.close()
-            print("I got %d bytes from this file." % len(data))
+
         self.add_picture()
 
     def chose_picture_from_explorer(self):
-        self.file = filedialog.askopenfile(parent=self.frame, mode='rb', title='Choose a file')
+        self.file = filedialog.askopenfile(parent=self.frame, mode='rb', title='Bild auswählen')
         if self.file != None:
             data = self.file.read()
             self.file.close()
-            print("I got %d bytes from this file." % len(data))
+
         self.add_picture()
 
     def show_picture(self, e):
