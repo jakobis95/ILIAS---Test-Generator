@@ -49,7 +49,7 @@ class DB_Interface():
         datei = open('Standard_DB_Name.txt', 'w')
         datei.write(db_path)
 
-    def search_DB(self, q2, id): #Suche sollte so jetzt Funktionieren
+    def search_DB(self, q2, id): #sucht nach String in allen Fragen
         searchterm = str(q2)
         zwischenspeicher = []
         for table in self.table_list:
@@ -65,7 +65,7 @@ class DB_Interface():
             self.db_data[id] = zwischenspeicher
             self.notify()
 
-    def does_title_exist(self, title): #todo testing required
+    def does_title_exist(self, title): #Testet ob ein Titel bereits existiert
         state = False
         print("does title exist", title)
         for table in self.table_list:
@@ -79,13 +79,14 @@ class DB_Interface():
 
         return state
 
-    def get_question(self, q2, id): #todo testing required
+    def get_question(self, q2, id): #Sucht eine bestimmte Frage herraus um diese dann bearbeiten zu können
         zwischenspeicher = []
+
         for table in self.table_list:
             index = self.table_index_list[self.table_dict[table]][3][1]
             query = " SELECT * FROM " + table + " WHERE " + index + " LIKE '" + q2 + "' "
 
-            #print(self.query)
+            print(query)
             self.cursor.execute(query)
             test = self.cursor.fetchone()
             if test == None:
@@ -162,11 +163,11 @@ class DB_Interface():
         for item in item_list:
             fragentyp = item['values'][2]
             table = fragentyp
-            fragenname = item['values'][3]
+            fragenname = item['values'][0]
             print(self.index_list[3][1])
             self.cursorlist[ID].execute(
                 "DELETE  FROM " + fragentyp + " WHERE " + self.table_index_list[self.table_dict[table]][3][1] + " = '" + item['values'][
-                    3] + "'") # item['values'][2] = Fragentyp und der entspricht dem Table in der Datenbank für diesen Fragentyp
+                    0] + "'") # item['values'][2] = Fragentyp und der entspricht dem Table in der Datenbank für diesen Fragentyp
             self.dblist[ID].commit()
         self.get_complete_DB(ID)
         self.notify()

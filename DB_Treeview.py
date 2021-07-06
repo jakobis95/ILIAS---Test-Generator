@@ -214,7 +214,7 @@ class UI():
             work_window = Toplevel()
             work_window.title(gesucht['values'][3])
             Work_on_question = formelfrage(self.table_dict, work_window, self.db_I, self.ScrText, self.table_index_list, self.table_index_dict, self.bg_color, self.label_color, self.button_color)
-            self.db_I.get_question(gesucht['values'][3], 1)
+            self.db_I.get_question(gesucht['values'][0], 1) #hier wird nach dem Titel gesucht, beim ändern der Reihenfolge in der Anzeige muss auch hier der index geändert werden
         elif gesucht['values'][2] == "singlechoice":
             work_window = Toplevel()
             work_window.title(gesucht['values'][3])
@@ -223,7 +223,7 @@ class UI():
             work_on_question = singlechoice(self.table_dict, work_window, self.db_I, self.ScrText, self.table_index_list,
                                           self.table_index_dict, self.bg_color, self.label_color, self.button_color)
 
-            self.db_I.get_question(gesucht['values'][3], 1)
+            self.db_I.get_question(gesucht['values'][0], 1)
         elif gesucht['values'][2] == "multiplechoice":
             work_window = Toplevel()
             work_window.title(gesucht['values'][3])
@@ -232,7 +232,7 @@ class UI():
             work_on_question = multiplechoice(self.table_dict, work_window, self.db_I, self.ScrText, self.table_index_list,
                                           self.table_index_dict, self.bg_color, self.label_color, self.button_color)
 
-            self.db_I.get_question(gesucht['values'][3], 1)
+            self.db_I.get_question(gesucht['values'][0], 1)
         elif gesucht['values'][2] == "zuordnungsfrage":
             work_window = Toplevel()
             work_window.title(gesucht['values'][3])
@@ -240,13 +240,13 @@ class UI():
             print("Hier wir in zukunft eine zuodnungsfrage Frage geöffnet")
             work_on_question = zuordnungsfrage(self.table_dict, work_window, self.db_I, self.ScrText, self.table_index_list,
                                           self.table_index_dict, self.bg_color, self.label_color, self.button_color)
-            self.db_I.get_question(gesucht['values'][3], 1)
+            self.db_I.get_question(gesucht['values'][0], 1)
 
         elif gesucht['values'][2] == "formelfrage_permutation":
             work_window = Toplevel()
             work_window.title(gesucht['values'][3])
             Work_on_question = formelfrage_permutation(self.table_dict, work_window, self.db_I, self.ScrText, self.table_index_list, self.table_index_dict, self.bg_color, self.label_color, self.button_color)
-            self.db_I.get_question(gesucht['values'][3], 1)
+            self.db_I.get_question(gesucht['values'][0], 1)
         else:
             print("der Fragentyp konnte nicht zugeornet werden ")
 

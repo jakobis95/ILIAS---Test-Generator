@@ -31,7 +31,7 @@ class Main(tk.Frame):
         # Datenbank mit allen Fragentypen/ wenn nicht vorhanden muss mit DB_creator_Testbed erstellt werden
         mydb_name = 'generaldb.db'
         # Kopie der originalen Datenbankstrucktur und wird als temporärer Speicher für Fragen die als Test verwendet werden sollen benutzt
-        mytempdb_name = 'Zwischenspeicher_Datenbank.db'
+        mytempdb_name = 'generaldb2.db'
         # hier sind die Namen der Table drinne die verwendet werden können
         self.table_list = ['formelfrage', 'singlechoice', 'multiplechoice', 'zuordnungsfrage',
                            'formelfrage_permutation',
@@ -120,7 +120,7 @@ class Main(tk.Frame):
         Menu_lbl_2['font'] = self.Label_Font
         Menu_lbl_2.place(relx=.1, rely=.3, relwidth=1, relheight=.2)
         Menu_lbl_2 = Label(work_window,
-                           text="Die Suche sucht nach ganzen begriffen oder Textteilen in allen 6 Spalten. Um wieder alle fragen sehen zu könne drücken Sie zurücksetzen."
+                           text="Die Suche sucht nach ganzen begriffen oder Textteilen in allen 6 Spalten.\n Um wieder alle fragen sehen zu könne drücken Sie zurücksetzen."
                            ,bg=self.label_color,
                            fg="white", anchor="w")
         Menu_lbl_2['font'] = self.Label_Font
@@ -175,13 +175,15 @@ class Main(tk.Frame):
                            command=lambda: self.DBI.change_DB(self.file.name))
         self.Open_DB['font'] = self.Button_Font
         self.Open_DB.pack(side="top", fill=X)
+        Paltzhalter = Label(self.work_window,bg=self.bg_color)
+        Paltzhalter.pack(side="top", fill=X)
         New_DB = Button(self.work_window, text="Neue Datenbank erstellen", bg=self.button_color, fg=self.bg_color,
                         command=lambda: self.create_DB(name))
         New_DB['font'] = self.Button_Font
         New_DB.pack(side="top", fill=X)
-        New_DB = Entry(self.work_window, textvariable=name, fg=self.bg_color)
-        New_DB['font'] = self.Label_Font
-        New_DB.pack(side="top", fill=X)
+        New_DB_name = Entry(self.work_window, textvariable=name, fg=self.bg_color)
+        New_DB_name['font'] = self.Label_Font
+        New_DB_name.pack(side="top", fill=X)
         # self.Open_DB.bind('<ButtonRelease-1>', self.destroy_DB_Manager_UI)
 
     def destroy_DB_Manager_UI(self, e):
