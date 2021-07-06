@@ -67,11 +67,11 @@ class fragen_gui():
         #Subscribe to Fragentext Funktionalotäten
         self.ScrText.subscribe(self.Fragentext_Entry.insert)
 
-        self.Add_Entry_btn = Button(self.Speichern_Frame, text="Neue Frage erstellen", command=self.Add_data_to_DB, bg=self.button_color, fg=self.fg_color)
+        self.Add_Entry_btn = Button(self.Speichern_Frame, text="Als neue Frage \n speichern", command=self.Add_data_to_DB, bg=self.button_color, fg=self.fg_color)
         self.Add_Entry_btn['font'] = self.Button_Font
         self.Add_Entry_btn.pack(side=tk.RIGHT, padx=6, anchor="e", fill=Y)
 
-        self.Save_btn = Button(self.Speichern_Frame, text="Änderungen Speichern", command=self.Save_Change_to_DB, bg=self.button_color, fg=self.fg_color)
+        self.Save_btn = Button(self.Speichern_Frame, text="Änderungen speichern", command=self.Save_Change_to_DB, bg=self.button_color, fg=self.fg_color)
         self.Save_btn['font'] = self.Button_Font
         self.Save_btn.pack(side=tk.RIGHT, padx=6, anchor="e", fill=Y)
 
@@ -223,6 +223,20 @@ class fragen_gui():
                                  command=lambda: self.close_Alert(work_window))
             formelfrage['font'] = self.Button_Font
             formelfrage.place(relx=.15 ,rely=.5, relwidth=.7, relheight=.2)
+        else:
+            work_window = Toplevel(bg=self.bg_color)
+            work_window.geometry("%dx%d+%d+%d" % (1900 / 4, 1999 / 10, 1999 / 2, 1999 / 4))
+            message = Label(work_window,
+                             text="Frage wurde erfolgreich gespeichert.",
+                             bg="green",
+                             fg="white")
+            message['font'] = self.Label_Font
+            message.place(relx=.15, rely=.25, relwidth=.7, relheight=.2)
+            ok_btn = Button(work_window, text="ok", bg=self.button_color, fg=self.bg_color,
+                                 command=lambda: self.close_Alert(work_window))
+            ok_btn['font'] = self.Button_Font
+            ok_btn.place(relx=.15, rely=.5, relwidth=.7, relheight=.2)
+
 
     def close_Alert(self, work_window):
         work_window.destroy()

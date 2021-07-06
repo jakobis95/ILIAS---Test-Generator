@@ -1019,4 +1019,4 @@ class generate_db():
 if __name__ == "__main__":
     #Wenn diese Datei ausgeführt wird werden zwei leere Datenbanken erstellt
     db = generate_db('generaldb.db')
-    db = generate_db('generaldb2.db')
+    db = generate_db('Zwischenspeicher_Datenbank.db')

@@ -147,15 +147,16 @@ class DB_Interface():
                 i = i + 1
         self.mytempdb.commit()
 
-        for table in self.table_list:
-        #todo das läuft hier nicht durch database is locked heißt es
-            self.query = "SELECT " + self.table_index_list[self.table_dict[table]][0][1] + ", " + self.table_index_list[self.table_dict[table]][1][1] + ", " + self.table_index_list[self.table_dict[table]][2][1] + ", " + self.table_index_list[self.table_dict[table]][3][1] + ", " + self.table_index_list[self.table_dict[table]][4][1] + " FROM " + table + ""
-        #print(self.query)
-            self.tempcursor.execute(self.query)
-            zwischenspeicher.append(self.tempcursor.fetchall())
-
-        self.db_data[2] = zwischenspeicher
-        self.notify()
+        # for table in self.table_list:
+        # #todo das läuft hier nicht durch database is locked heißt es
+        #     self.query = "SELECT " + self.table_index_list[self.table_dict[table]][0][1] + ", " + self.table_index_list[self.table_dict[table]][1][1] + ", " + self.table_index_list[self.table_dict[table]][2][1] + ", " + self.table_index_list[self.table_dict[table]][3][1] + ", " + self.table_index_list[self.table_dict[table]][4][1] + " FROM " + table + ""
+        # #print(self.query)
+        #     self.tempcursor.execute(self.query)
+        #     zwischenspeicher.append(self.tempcursor.fetchall())
+        #
+        # self.db_data[2] = zwischenspeicher
+        # self.notify()
+        self.get_complete_DB(2)
 
     def delete_DB_content(self, item_list, ID):
         for item in item_list:

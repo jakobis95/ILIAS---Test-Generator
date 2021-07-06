@@ -7,6 +7,7 @@ from XML_class import XML_Interface
 from Taxonomie_interface import TAX_Interface
 from Test_Klassen import Testeinstellungen_TRV
 from tkinter import filedialog
+from DB_creator import generate_db
 from ScrolledText_Functionality import Textformatierung
 class Main(tk.Frame):
 
@@ -30,7 +31,7 @@ class Main(tk.Frame):
         # Datenbank mit allen Fragentypen/ wenn nicht vorhanden muss mit DB_creator_Testbed erstellt werden
         mydb_name = 'generaldb.db'
         # Kopie der originalen Datenbankstrucktur und wird als temporärer Speicher für Fragen die als Test verwendet werden sollen benutzt
-        mytempdb_name = 'generaldb2.db'
+        mytempdb_name = 'Zwischenspeicher_Datenbank.db'
         # hier sind die Namen der Table drinne die verwendet werden können
         self.table_list = ['formelfrage', 'singlechoice', 'multiplechoice', 'zuordnungsfrage',
                            'formelfrage_permutation',
@@ -89,6 +90,10 @@ class Main(tk.Frame):
         taxonomy_settings = Button(Right_Menu_Frame, text="Taxonomie bearbeiten", bg=self.button_color, fg=self.bg_color, command=tax_interface.edit_tax_of_existing_ilias_pool_file)
         taxonomy_settings['font'] = self.Button_Font
         taxonomy_settings.pack(side="top", fill=X)
+        help_btn = Button(Right_Menu_Frame, text="Hilfe", bg=self.button_color,
+                                   fg=self.bg_color, command=self.help_window)
+        help_btn['font'] = self.Button_Font
+        help_btn.pack(side="top", fill=X)
         test_lbl = Label(Right_Menu_Frame, text="Test Menü", bg=self.label_color, fg=self.bg_color)
         test_lbl['font'] = self.Label_Font
         test_lbl.pack(side="top", fill=X)
@@ -99,6 +104,48 @@ class Main(tk.Frame):
         create_Pool['font'] = self.Button_Font
         create_Pool.pack(side="top", fill=X)
 
+
+    def help_window(self):
+        work_window = Toplevel(bg=self.bg_color)
+        work_window.geometry("%dx%d+%d+%d" % (WIDTH / 1.5, WIDTH / 5, WIDTH / 2, WIDTH / 4))
+        Menu_lbl = Label(work_window,
+                         text="Auswahl einer Frage in der Datenbank geshieht durch einmaliges drücken der linken Maustaste.\n Es kann Shift oder Str gedrücktgehalten werden um mehrere Fragen gleichzeitig zu Makieren.\n Ihre auswahl können Sie entweder zu einem Test hinzufügen über den Button im Menü auf der rechte Seite oder Löschen ", bg=self.label_color,
+                         fg="white", anchor="w")
+        Menu_lbl['font'] = self.Label_Font
+        Menu_lbl.place(relx=.1, rely=.05, relwidth=1, relheight=.2)
+        Menu_lbl_2 = Label(work_window,
+                         text="Bearbeiten Sie eine bereits erstellte Frage durch einen Doppelklick auf die Zeile in der Fragenübersicht.",
+                         bg=self.label_color,
+                         fg="white", anchor="w")
+        Menu_lbl_2['font'] = self.Label_Font
+        Menu_lbl_2.place(relx=.1, rely=.3, relwidth=1, relheight=.2)
+        Menu_lbl_2 = Label(work_window,
+                           text="Die Suche sucht nach ganzen begriffen oder Textteilen in allen 6 Spalten. Um wieder alle fragen sehen zu könne drücken Sie zurücksetzen."
+                           ,bg=self.label_color,
+                           fg="white", anchor="w")
+        Menu_lbl_2['font'] = self.Label_Font
+        Menu_lbl_2.place(relx=.1, rely=.55, relwidth=1, relheight=.2)
+
+    def New_DB_window(self):
+        work_window = Toplevel(bg=self.bg_color)
+        work_window.geometry("%dx%d+%d+%d" % (WIDTH / 1.5, WIDTH / 5, WIDTH / 2, WIDTH / 4))
+        Menu_lbl = Label(work_window,
+                         text="Auswahl einer Frage in der Datenbank geshieht durch einmaliges drücken der linken Maustaste.\n Es kann Shift oder Str gedrücktgehalten werden um mehrere Fragen gleichzeitig zu Makieren.\n Ihre auswahl können Sie entweder zu einem Test hinzufügen über den Button im Menü auf der rechte Seite oder Löschen ", bg=self.label_color,
+                         fg="white", anchor="w")
+        Menu_lbl['font'] = self.Label_Font
+        Menu_lbl.place(relx=.1, rely=.05, relwidth=1, relheight=.2)
+        Menu_lbl_2 = Label(work_window,
+                         text="Bearbeiten Sie eine bereits erstellte Frage durch einen Doppelklick auf die Zeile in der Fragenübersicht.",
+                         bg=self.label_color,
+                         fg="white", anchor="w")
+        Menu_lbl_2['font'] = self.Label_Font
+        Menu_lbl_2.place(relx=.1, rely=.3, relwidth=1, relheight=.2)
+        Menu_lbl_2 = Label(work_window,
+                           text="Die Suche sucht nach ganzen begriffen oder Textteilen in allen 6 Spalten. Um wieder alle fragen sehen zu könne drücken Sie zurücksetzen."
+                           ,bg=self.label_color,
+                           fg="white", anchor="w")
+        Menu_lbl_2['font'] = self.Label_Font
+        Menu_lbl_2.place(relx=.1, rely=.55, relwidth=1, relheight=.2)
 
 
     #Testmenü wird als neue Instanz aufgerufen wenn der Test_erstellen_Button gedrückt wird, diese Klasse befindet sich in Test_Klassen.py
@@ -113,6 +160,7 @@ class Main(tk.Frame):
         self.textvar = StringVar()
         self.work_window = Toplevel()
         width = self.WIDTH
+        name = StringVar()
         self.work_window.title("Datenbankauswahl")
         self.work_window.resizable(True, True)
         self.work_window.geometry("%dx%d+%d+%d" % (width / 6, width / 12, width / 2, width / 4))
@@ -127,10 +175,23 @@ class Main(tk.Frame):
                            command=lambda: self.DBI.change_DB(self.file.name))
         self.Open_DB['font'] = self.Button_Font
         self.Open_DB.pack(side="top", fill=X)
+        New_DB = Button(self.work_window, text="Neue Datenbank erstellen", bg=self.button_color, fg=self.bg_color,
+                        command=lambda: self.create_DB(name))
+        New_DB['font'] = self.Button_Font
+        New_DB.pack(side="top", fill=X)
+        New_DB = Entry(self.work_window, textvariable=name, fg=self.bg_color)
+        New_DB['font'] = self.Label_Font
+        New_DB.pack(side="top", fill=X)
         # self.Open_DB.bind('<ButtonRelease-1>', self.destroy_DB_Manager_UI)
 
     def destroy_DB_Manager_UI(self, e):
         self.work_window.destroy()
+
+    def create_DB(self, name_var):
+        name = name_var.get()
+        name = name + ".db"
+        print(name)
+        new_DB = generate_db(name)
 
     def Choose_DB(self):
         self.file = filedialog.askopenfile(parent=self.work_window, mode='rb', title='Choose a file')
