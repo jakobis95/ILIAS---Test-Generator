@@ -203,30 +203,32 @@ class DB_Interface():
 
     def add_Changes_to_DB(self, q):
         table_name = q[2][0].get() #table name ist gleich dem FragentypA
+        name = q[3][0].get()
         index = self.table_dict[table_name]
         for i in q:
             query = "UPDATE " + table_name + " SET '" + i[1] + "' = :Value WHERE " + self.table_index_list[index][3][
-                    1] + " LIKE '%" + self.db_data[1][0][3] + "%'", {'Value': i[0].get()}
-            print("query add_changes:", query)
+                    1] + " LIKE '%" + name + "%'", {'Value': i[0].get()}
+            print("Value:", i[0].get())
             self.cursor.execute(
                 "UPDATE " + table_name + " SET '" + i[1] + "' = :Value WHERE " + self.table_index_list[index][3][
-                    1] + " LIKE '%" + self.db_data[1][0][3] + "%'",
+                    1] + " LIKE '%" + name + "%'",
                 {'Value': i[0].get()})
-            self.mydb.commit()
+        self.mydb.commit()
         self.get_question(q[3][0].get(), 1)
         self.get_complete_DB(0)
 
     def Save_Change_to_DB(self, q):
         print("q:", q)
         title = q[3][0].get()
-        if self.og_title == title:
-            self.add_Changes_to_DB(q)
-            print("Änderung wurde gespeichert")
-        elif self.does_title_exist(title):
-            print("title existiert bereits, speichern nicht möglich")
-        else:
-            print("datenänderung konnte gespeichert werden")
-            self.add_Changes_to_DB(q)
+        self.add_Changes_to_DB(q)
+        # if self.og_title == title:
+        #     self.add_Changes_to_DB(q)
+        #     print("Änderung wurde gespeichert")
+        # elif self.does_title_exist(title):
+        #     print("title existiert bereits, speichern nicht möglich")
+        # else:
+        #     print("datenänderung konnte gespeichert werden")
+        #     self.add_Changes_to_DB(q)
 
     def subscribe(self, listener):
         self.listeners.append(listener)
