@@ -1,1 +1,1 @@
-C:/Users/mfroehl2/Dropbox/Max/WorkTH/Software/pythonProject2/generaldb.db
+C:/Users/mfroehl2/Dropbox/Max/WorkTH/Software/pythonProject2/db_copy.db

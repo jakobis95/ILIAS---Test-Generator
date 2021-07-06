@@ -95,8 +95,8 @@ class DB_Interface():
                 zwischenspeicher.append(test)
         print("zwischenspeicher", zwischenspeicher)
         self.db_data[id] = zwischenspeicher
-        self.og_title = self.db_data[id][0][3]
-        #print(og_title)
+        self.og_title = q2
+        print("OG_Title:", self.og_title)
         print(self.db_data[id])
         self.notify()
 
@@ -205,7 +205,9 @@ class DB_Interface():
         table_name = q[2][0].get() #table name ist gleich dem FragentypA
         index = self.table_dict[table_name]
         for i in q:
-
+            query = "UPDATE " + table_name + " SET '" + i[1] + "' = :Value WHERE " + self.table_index_list[index][3][
+                    1] + " LIKE '%" + self.db_data[1][0][3] + "%'", {'Value': i[0].get()}
+            print("query add_changes:", query)
             self.cursor.execute(
                 "UPDATE " + table_name + " SET '" + i[1] + "' = :Value WHERE " + self.table_index_list[index][3][
                     1] + " LIKE '%" + self.db_data[1][0][3] + "%'",
@@ -215,10 +217,11 @@ class DB_Interface():
         self.get_complete_DB(0)
 
     def Save_Change_to_DB(self, q):
-
+        print("q:", q)
         title = q[3][0].get()
         if self.og_title == title:
-               self.add_Changes_to_DB(q)
+            self.add_Changes_to_DB(q)
+            print("Änderung wurde gespeichert")
         elif self.does_title_exist(title):
             print("title existiert bereits, speichern nicht möglich")
         else:
